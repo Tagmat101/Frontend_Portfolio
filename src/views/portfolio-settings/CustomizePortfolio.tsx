@@ -84,17 +84,6 @@ const CustomizePortfolio = () => {
             </Box>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
-            <TextField
-                fullWidth
-                label='Color'
-                placeholder='Pick a color'
-                value={color} 
-                onChange={(e) => setColor(e.target.value)} 
-                disabled={true}
-              />
-            <HexColorPicker color={color} onChange={setColor} />
-          </Grid>
           
           <Grid item xs={12}>
             <Button variant='contained' sx={{ marginRight: 3.5 }}>
