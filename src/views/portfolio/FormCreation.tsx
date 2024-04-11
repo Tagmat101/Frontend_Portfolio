@@ -36,6 +36,8 @@ const FormCreation = () => {
     experiences: modify ? dataPortfolioMod.experiences : [],
     projects: modify ? dataPortfolioMod.projects : []
   });
+  console.log(list)
+  console.log(dataPortfolioMod)
   const [dataPortfolio, setDataPortfolio] = useState<PortfolioDataHelper>({
     categories: [],
     educations: [],
@@ -280,43 +282,50 @@ const FormCreation = () => {
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <List style={{ display: 'flex' }}>
-                  {list.experiences.map((experience, index) => (
-                    <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>
-                      {experience?.companyName}
-                      <Button onClick={() => handleDeleteItem('experiences', index)}>
-                        <TrashCan />
-                      </Button>
-                    </li>
+                  {list.experiences != null && list.experiences.map((experience, index) => (
+                    experience && (
+                      <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>
+                        {experience?.companyName}
+                        <Button onClick={() => handleDeleteItem('experiences', index)}>
+                          <TrashCan />
+                          </Button>
+                      </li>
+                    )
                   ))}
                 </List>
               </FormControl>
             </Grid>
 
             <Grid item xs={12}>
-              <FormControl fullWidth>
-                <List style={{ display: 'flex' }}>
-                  {list.projects.map((project, index) => (
-                    <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      
+            <FormControl fullWidth>
+              <List style={{ display: 'flex' }}>
+                {list.projects.map((project, index) => (
+                  project && (
+                    <li key={index} style={{ margin: '12px', borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      
                       {project.name}
                       <Button onClick={() => handleDeleteItem('projects', index)}>
                         <TrashCan />
                       </Button>
                     </li>
-                  ))}
-                </List>
-              </FormControl>
-            </Grid>
+                  )
+                ))}
+              </List>
+            </FormControl>
+          </Grid>
+
 
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <List style={{ display: 'flex' }}>
-                  {list.educations.map((education, index) => (
-                    <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      
+                  {list.educations != null && list.educations.map((education, index) => (
+                    education && (
+                      <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      
                       {education.institution}
                       <Button onClick={() => handleDeleteItem('educations', index)}>
                         <TrashCan />
                       </Button>
                     </li>
+                    )
                   ))}
                 </List>
               </FormControl>
