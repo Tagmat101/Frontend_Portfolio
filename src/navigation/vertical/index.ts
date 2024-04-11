@@ -8,8 +8,9 @@ import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
-import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
-
+import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended' 
+import SchoolIcon from 'mdi-material-ui/School';
+import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline'; 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 
@@ -30,6 +31,24 @@ const navigation = (): VerticalNavItemsType => {
       icon: AccountCogOutline,
       path: '/portfolio-settings'
     },
+    {
+      sectionTitle: 'My Personal Details'
+    },
+    {
+      title: 'Education',
+      icon: SchoolIcon,
+      path: '/details/education'
+    },  
+    {
+      title: 'Experience',
+      icon: BriefcaseOutline,
+      path: '/details/experience'
+    }, 
+    {
+      title: 'Project',
+      icon: SchoolIcon,
+      path: '/details/project'
+    }, 
     {
       sectionTitle: 'Pages'
     },

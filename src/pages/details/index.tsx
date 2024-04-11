@@ -1,4 +1,5 @@
 // ** React Imports
+ 
 import { SyntheticEvent, useState } from 'react'
 
 // ** MUI Imports
@@ -11,18 +12,17 @@ import { styled } from '@mui/material/styles'
 import MuiTab, { TabProps } from '@mui/material/Tab'
 
 // ** Icons Imports
-import AccountOutline from 'mdi-material-ui/AccountOutline'
-import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
+import AccountOutline from 'mdi-material-ui/AccountOutline' 
 import InformationOutline from 'mdi-material-ui/InformationOutline'
 
 // ** Demo Tabs Imports
 import TabInfo from 'src/views/account-settings/TabInfo'
-import TabAccount from 'src/views/account-settings/TabAccount'
-import TabSecurity from 'src/views/account-settings/TabSecurity'
+import Education from 'src/views/details/Education'
+import Experience from 'src/views/details/Experience'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-
+import { School,BriefcaseOutline} from 'mdi-material-ui'  
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     minWidth: 100
@@ -44,7 +44,7 @@ const TabName = styled('span')(({ theme }) => ({
 const AccountSettings = () => {
   // ** State
   const [value, setValue] = useState<string>('account')
-
+ 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
@@ -54,24 +54,24 @@ const AccountSettings = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label='account-settings tabs'
+          aria-label='education tabs'
           sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value='account'
+            value='education'
             label={ 
               <Box sx={{ display: 'flex', alignItems: 'center' }}> 
-                <AccountOutline />
-                <TabName>Account</TabName>
+                <School />
+                <TabName>Education</TabName>
               </Box>  
             }
           />
           <Tab
-            value='security'
+            value='experience'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <LockOpenOutline />
-                <TabName>Security</TabName>
+                <BriefcaseOutline   />
+                <TabName>Experience</TabName>
               </Box>
             }
           />
@@ -86,11 +86,11 @@ const AccountSettings = () => {
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='account'>
-          <TabAccount />
+        <TabPanel sx={{ p: 0 }} value='education'>
+          <Education />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='security'>
-          <TabSecurity />
+        <TabPanel sx={{ p: 0 }} value='experience'>
+          <Experience />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='info'>
           <TabInfo />
