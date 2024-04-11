@@ -20,3 +20,19 @@ export const CreatePortfolioPost = async(data:any) => {
         console.log(error)
     }
 }
+
+export const GetAllPortfolios = async() => {
+    try{
+        const cookie_ = cookie.get('token-cookie')
+        const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${root}/create`;
+        const response = await axios.post(url,data,{
+            headers: {
+                'Authorization': cookie_
+            }
+        })
+        return response.data.data
+    } catch(error:any)
+    {
+        console.log(error)
+    }
+}

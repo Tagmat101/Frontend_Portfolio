@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import List from '@mui/material/List';
 import Button from '@mui/material/Button';
-import { Card, CardContent, CardHeader, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, MenuItem, Select, TextField, Typography, CircularProgress } from '@mui/material';
 import { Cross, Projector } from 'mdi-material-ui'
 import InputLabel from '@mui/material/InputLabel';
 import { CreatePortfolioPost } from 'src/pages/api/PortfolioServices/Services';
@@ -53,6 +53,9 @@ const FormCreation = () => {
     projects: [],
     skills: []
   });
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleAddItem = (type: keyof ListState, value: string) => {
     if (!list[type].some(item => item.id === value)) {
@@ -98,18 +101,38 @@ const FormCreation = () => {
     });
   };
 
+  const handleCreate = async () => {
+    if (!name) {
+      setError('Please enter a name.');
+      return;
+    }
 
-  const handleCreate = async() => {
-    const response = await CreatePortfolioPost(list)
-    alert('Portfolio created : ' + response.id)
-    console.log(response)
-  }
+    try {
+      setLoading(true);
+      console.log(list)
+      const payload = {
+        selectedItems: {
+          educations: list.educations.map(edu => ({ id: edu.id })),
+          experiences: list.experiences.map(exp => ({ id: exp.id })),
+          projects: list.projects.map(proj => ({ id: proj.id }))
+        }
+      };
+      const response = await CreatePortfolioPost(payload.selectedItems);
+      setLoading(false);
+      alert('Portfolio created: ' + response.id);
+      console.log(response);
+    } catch (error) {
+      setLoading(false);
+      setError('Error creating portfolio. Please try again later.');
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     async function GettingData() {
       const responseEducations = await GetData();
       const responseProjects = await GetDataProjects();
-      const responseExperiences = await GetDataExperience()
+      const responseExperiences = await GetDataExperience();
       setDataPortfolio({
         ...dataPortfolio,
         educations: responseEducations,
@@ -117,9 +140,10 @@ const FormCreation = () => {
         experiences: responseExperiences
       });
     }
-  
+
     GettingData();
   }, []);
+
   return (
     <Card>
       <CardHeader titleTypographyProps={{ variant: 'h6' }} />
@@ -127,7 +151,15 @@ const FormCreation = () => {
         <form onSubmit={e => e.preventDefault()}>
           <Grid container spacing={5}>
             <Grid item xs={12}>
-              <TextField fullWidth label='Name' placeholder='Leonard Carter' />
+              <TextField
+                fullWidth
+                label='Name'
+                placeholder='Leonard Carter'
+                value={name}
+                onChange={e => setName(e.target.value)}
+                error={!!error}
+                helperText={error}
+              />
             </Grid>
 
             <Grid item xs={12}>
@@ -183,7 +215,6 @@ const FormCreation = () => {
 
             {/* Render list items */}
             <Grid item xs={12}>
-              
               <FormControl fullWidth>
                 <List style={{ display: 'flex' }}>
                   {list.experiences.map((experience, index) => (
@@ -229,8 +260,8 @@ const FormCreation = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Button type='submit' variant='contained' size='large' onClick={() => handleCreate()}>
-                Create Portfolio
+              <Button type='submit' variant='contained' size='large' onClick={handleCreate}>
+                {loading ? <CircularProgress size={24} /> : 'Create Portfolio'}
               </Button>
             </Grid>
           </Grid>
