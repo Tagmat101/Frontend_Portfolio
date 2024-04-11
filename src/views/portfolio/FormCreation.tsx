@@ -32,10 +32,11 @@ const initialList: ListState = {
 const FormCreation = () => {
   const {modify,dataPortfolioMod,setModify} = useContext(PortfolioContext)
   const [list, setList] = useState<ListState>({
-     educations: modify ? dataPortfolioMod.educations : [],
-     experiences: modify ? dataPortfolioMod.experiences : [],
-     projects: modify ? dataPortfolioMod.projects : []
+    educations: modify ? dataPortfolioMod.educations : [],
+    experiences: modify ? dataPortfolioMod.experiences : [],
+    projects: modify ? dataPortfolioMod.projects : []
   });
+  console.log(list)
   const [dataPortfolio, setDataPortfolio] = useState<PortfolioDataHelper>({
     categories: [],
     educations: [],
@@ -53,27 +54,36 @@ const FormCreation = () => {
   const handleAddItem = (type: keyof ListState, value: string) => {
     if (!list[type].some(item => item.id === value)) {
       let itemName = '';
+      let newItem: Education | Experience | Project; 
+  
       switch (type) {
         case 'educations':
           const foundEducation = dataPortfolio.educations.find(edu => edu.id === value);
           itemName = foundEducation ? foundEducation.institution : '';
+          newItem = {
+            id: value,
+            institution: itemName,
+          };
           break;
         case 'experiences':
           const foundExperience = dataPortfolio.experiences.find(exp => exp.id === value);
           itemName = foundExperience ? foundExperience.companyName : '';
+          newItem = {
+            id: value,
+            companyName: itemName,
+          };
           break;
         case 'projects':
           const foundProject = dataPortfolio.projects.find(proj => proj.id === value);
           itemName = foundProject ? foundProject.name : '';
+          newItem = {
+            id: value,
+            name: itemName,
+          };
           break;
         default:
           break;
       }
-  
-      const newItem = {
-        id: value,
-        name: itemName,
-      };
   
       setList(prevState => ({
         ...prevState,
@@ -102,7 +112,6 @@ const FormCreation = () => {
 
     try {
       setLoading(true);
-      console.log(list)
       const payload = {
         selectedItems: {
           name: name,
@@ -251,7 +260,7 @@ const FormCreation = () => {
                 <List style={{ display: 'flex' }}>
                   {list.experiences.map((experience, index) => (
                     <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>
-                      {experience?.name}
+                      {experience?.companyName}
                       <Button onClick={() => handleDeleteItem('experiences', index)}>
                         <TrashCan />
                       </Button>
@@ -265,7 +274,8 @@ const FormCreation = () => {
               <FormControl fullWidth>
                 <List style={{ display: 'flex' }}>
                   {list.projects.map((project, index) => (
-                    <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      {project.name}
+                    <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      
+                      {project.name}
                       <Button onClick={() => handleDeleteItem('projects', index)}>
                         <TrashCan />
                       </Button>
@@ -279,7 +289,8 @@ const FormCreation = () => {
               <FormControl fullWidth>
                 <List style={{ display: 'flex' }}>
                   {list.educations.map((education, index) => (
-                    <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      {education.name}
+                    <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      
+                      {education.institution}
                       <Button onClick={() => handleDeleteItem('educations', index)}>
                         <TrashCan />
                       </Button>
