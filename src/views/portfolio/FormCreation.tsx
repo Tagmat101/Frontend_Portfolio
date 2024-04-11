@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import List from '@mui/material/List';
@@ -13,6 +13,7 @@ import { GetDataExperience } from 'src/pages/api/ExperienceServices/Service';
 import { HexColorPicker } from 'react-colorful';
 import { GetCategoriesPort } from 'src/pages/api/CategoriePortServices/Service';
 import { Categorie, Categories, Education, Experience, PortfolioData, PortfolioDataHelper, Project } from 'src/utils/interfaces/int';
+import { PortfolioContext } from 'src/@core/context/PortfolioContext';
 
 
 
@@ -29,7 +30,12 @@ const initialList: ListState = {
 };
 
 const FormCreation = () => {
-  const [list, setList] = useState<ListState>(initialList);
+  const {modify,dataPortfolioMod,setModify} = useContext(PortfolioContext)
+  const [list, setList] = useState<ListState>({
+     educations: modify ? dataPortfolioMod.educations : [],
+     experiences: modify ? dataPortfolioMod.experiences : [],
+     projects: modify ? dataPortfolioMod.projects : []
+  });
   const [dataPortfolio, setDataPortfolio] = useState<PortfolioDataHelper>({
     categories: [],
     educations: [],
@@ -37,7 +43,7 @@ const FormCreation = () => {
     projects: [],
     skills: [],
   });
-  const [name, setName] = useState('');
+  const [name, setName] = useState(modify ? dataPortfolioMod.name : '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [color, setColor] = useState("#aabbcc");
@@ -108,8 +114,10 @@ const FormCreation = () => {
         }
       };
       const response = await CreatePortfolioPost(payload.selectedItems);
+
+      if(modify) setModify(false)
       setLoading(false);
-      alert('Portfolio created: ' + response.id);
+      alert(`Portfolio : ${modify ? "modified" : "Created"}` + response.id);
       console.log(response);
     } catch (error) {
       setLoading(false);
@@ -139,7 +147,8 @@ const FormCreation = () => {
 
   return (
     <Card>
-      <CardHeader titleTypographyProps={{ variant: 'h6' }} color='red' title={error} />
+      <CardHeader titleTypographyProps={{ variant: 'h6' }} title={modify ? "Modify portfolio" : "Create portfolio"} />
+      {error != "" && <div>{error}</div>}
       <CardContent>
         <form onSubmit={e => e.preventDefault()}>
           <Grid container spacing={5}>
@@ -282,7 +291,11 @@ const FormCreation = () => {
 
             <Grid item xs={12}>
               <Button type='submit' variant='contained' size='large' onClick={handleCreate}>
-                {loading ? <CircularProgress size={24} /> : 'Create Portfolio'}
+                {loading ? <CircularProgress size={24} /> : <>
+                  {
+                    modify ? 'Modify Portfolio' : 'Create Portfolio'
+                  }
+                </>}
               </Button>
             </Grid>
           </Grid>

@@ -1,5 +1,5 @@
 // ** React Imports
-import { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useContext, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -10,21 +10,15 @@ import TabContext from '@mui/lab/TabContext'
 import { styled } from '@mui/material/styles'
 import MuiTab, { TabProps } from '@mui/material/Tab'
 
-// ** Icons Imports
-import AccountOutline from 'mdi-material-ui/AccountOutline'
-import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
-import InformationOutline from 'mdi-material-ui/InformationOutline'
-
-// ** Demo Tabs Imports
-import TabInfo from 'src/views/account-settings/TabInfo'
-import TabAccount from 'src/views/account-settings/TabAccount'
-import TabSecurity from 'src/views/account-settings/TabSecurity'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
 import { Pencil, ViewAgenda } from 'mdi-material-ui'
 import FormCreation from 'src/views/portfolio/FormCreation'
 import ViewPortfolios from 'src/views/portfolio/ViewPortfolios'
+import { PortfolioContext } from 'src/@core/context/PortfolioContext'
+import { SettingsContext } from 'src/@core/context/settingsContext'
+import { useSettings } from 'src/@core/hooks/useSettings'
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -46,12 +40,12 @@ const TabName = styled('span')(({ theme }) => ({
 
 const Portfolio = () => {
   // ** State
-  const [value, setValue] = useState<string>('portfolio')
-
+  const {value,modify,setModify,setValue} = useContext(PortfolioContext)
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
-
+  const theme = useSettings();
+ console.log(value)
   return (
     <Card>
       <TabContext value={value}>
@@ -65,7 +59,7 @@ const Portfolio = () => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Pencil />
-                <TabName>Create portfolio</TabName>
+                <TabName>portfolio</TabName>
               </Box>
             }
           />
@@ -84,7 +78,7 @@ const Portfolio = () => {
           <FormCreation />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='view'>
-          <ViewPortfolios />
+          <ViewPortfolios  />
         </TabPanel>
       </TabContext>
     </Card>

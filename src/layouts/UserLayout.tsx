@@ -18,6 +18,7 @@ import VerticalAppBarContent from './components/vertical/AppBarContent'
 
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
+import { ContextProvider } from 'src/@core/context/PortfolioContext'
 
 interface Props {
   children: ReactNode
@@ -52,28 +53,29 @@ const UserLayout = ({ children }: Props) => {
   }
 
   return (
-    <VerticalLayout
-      hidden={hidden}
-      settings={settings}
-      saveSettings={saveSettings}
-      verticalNavItems={VerticalNavItems()} // Navigation Items
-      afterVerticalNavMenuContent={UpgradeToProImg}
-      verticalAppBarContent={(
-        props // AppBar Content
-      ) => (
-        <VerticalAppBarContent
-          hidden={hidden}
-          settings={settings}
-          saveSettings={saveSettings}
-          toggleNavVisibility={props.toggleNavVisibility}
-        />
-      )}
-    >
-      {children}
-      {/* <UpgradeToProButton /> */}
-    </VerticalLayout>
+    <ContextProvider> {/* Wrap UserLayout with ContextProvider */}
+      <VerticalLayout
+        hidden={hidden}
+        settings={settings}
+        saveSettings={saveSettings}
+        verticalNavItems={VerticalNavItems()} // Navigation Items
+        afterVerticalNavMenuContent={UpgradeToProImg}
+        verticalAppBarContent={(
+          props // AppBar Content
+        ) => (
+          <VerticalAppBarContent
+            hidden={hidden}
+            settings={settings}
+            saveSettings={saveSettings}
+            toggleNavVisibility={props.toggleNavVisibility}
+          />
+        )}
+      >
+        {children}
+        {/* <UpgradeToProButton /> */}
+      </VerticalLayout>
+    </ContextProvider>
   )
 }
-
 
 export default UserLayout
