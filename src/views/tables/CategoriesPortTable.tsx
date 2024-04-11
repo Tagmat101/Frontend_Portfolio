@@ -1,4 +1,4 @@
-// ** MUI Imports
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Chip from '@mui/material/Chip'
@@ -9,11 +9,9 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
-
-// ** Types Imports
-import { ThemeColor } from 'src/@core/layouts/types'
-import { useEffect, useState } from 'react'
+import { CircularProgress } from '@mui/material'
 import { GetCategoriesPort } from 'src/pages/api/CategoriePortServices/Service'
+import { ThemeColor } from 'src/@core/layouts/types'
 
 interface RowType {
   id: number
@@ -33,56 +31,63 @@ const statusObj: StatusObj = {
 }
 
 const CategoriesPortTable = () => {
-  const [categoriesData,setCategories] = useState([])
+  const [categoriesData, setCategories] = useState<RowType[]>([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-     async function GetData() {
-         const response = await GetCategoriesPort()
-         setCategories(response)
-     }
+    async function fetchData() {
+      setLoading(true)
+      const response = await GetCategoriesPort()
+      setCategories(response)
+      setLoading(false)
+    }
 
-     GetData()
+    fetchData()
+  }, [])
 
-  },[])
   return (
     <Card>
-      <TableContainer>
-        <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
-          <TableHead>
-            <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>State</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {categoriesData && categoriesData.map((row: RowType) => (
-              <TableRow hover key={row.name} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
-                <TableCell sx={{ py: theme => `${theme.spacing(0.5)} !important` }}>
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.id}</Typography>
-                  </Box>
-                </TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>
-                  <Chip
-                    label={row.state ? "active" : "inactive"}
-                    color={statusObj[row.state ? "active" : "inactive"].color}
-                    sx={{
-                      height: 24,
-                      fontSize: '0.75rem',
-                      textTransform: 'capitalize',
-                      '& .MuiChip-label': { fontWeight: 500 }
-                    }}
-                  />
-                </TableCell>
+      {loading ? (
+        <CircularProgress size={24} />
+      ) : (
+        <TableContainer>
+          <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
+            <TableHead>
+              <TableRow>
+                <TableCell>Id</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>State</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {categoriesData.map((row) => (
+                <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.id}</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={row.state ? 'active' : 'inactive'}
+                      color={statusObj[row.state ? 'active' : 'inactive'].color}
+                      sx={{
+                        height: 24,
+                        fontSize: '0.75rem',
+                        textTransform: 'capitalize',
+                        '& .MuiChip-label': { fontWeight: 500 },
+                      }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Card>
   )
 }
 
-export default CategoriesPortTable;
+export default CategoriesPortTable

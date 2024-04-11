@@ -16,10 +16,6 @@ import CategoriesPortTable from '../tables/CategoriesPortTable';
 
 const FormCreation = () => {
 
-  const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [color, setColor] = useState("#aabbcc");
   const [openModal,setOpenModal] = useState(false)
 
   const handleCreate = async () => {
@@ -30,10 +26,9 @@ const FormCreation = () => {
     <Card>
       <CardHeader titleTypographyProps={{ variant: 'h6' }} />
       <CardContent>
-        <Button type='submit' variant='contained' size='large' onClick={handleCreate}>
-            {loading ? <CircularProgress size={24} /> : 'Add categorie'}
+        <Button type='submit' variant='contained' style={{marginBottom: '5px'}} size='large' onClick={handleCreate}>
+            Add categorie
         </Button>
-
         <CategoriesPortTable />
       </CardContent>
       <CategorieModal open={openModal} setOpen={setOpenModal}/>
