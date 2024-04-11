@@ -10,8 +10,8 @@ export function middleware(request: NextRequest) {
    {
     console.log(request.nextUrl.pathname)
     if(token != undefined) 
-        return NextResponse.redirect(baseUrl + '/dashboard/')
-   } else if(request.nextUrl.pathname == "/dashboard/")
+        return NextResponse.redirect(baseUrl + '/')
+   } else if(request.nextUrl.pathname == "/")
     {
         console.log("hna2")
         if(token == undefined)

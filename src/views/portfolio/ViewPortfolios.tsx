@@ -23,7 +23,7 @@ import { MenuItem } from '@mui/material'
 // ** Icons Imports
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-import CardPortfolio from './CardPortfolio'
+import CardPortfolio from '../cards/PortfolioCards/CardPortfolio'
 import { PortfolioData } from 'src/utils/interfaces/int'
 import { GetAllPortfolios } from 'src/pages/api/PortfolioServices/Services'
 

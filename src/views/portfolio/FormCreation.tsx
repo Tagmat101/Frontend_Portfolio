@@ -139,7 +139,7 @@ const FormCreation = () => {
 
   return (
     <Card>
-      <CardHeader titleTypographyProps={{ variant: 'h6' }} />
+      <CardHeader titleTypographyProps={{ variant: 'h6' }} color='red' title={error} />
       <CardContent>
         <form onSubmit={e => e.preventDefault()}>
           <Grid container spacing={5}>
@@ -150,7 +150,6 @@ const FormCreation = () => {
                 placeholder='Leonard Carter'
                 value={name}
                 onChange={e => setName(e.target.value)}
-                error={!!error}
                 helperText={error}
               />
             </Grid>
