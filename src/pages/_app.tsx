@@ -69,7 +69,6 @@ const App = (props: ExtendedAppProps) => {
         <meta name='keywords' content='portfolio' />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-
       <SettingsProvider>
         <SettingsConsumer>
           {({ settings }) => {

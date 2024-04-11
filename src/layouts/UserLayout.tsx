@@ -9,7 +9,6 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 // ** Layout Imports
 // !Do not remove this Layout import
 import VerticalLayout from 'src/@core/layouts/VerticalLayout'
-
 // ** Navigation Imports
 import VerticalNavItems from 'src/navigation/vertical'
 
@@ -75,5 +74,6 @@ const UserLayout = ({ children }: Props) => {
     </VerticalLayout>
   )
 }
+
 
 export default UserLayout
