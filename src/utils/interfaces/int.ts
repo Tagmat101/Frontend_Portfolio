@@ -32,10 +32,12 @@ export interface PortfolioDataHelper { //this interface helps me to get data fro
 }
 
 export interface PortfolioData { // this one gets the effective portfolio in order to display it : 
+    id: string;
     name: string;
     color: string;
     educations: Education[];
     experiences: Experience[];
     projects: Project[];
     skills: string[]; 
+    categorie: Categorie;
 }

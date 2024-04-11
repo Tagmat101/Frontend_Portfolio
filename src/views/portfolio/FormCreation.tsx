@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { Card, CardContent, CardHeader, MenuItem, Select, TextField, Typography, CircularProgress } from '@mui/material';
 import { Cross, Projector, TrashCan } from 'mdi-material-ui'
 import InputLabel from '@mui/material/InputLabel';
-import { CreatePortfolioPost } from 'src/pages/api/PortfolioServices/Services';
+import { CreatePortfolioPost, ModifyPortfolio } from 'src/pages/api/PortfolioServices/Services';
 import { GetData } from 'src/pages/api/EducationServices/Services';
 import { GetDataProjects } from 'src/pages/api/ProjectServices/Services';
 import { GetDataExperience } from 'src/pages/api/ExperienceServices/Service';
@@ -30,13 +30,12 @@ const initialList: ListState = {
 };
 
 const FormCreation = () => {
-  const {modify,dataPortfolioMod,setModify} = useContext(PortfolioContext)
+  const {modify,dataPortfolioMod,setModify,setValue} = useContext(PortfolioContext)
   const [list, setList] = useState<ListState>({
     educations: modify ? dataPortfolioMod.educations : [],
     experiences: modify ? dataPortfolioMod.experiences : [],
     projects: modify ? dataPortfolioMod.projects : []
   });
-  console.log(list)
   const [dataPortfolio, setDataPortfolio] = useState<PortfolioDataHelper>({
     categories: [],
     educations: [],
@@ -49,7 +48,7 @@ const FormCreation = () => {
   const [error, setError] = useState('');
   const [color, setColor] = useState("#aabbcc");
   
-  const [selectedCategorie, setSelectedCategorie] = useState<string>('');
+  const [selectedCategorie, setSelectedCategorie] = useState<string>(modify ? dataPortfolioMod.categorie.id : "");
 
   const handleAddItem = (type: keyof ListState, value: string) => {
     if (!list[type].some(item => item.id === value)) {
@@ -112,7 +111,7 @@ const FormCreation = () => {
 
     try {
       setLoading(true);
-      const payload = {
+      const payload:any = {
         selectedItems: {
           name: name,
           color: color,
@@ -122,12 +121,21 @@ const FormCreation = () => {
           categorie: {id: selectedCategorie}
         }
       };
-      const response = await CreatePortfolioPost(payload.selectedItems);
 
-      if(modify) setModify(false)
+      let response:any = "";
+      //adding the id if it is a modified one : 
+      if(modify) {
+        payload.selectedItems.id = dataPortfolioMod.id;
+        response = ModifyPortfolio(payload.selectedItems)
+
+      } else response = await CreatePortfolioPost(payload.selectedItems);
+
+      if(modify) {
+        setModify(false)
+        setValue('view')
+      }
       setLoading(false);
-      alert(`Portfolio : ${modify ? "modified" : "Created"}` + response.id);
-      console.log(response);
+      alert(`Portfolio : ${modify ? "modified" + dataPortfolioMod.id : "Created" + response.id}`);
     } catch (error) {
       setLoading(false);
       setError('Error creating portfolio. Please try again later.');
@@ -136,23 +144,37 @@ const FormCreation = () => {
   };
 
   useEffect(() => {
+    let isMounted = true; // Track if the component is mounted
+  
     async function GettingData() {
-      const responseEducations = await GetData();
-      const responseProjects = await GetDataProjects();
-      const responseExperiences = await GetDataExperience();
-      const responseCategories = await GetCategoriesPort();
-      setDataPortfolio({
-        ...dataPortfolio,
-        educations: responseEducations,
-        projects: responseProjects,
-        experiences: responseExperiences,
-        categories: responseCategories
-      });
-      
+      try {
+        const responseEducations = await GetData();
+        const responseProjects = await GetDataProjects();
+        const responseExperiences = await GetDataExperience();
+        const responseCategories = await GetCategoriesPort();
+        
+        // Only update state if the component is still mounted
+        if (isMounted) {
+          setDataPortfolio({
+            ...dataPortfolio,
+            educations: responseEducations,
+            projects: responseProjects,
+            experiences: responseExperiences,
+            categories: responseCategories
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
-      
+  
     GettingData();
+  
+    return () => {
+      isMounted = false;
+    };
   }, []);
+  
 
   return (
     <Card>

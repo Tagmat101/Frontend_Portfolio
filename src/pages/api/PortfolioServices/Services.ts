@@ -1,4 +1,6 @@
 import axios from "axios";
+import { ConsoleNetworkOutline } from "mdi-material-ui";
+import { PortfolioData } from "src/utils/interfaces/int";
 import Cookies from 'universal-cookie';
 
 
@@ -37,4 +39,24 @@ export const GetAllPortfolios = async() => {
         console.log(error)
     }
 }
+
+export const ModifyPortfolio = async(data:PortfolioData) => {
+    try{
+        console.log(data)
+        const cookie_ = cookie.get('token-cookie')
+        const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${root}/${data.id}`;
+        console.log(url)
+        const response = await axios.put(url,data,{
+            headers: {
+                'Authorization': cookie_
+            }
+        })
+        console.log(response.data)
+        return response.data.data
+    } catch(error:any)
+    {
+        console.log(error)
+    }
+}
+
 

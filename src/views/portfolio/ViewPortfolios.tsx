@@ -11,15 +11,31 @@ const ViewPortfolios = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    let isMounted = true; // Track whether the component is mounted
+  
     async function getData() {
-      setLoading(true)
-      const responsePortfolios = await GetAllPortfolios()
-      setData(responsePortfolios)
-      setLoading(false)
+      setLoading(true);
+      try {
+        const responsePortfolios = await GetAllPortfolios();
+        if (isMounted) {
+          setData(responsePortfolios);
+          setLoading(false);
+        }
+      } catch (error) {
+        // Handle errors if necessary
+        console.error(error);
+        setLoading(false);
+      }
     }
-
-    getData()
-  }, [])
+  
+    getData();
+  
+    // Cleanup function to set isMounted to false when the component unmounts
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+  
 
   return (
     <Grid container spacing={6} padding={10}>

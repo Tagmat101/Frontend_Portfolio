@@ -8,7 +8,7 @@ import React, {
     useState,
     useCallback
   } from "react";
-  import { PortfolioData } from "src/utils/interfaces/int";
+  import { Categorie, PortfolioData } from "src/utils/interfaces/int";
   
   interface StateContextType {
     modify:boolean;
@@ -17,7 +17,6 @@ import React, {
     setValue: Dispatch<SetStateAction<string>>;
     setData: Dispatch<SetStateAction<PortfolioData>>;
     setModify: Dispatch<SetStateAction<boolean>>;
-    
   }
   
   export const PortfolioContext = createContext<StateContextType>({
@@ -26,7 +25,7 @@ import React, {
     setModify: () => {},
     setData: () => {},
     setValue: () => {},
-    dataPortfolioMod: {name: "", color: "" , educations: [],experiences: [] , skills: [] , projects: []}
+    dataPortfolioMod: {categorie: {id: "" , name: "" , state: false},id: "",name: "", color: "" , educations: [],experiences: [] , skills: [] , projects: []},
   });
   
   type ContextProviderProps = {
@@ -35,12 +34,14 @@ import React, {
   
   export const ContextProvider = ({ children }: ContextProviderProps) => {
     const [dataPortfolioMod, setData] = useState<PortfolioData>({
+        id: "",
         name: "",
         color: "",
         educations: [],
         experiences: [],
         projects: [],
-        skills: []
+        skills: [],
+        categorie: {id: "" , name: "" , state: false}
     });
     const [modify, setModify] = useState<boolean>(false);
     const [value,setValue] = useState<string>('portfolio')
