@@ -26,17 +26,20 @@ const CategorieModal = ({ open, setOpen }: any) => {
   const handleClose = () => setOpen(false);
 
    const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    const categoryObject = {
-      name: categoryName, 
-      state: categoryState == "active" ? true : false
-    };
-
-    const response = await CreateCategoriePort(categoryObject)
-    console.log(response)
-    setCategoryName('');
-    setCategoryState('active');
-    handleClose();
+        event.preventDefault();
+        if(categoryName != "")
+        {
+            const categoryObject = {
+                name: categoryName, 
+                state: categoryState == "active" ? true : false
+            };
+        
+            const response = await CreateCategoriePort(categoryObject)
+            console.log(response)
+            setCategoryName('');
+            setCategoryState('active');
+            handleClose();
+        }
   };
 
   return (

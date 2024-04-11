@@ -89,8 +89,8 @@ const FormCreation = () => {
   };
 
   const handleCreate = async () => {
-    if (!name) {
-      setError('Please enter a name.');
+    if (!name || !color || list.educations.length == 0 || list.projects.length == 0 || list.experiences.length == 0 ) {
+      setError('Please enter fields.');
       return;
     }
 
