@@ -2,9 +2,9 @@ import axios from "axios";
 import Cookies from 'universal-cookie';
 
 
-const root = 'api/portfolio';
+const root = 'api/categoriePort';
 const cookie = new Cookies() 
-export const CreatePortfolioPost = async(data:any) => {
+export const CreateCategoriePort = async(data:any) => {
     try{
         console.log(data)
         const cookie_ = cookie.get('token-cookie')
@@ -21,7 +21,8 @@ export const CreatePortfolioPost = async(data:any) => {
     }
 }
 
-export const GetAllPortfolios = async() => {
+
+export const GetCategoriesPort = async() => {
     try{
         const cookie_ = cookie.get('token-cookie')
         const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${root}/all`;
@@ -30,11 +31,10 @@ export const GetAllPortfolios = async() => {
                 'Authorization': cookie_
             }
         })
-        console.log(response.data)
+        console.log(response)
         return response.data.data
     } catch(error:any)
     {
         console.log(error)
     }
 }
-

@@ -61,6 +61,11 @@ const navigation = (): VerticalNavItemsType => {
       path: '/portfolio'
     },
     {
+      title: 'Portfolio categories',
+      icon: Folder,
+      path: '/categorie-portfolio'
+    },
+    {
       sectionTitle: 'User Interface'
     },
     {

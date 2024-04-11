@@ -1,5 +1,5 @@
 // ** React Imports
-import { ChangeEvent, MouseEvent, useState, SyntheticEvent } from 'react'
+import { ChangeEvent, MouseEvent, useState, SyntheticEvent, useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -24,48 +24,37 @@ import { MenuItem } from '@mui/material'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import CardPortfolio from './CardPortfolio'
+import { PortfolioData } from 'src/utils/interfaces/int'
+import { GetAllPortfolios } from 'src/pages/api/PortfolioServices/Services'
 
-interface State {
-  password: string
-  showPassword: boolean
-}
+
 
 const ViewPortfolios = () => {
   // ** States
-  const [values, setValues] = useState<State>({
-    password: '',
-    showPassword: false
-  })
-  const [confirmPassValues, setConfirmPassValues] = useState<State>({
-    password: '',
-    showPassword: false
-  })
+  const [data,setData] = useState<PortfolioData[]>([])
+  useEffect(() => {
+     async function GetData() {
+        const responsePortfolios = await GetAllPortfolios() 
+        setData(responsePortfolios)
+     }
 
-  const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
-
-  const handleConfirmPassChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassValues({ ...confirmPassValues, [prop]: event.target.value })
-  }
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
-
-  const handleClickConfirmPassShow = () => {
-    setConfirmPassValues({ ...confirmPassValues, showPassword: !confirmPassValues.showPassword })
-  }
-
-  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
+     GetData()
+  },[])
 
   return (
     <Grid container spacing={6} padding={10} >
       <Grid item xs={12} sx={{ paddingBottom: 4 }}>
         <Typography variant='h5'>View all</Typography>
       </Grid>
-      {Array.from({ length: 13 }, (_, index) => <Grid item xs={12} sm={6} md={4}><CardPortfolio /></Grid>)}
+      {
+        data.length > 0 && data.map((portfolio,index) => {
+          return(
+            <Grid key={index} item xs={12} sm={6} md={4}>
+               <CardPortfolio portfolio={portfolio} />
+            </Grid>
+          )
+        })
+      }
     </Grid>
   )
 }

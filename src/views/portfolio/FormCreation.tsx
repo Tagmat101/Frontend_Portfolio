@@ -4,34 +4,17 @@ import FormControl from '@mui/material/FormControl';
 import List from '@mui/material/List';
 import Button from '@mui/material/Button';
 import { Card, CardContent, CardHeader, MenuItem, Select, TextField, Typography, CircularProgress } from '@mui/material';
-import { Cross, Projector } from 'mdi-material-ui'
+import { Cross, Projector, TrashCan } from 'mdi-material-ui'
 import InputLabel from '@mui/material/InputLabel';
 import { CreatePortfolioPost } from 'src/pages/api/PortfolioServices/Services';
 import { GetData } from 'src/pages/api/EducationServices/Services';
 import { GetDataProjects } from 'src/pages/api/ProjectServices/Services';
 import { GetDataExperience } from 'src/pages/api/ExperienceServices/Service';
+import { HexColorPicker } from 'react-colorful';
+import { GetCategoriesPort } from 'src/pages/api/CategoriePortServices/Service';
+import { Categorie, Categories, Education, Experience, PortfolioData, PortfolioDataHelper, Project } from 'src/utils/interfaces/int';
 
-interface Education {
-  id: string;
-  institution: string;
-}
 
-interface Experience {
-  id: string;
-  companyName: string;
-}
-
-interface Project {
-  id: string;
-  name: string;
-}
-
-interface PortfolioData {
-  educations: Education[];
-  experiences: Experience[];
-  projects: Project[];
-  skills: string[]; 
-}
 
 interface ListState {
   educations: any[];
@@ -42,20 +25,24 @@ interface ListState {
 const initialList: ListState = {
   educations: [],
   experiences: [],
-  projects: []
+  projects: [],
 };
 
 const FormCreation = () => {
   const [list, setList] = useState<ListState>(initialList);
-  const [dataPortfolio, setDataPortfolio] = useState<PortfolioData>({
+  const [dataPortfolio, setDataPortfolio] = useState<PortfolioDataHelper>({
+    categories: [],
     educations: [],
     experiences: [],
     projects: [],
-    skills: []
+    skills: [],
   });
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [color, setColor] = useState("#aabbcc");
+  
+  const [selectedCategorie, setSelectedCategorie] = useState<string>('');
 
   const handleAddItem = (type: keyof ListState, value: string) => {
     if (!list[type].some(item => item.id === value)) {
@@ -112,9 +99,12 @@ const FormCreation = () => {
       console.log(list)
       const payload = {
         selectedItems: {
+          name: name,
+          color: color,
           educations: list.educations.map(edu => ({ id: edu.id })),
           experiences: list.experiences.map(exp => ({ id: exp.id })),
-          projects: list.projects.map(proj => ({ id: proj.id }))
+          projects: list.projects.map(proj => ({ id: proj.id })),
+          categorie: {id: selectedCategorie}
         }
       };
       const response = await CreatePortfolioPost(payload.selectedItems);
@@ -133,14 +123,17 @@ const FormCreation = () => {
       const responseEducations = await GetData();
       const responseProjects = await GetDataProjects();
       const responseExperiences = await GetDataExperience();
+      const responseCategories = await GetCategoriesPort();
       setDataPortfolio({
         ...dataPortfolio,
         educations: responseEducations,
         projects: responseProjects,
-        experiences: responseExperiences
+        experiences: responseExperiences,
+        categories: responseCategories
       });
+      
     }
-
+      
     GettingData();
   }, []);
 
@@ -170,7 +163,7 @@ const FormCreation = () => {
                   value={''}
                   onChange={(event) => handleAddItem('experiences', event.target.value as string)}
                 >
-                  {dataPortfolio.experiences.map((experience: Experience) => (
+                  {dataPortfolio.experiences && dataPortfolio.experiences.map((experience: Experience) => (
                     <MenuItem key={experience.id} value={experience.id}>
                       {experience.companyName}
                     </MenuItem>
@@ -187,7 +180,7 @@ const FormCreation = () => {
                   value={''} 
                   onChange={(event) => handleAddItem('projects', event.target.value as string)}
                 >
-                  {dataPortfolio.projects.map((project: Project) => (
+                  {dataPortfolio.projects && dataPortfolio.projects.map((project: Project) => (
                     <MenuItem key={project.id} value={project.id}>
                       {project.name}
                     </MenuItem>
@@ -204,7 +197,7 @@ const FormCreation = () => {
                   value={''} 
                   onChange={(event) => handleAddItem('educations', event.target.value as string)}
                 >
-                  {dataPortfolio.educations.map((education: Education) => (
+                  {dataPortfolio.educations && dataPortfolio.educations.map((education: Education) => (
                     <MenuItem key={education.id} value={education.id}>
                       {education.institution}
                     </MenuItem>
@@ -213,15 +206,46 @@ const FormCreation = () => {
               </FormControl>
             </Grid>
 
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel>Categories</InputLabel>
+                <Select
+                  label='Categories'
+                  value={selectedCategorie} 
+                  onChange={(event: any) => setSelectedCategorie(event.target.value as string)}
+                >
+                  {dataPortfolio.categories && dataPortfolio.categories.map((categorie: Categorie) => (
+                    <MenuItem key={categorie.id} value={categorie.id}>
+                      {categorie.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+
+
+            <Grid item xs={12} sm={6}>
+              <TextField
+                  fullWidth
+                  label='Color'
+                  placeholder='Pick a color'
+                  value={color} 
+                  onChange={(e) => setColor(e.target.value)} 
+                  disabled={true}
+                />
+              <HexColorPicker color={color} onChange={setColor} />
+            </Grid>
+
             {/* Render list items */}
             <Grid item xs={12}>
               <FormControl fullWidth>
                 <List style={{ display: 'flex' }}>
                   {list.experiences.map((experience, index) => (
-                    <li key={index} style={{ margin: '12px', backgroundColor: 'gray', padding: '4px', display: 'flex', alignItems: 'center' }}>
+                    <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>
                       {experience?.name}
                       <Button onClick={() => handleDeleteItem('experiences', index)}>
-                        <Cross />
+                        <TrashCan />
                       </Button>
                     </li>
                   ))}
@@ -233,10 +257,9 @@ const FormCreation = () => {
               <FormControl fullWidth>
                 <List style={{ display: 'flex' }}>
                   {list.projects.map((project, index) => (
-                    <li key={index} style={{ margin: '12px', backgroundColor: 'gray', padding: '4px', display: 'flex', alignItems: 'center' }}>
-                      {project.name}
+                    <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      {project.name}
                       <Button onClick={() => handleDeleteItem('projects', index)}>
-                        <Cross />
+                        <TrashCan />
                       </Button>
                     </li>
                   ))}
@@ -248,10 +271,9 @@ const FormCreation = () => {
               <FormControl fullWidth>
                 <List style={{ display: 'flex' }}>
                   {list.educations.map((education, index) => (
-                    <li key={index} style={{ margin: '12px', backgroundColor: 'gray', padding: '4px', display: 'flex', alignItems: 'center' }}>
-                      {education.name}
+                    <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      {education.name}
                       <Button onClick={() => handleDeleteItem('educations', index)}>
-                        <Cross />
+                        <TrashCan />
                       </Button>
                     </li>
                   ))}

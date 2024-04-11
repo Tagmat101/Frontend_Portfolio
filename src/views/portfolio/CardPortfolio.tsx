@@ -4,16 +4,22 @@ import Button from '@mui/material/Button'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
+import { PortfolioData } from 'src/utils/interfaces/int'
+import { Theme } from '@mui/material/styles';
 
-const CardPortfolio = () => {
+interface CardPortfolioProps {
+  portfolio: PortfolioData;
+}
+
+const CardPortfolio = ({ portfolio }: CardPortfolioProps) => {
   return (
     <Card>
-      <CardMedia sx={{ height: '9.375rem' }} image='/images/cards/watch-on-hand.jpg' />
-      <CardContent sx={{ padding: theme => `${theme.spacing(3, 5.25, 4)} !important` }}>
+      <div style={{ height: '9.375rem', backgroundColor: portfolio.color }} ></div>
+      <CardContent sx={(theme: Theme) => ({ padding: `${theme.spacing(3)} ${theme.spacing(5.25)} ${theme.spacing(4)} !important` })}>
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
-          Apple Watch
+          {portfolio?.name}
         </Typography>
-        <Typography sx={{ marginBottom: 2 }}>$249.40</Typography>
+        <Typography sx={{ marginBottom: 2 }}> {portfolio?.name}</Typography>
         <Button>Modify</Button>
         <Button>View portfolio</Button>
       </CardContent>
