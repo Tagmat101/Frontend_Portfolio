@@ -71,6 +71,7 @@ const LoginPage = () => {
     password: '',
     showPassword: false
   })
+  const [message,setMessage] = useState<string>("")
 
   // ** Hook
   const theme = useTheme()
@@ -89,6 +90,7 @@ const LoginPage = () => {
   }
 
   const handleLoginButton = async () => {
+    try {
       if(values.email && values.password)
       { 
           const data = 
@@ -97,14 +99,17 @@ const LoginPage = () => {
             password: values.password
           }
           const response = await SigninUser(data) 
+          document.location.reload()
       }
+    } catch(error:any) {
+       setMessage(error.response.data.message)
+    }
   }
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-           
             <Typography
               variant='h6'
               sx={{
@@ -119,6 +124,7 @@ const LoginPage = () => {
             </Typography>
           </Box>
           <Box sx={{ mb: 6 }}>
+            <p>{message}</p>
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
               Welcome to {themeConfig.templateName}! 👋🏻 
             </Typography>

@@ -40,10 +40,10 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { SignupUser } from 'src/pages/api/UserServices/Services'
 
 interface State {
-  email: string,
-  name: string,
-  tel: string,
-  password: string
+  email: {value: string,error: string,isValid: boolean},
+  name: {value: string ,error: string,isValid: boolean},
+  tel: {value: string,error: string,isValid: boolean},
+  password: {value: string , error: string,isValid: boolean}
   showPassword: boolean
 }
 
@@ -69,11 +69,12 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 
 const RegisterPage = () => {
   // ** States
+  const [message,setMessage] = useState<string>("")
   const [values, setValues] = useState<State>({
-    email: '',
-    name: '',
-    tel: '',
-    password: '',
+    email: {value: '',error: '',isValid: false},
+    name: {value: '' , error: '',isValid: false},
+    tel: {value: '',error: '',isValid: false},
+    password: {value: '' , error: '',isValid: false},
     showPassword: false
   })
 
@@ -82,7 +83,24 @@ const RegisterPage = () => {
   const router = useRouter()
 
   const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
+    const { name, value } = event.target;
+    let isValid = true
+    let errorMessage = ''
+    const regexPatterns = {
+      name: /^[a-zA-Z\s]+$/,
+      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      tel: /^[0-9]{10}$/,
+      password: /^[a-zA-Z\s]+$/, // password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{4,}$/,
+    };
+
+    if(prop != "showPassword") {
+      if(!regexPatterns[prop].test(value)) {
+        errorMessage = `Invalid ${prop}`
+        isValid = false
+      }
+    }
+    console.log(errorMessage)
+    setValues({ ...values, [prop]: {value: event.target.value,error: errorMessage,isValid: !isValid} }) // reverse logic 
   }
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword })
@@ -90,13 +108,24 @@ const RegisterPage = () => {
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
   }
-
-  const handleRegisterButton = () => {
-     if(values.email && values.password && values.tel && values.name)
-      {
-          SignupUser(values)
-          router.push('/')
-      }
+  
+  const handleRegisterButton = async () => {
+     try
+     {
+      if(!values.email.error && !values.password.error && !values.tel.error && !values.name.error)
+        {
+            const data = {
+              email: values.email.value,
+              tel: values.tel.value,
+              name: values.name.value,
+              password: values.password.value
+            }
+            const response = await SignupUser(data)
+            router.push('/')
+        }
+     } catch(error:any) {
+        setMessage(error.response.data.message)
+     }
   }
   return (
     <Box className='content-center'>
@@ -117,20 +146,22 @@ const RegisterPage = () => {
             </Typography>
           </Box>
           <Box sx={{ mb: 6 }}>
+            <div>{message}</div>
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
               Adventure starts here 🚀
             </Typography>
             <Typography variant='body2'>Make your app management easy and fun!</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField onChange={handleChange('name')} autoFocus fullWidth id='name' label='name' sx={{ marginBottom: 4 }} />
-            <TextField onChange={handleChange('tel')} fullWidth type='tel' label='phone number' sx={{ marginBottom: 4 }} />
-            <TextField onChange={handleChange('email')} fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} />
+            <TextField onChange={handleChange('name')} autoFocus fullWidth id='name' label='name' helperText={values.name.error} value={values.name.value} error={values.name.isValid} sx={{ marginBottom: 4 }} />
+            <TextField onChange={handleChange('tel')} fullWidth type='tel' label='phone number' sx={{ marginBottom: 4 }} helperText={values.tel.error} value={values.tel.value} error={values.tel.isValid}/>
+            <TextField onChange={handleChange('email')} fullWidth type='email' label='Email' sx={{ marginBottom: 4 }} helperText={values.email.error} value={values.email.value} error={values.email.isValid} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
-                value={values.password}
+                value={values.password.value} 
+                error={values.password.isValid} 
                 id='auth-register-password'
                 onChange={handleChange('password')}
                 type={values.showPassword ? 'text' : 'password'}

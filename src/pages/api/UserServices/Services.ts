@@ -13,10 +13,9 @@ export async function SigninUser(data:any): Promise<any> {
         cookies.set('token-cookie',response.data.data, {
             path: '/'
         })
-        alert('User Logged in successfully');
-        return response.data;   
+        return response;   
     } catch (error:any) {
-        console.error('Error:', error.message);
+       throw error
     }
 }
 
@@ -25,9 +24,8 @@ export async function SignupUser(data:any): Promise<any> {
         const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${root}/signup`;
         const response = await axios.post(url, data);
         
-        alert('User Created successfully: ' + response.data.data.id);
-        
+        return response
     } catch (error:any) {
-        console.error('Error:', error.message);
+        throw error
     }
 }
