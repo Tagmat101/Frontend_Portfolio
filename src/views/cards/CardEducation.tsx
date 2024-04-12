@@ -38,7 +38,7 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
     borderRight: `1px solid ${theme.palette.divider}`
   }
 }))
- 
+
 const EducationCard = ({ educationData }: { educationData: IEducation }) => {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -52,13 +52,14 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-  
- 
+
+  console.log(educationData.endDate)
+
   const handleUpdate = () => {
 
   }
   return (
-    <Card>
+    <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>
         <StyledGrid item md={5} xs={12}>
           <CardContent sx={{ display: 'flex', alignItems: 'center' ,justifyContent: 'center', }}>
@@ -83,9 +84,9 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
             {educationData.degree}
              </Typography>
             <Typography sx={{ fontWeight: 500, marginBottom: 3 }}>
-            {educationData.startYear}
+            {educationData.startDate}
               <Box component='span' sx={{ fontWeight: 'bold' }}>
-              {educationData.endYear}
+              {educationData.endDate}
               </Box>
             </Typography>
           </CardContent>
@@ -94,17 +95,7 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
               <Button>
                 <CartPlus fontSize='small' sx={{ marginRight: 2 }} />
             
-              </Button>
-              <IconButton
-                id='long-button'
-                aria-label='share'
-                aria-haspopup='true'
-                onClick={handleClick}
-                aria-controls='long-menu'
-                aria-expanded={open ? 'true' : undefined}
-              >
-                <ShareVariant fontSize='small' />
-              </IconButton>
+              </Button> 
               <Menu
                 open={open}
                 id='long-menu'

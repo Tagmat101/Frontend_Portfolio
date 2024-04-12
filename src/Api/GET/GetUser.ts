@@ -1,6 +1,6 @@
 "use server"
 import axios from "axios";
- 
+import {token} from "../token"
 
 export async function getUserByID(idUser:string) {
     try {   

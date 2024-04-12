@@ -28,6 +28,8 @@ import Button from '@mui/material/Button'
 import { useExperienceAll } from 'src/@core/hooks/useExperience';
 import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline';
 import CardExperience from 'src/views/cards/CardExperience';
+import AddEducationModal from 'src/views/modals/AddEducation';
+import AddExperience from 'src/views/modals/AddExperience';
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -50,15 +52,14 @@ const TabName = styled('span')(({ theme }) => ({
 export default function experience(){
   // ** State
   const { ExperienceList, loading, error  }= useExperienceAll();
-
-  const [value, setValue] = useState<string>('account')
- 
-  const handleChange = (event: SyntheticEvent, newValue: string) => {
-    setValue(newValue)
-  }
+  const [openModal,setOpenModal] = useState(false)
+  
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
+  const handleCreate =  () => {
+    setOpenModal(true)
+ };
   return (
     <Card>
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between' ,padding:"15px"}}>
@@ -67,7 +68,7 @@ export default function experience(){
               <BriefcaseOutline /> 
                 <TabName>Experience</TabName>
             </Box>  
-            <Button variant="outlined" startIcon={<Plus />}> 
+            <Button variant="outlined" onClick={handleCreate} endIcon={<Plus />}> 
                 <TabName>Add</TabName>
             </Button>  
         </div>
@@ -76,6 +77,7 @@ export default function experience(){
           <CardExperience  experienceData={item} />
       ))}
     </div>
+    <AddExperience open={openModal} setOpen={setOpenModal}/>
 
     </Card>
   )

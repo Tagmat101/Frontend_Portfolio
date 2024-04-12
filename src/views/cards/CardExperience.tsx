@@ -56,7 +56,7 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
      
   }
   return (
-    <Card>
+    <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>
         <StyledGrid item md={5} xs={12}>
           <CardContent sx={{ display: 'flex', alignItems: 'center' ,justifyContent: 'center', }}>

@@ -2,8 +2,8 @@ interface IEducation {
     id: String;
     institution: String; 
     degree:String;
-    startYear:Date;
-    endYear:Date;
+    startDate:Date;
+    endDate:Date;
     fieldOfStudy:String;
     location:String;
     description:String;

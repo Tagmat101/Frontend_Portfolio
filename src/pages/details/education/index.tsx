@@ -29,6 +29,7 @@ import Stack from '@mui/material/Stack'
 import Plus from 'mdi-material-ui/Plus'
 import School from 'mdi-material-ui/School'
 import Button from '@mui/material/Button'
+import AddEducationModal from 'src/views/modals/AddEducation';
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -53,13 +54,14 @@ export default function education(){
   // ** State
   const { educationList, loading, error }: UseEducationAllReturn = useEducationAll();
 
-  const [value, setValue] = useState<string>('account')
-
-  const handleChange = (event: SyntheticEvent, newValue: string) => {
-    setValue(newValue)
-  }
+   const [openModal,setOpenModal] = useState(false)
+ 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+
+  const handleCreate =  () => {
+     setOpenModal(true)
+  };
 
   return (
     <Card>
@@ -69,15 +71,16 @@ export default function education(){
                 <School />
                 <TabName>Education</TabName>
             </Box>  
-            <Button variant="outlined" endIcon={<Plus />}> 
+            <Button variant="outlined" onClick={handleCreate} endIcon={<Plus />}> 
                Add 
             </Button>  
         </div>
-        <div>
+        <div >
       {educationList?.map((item:IEducation) => (
           <EducationCard  educationData={item} />
       ))}
     </div>
+    <AddEducationModal open={openModal} setOpen={setOpenModal}/>
 
     </Card>
   )
