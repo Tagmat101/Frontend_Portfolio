@@ -6,19 +6,34 @@ import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import { PortfolioData } from 'src/utils/interfaces/int'
 import { Theme } from '@mui/material/styles';
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { PortfolioContext } from 'src/@core/context/PortfolioContext'
+import { DeletePortfolio } from 'src/pages/api/PortfolioServices/Services'
 
 interface CardPortfolioProps {
   portfolio: PortfolioData;
 }
 
 const CardPortfolio = ({ portfolio }: CardPortfolioProps) => {
+  // ** States
   const {setModify,modify,setValue,setData} = useContext(PortfolioContext)
+  // ** Functions 
   const handleModifyButton = () => {
     setModify(true)
     setValue('portfolio')
     setData(portfolio)
+  }
+
+  const handleDeleteButton = async () => {
+      try
+      {
+        const response = await DeletePortfolio(portfolio.id)
+        alert(response.data.message)
+        document.location.reload()
+      } catch(error:any) {
+         console.log(error)
+         alert(error.response.data.message)
+      }
   }
 
   return (
@@ -32,7 +47,7 @@ const CardPortfolio = ({ portfolio }: CardPortfolioProps) => {
         <Button onClick={handleModifyButton}>Modify</Button>
         <Button>View portfolio</Button>
       </CardContent>
-      <Button variant='contained' sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 , background: 'red'}}>
+      <Button onClick={handleDeleteButton} variant='contained' sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 , background: 'red'}}>
         Delete
       </Button>
     </Card>

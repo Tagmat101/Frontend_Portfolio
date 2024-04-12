@@ -22,7 +22,6 @@ const ViewPortfolios = () => {
           setLoading(false);
         }
       } catch (error) {
-        // Handle errors if necessary
         console.error(error);
         setLoading(false);
       }
@@ -30,7 +29,6 @@ const ViewPortfolios = () => {
   
     getData();
   
-    // Cleanup function to set isMounted to false when the component unmounts
     return () => {
       isMounted = false;
     };

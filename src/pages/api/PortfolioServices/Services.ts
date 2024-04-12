@@ -19,7 +19,7 @@ export const CreatePortfolioPost = async(data:any) => {
         return response.data.data
     } catch(error:any)
     {
-        console.log(error)
+        throw error
     }
 }
 
@@ -36,7 +36,7 @@ export const GetAllPortfolios = async() => {
         return response.data.data
     } catch(error:any)
     {
-        console.log(error)
+        throw error
     }
 }
 
@@ -51,11 +51,27 @@ export const ModifyPortfolio = async(data:PortfolioData) => {
                 'Authorization': cookie_
             }
         })
-        console.log(response.data)
-        return response.data.data
+        return response
     } catch(error:any)
     {
-        console.log(error)
+        throw error
+    }
+}
+
+export const DeletePortfolio = async(id:string) => {
+    try
+    {
+        const cookie_ = cookie.get('token-cookie')
+        const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${root}/${id}`;
+        const response = await axios.delete(url,{
+            headers: {
+                'Authorization': cookie_
+            }
+        })
+        return response
+    } catch(error:any)
+    {
+        throw error
     }
 }
 

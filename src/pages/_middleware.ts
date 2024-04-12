@@ -11,7 +11,7 @@ export function middleware(request: NextRequest) {
     console.log(request.nextUrl.pathname)
     if(token != undefined) 
         return NextResponse.redirect(baseUrl + '/')
-   } else if(request.nextUrl.pathname == "/")
+   } else 
     {
         console.log("hna2")
         if(token == undefined)
