@@ -21,12 +21,11 @@ import Facebook from 'mdi-material-ui/Facebook'
 import Linkedin from 'mdi-material-ui/Linkedin'
 import GooglePlus from 'mdi-material-ui/GooglePlus'
 import ShareVariant from 'mdi-material-ui/ShareVariant'
-import Plus from 'mdi-material-ui/Plus'
 import Pen from 'mdi-material-ui/Pen'
 import Delete from 'mdi-material-ui/Delete'
-import {useDeleteEducation, useEducationAll} from '@hooks/useEducation' 
-import { AddEducation } from 'src/Api/EducationService/Education'
-import AddEdit_Education from "@modals/AddEdit_Education"
+import { useDeleteProject } from 'src/@core/hooks/useProject'
+import AddEdit_Project from "@modals/AddEdit_Project"
+
 // Styled Grid component
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   display: 'flex',
@@ -39,24 +38,22 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
     borderRight: `1px solid ${theme.palette.divider}`
   }
 }))
-
-const EducationCard = ({ educationData }: { educationData: IEducation }) => {
+ 
+export default function CardProject ({ projectData }: { projectData: IProject }) {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { message, loading, error ,handleDelete} = useDeleteEducation(educationData.id);
+  const { message, loading, error,handleDelete } = useDeleteProject(projectData.id);
   const [openModal,setOpenModal] = useState(false)
 
-  const open = Boolean(anchorEl)
-
+  const open = Boolean(anchorEl) 
+ 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
     setAnchorEl(null)
   }
-
-  console.log(educationData.endDate)
-
+ 
   const handleUpdate = () => {
     setOpenModal(true)
   }
@@ -79,16 +76,15 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
         >
           <CardContent>
             <Typography variant='h6' sx={{ marginBottom: 2 }}>
-            {educationData.institution}
+            {projectData.name}
             </Typography>
-    
             <Typography variant='body2' sx={{ marginBottom: 3.5 }}>
-            {educationData.degree}
+            {projectData.description}
              </Typography>
             <Typography sx={{ fontWeight: 500, marginBottom: 3 }}>
-            {educationData.startDate}
+            {projectData.startDate} -  
               <Box component='span' sx={{ fontWeight: 'bold' }}>
-              {educationData.endDate}
+               {projectData.endDate}
               </Box>
             </Typography>
           </CardContent>
@@ -97,7 +93,17 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
               <Button>
                 <CartPlus fontSize='small' sx={{ marginRight: 2 }} />
             
-              </Button> 
+              </Button>
+              <IconButton
+                id='long-button'
+                aria-label='share'
+                aria-haspopup='true'
+                onClick={handleClick}
+                aria-controls='long-menu'
+                aria-expanded={open ? 'true' : undefined}
+              >
+                <ShareVariant fontSize='small' />
+              </IconButton>
               <Menu
                 open={open}
                 id='long-menu'
@@ -121,12 +127,10 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
                 </MenuItem>
               </Menu>
             </Box>
-            
           </CardActions>
         </Grid>
-        
       </Grid>
-     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
    
         <Button onClick={handleUpdate}>
                 <Pen fontSize='medium' sx={{ marginRight: 2 }} />
@@ -136,11 +140,9 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
                 <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
         </Button>
       </div>
-      <AddEdit_Education open={openModal} dataEducation={educationData} setOpen={setOpenModal}/>
+      <AddEdit_Project open={openModal} dataProject={projectData} setOpen={setOpenModal}/>
 
     </Card>
   )
 }
-
-export default EducationCard
  

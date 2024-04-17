@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useReducer,useEffect,forwardRef} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -16,15 +16,15 @@ import Phone from 'mdi-material-ui/Phone'
 import EmailOutline from 'mdi-material-ui/EmailOutline'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
-import { School } from 'mdi-material-ui';
+import { MapMarker, School } from 'mdi-material-ui';
 import DatePicker from 'react-datepicker'
-import { AddEducation } from 'src/Api/POST/POSTEducation';
+import { AddEducation,UpdateEducation } from 'src/Api/EducationService/Education';
 
   type CustomInputProps = {
     label: string;
     // other props...
   };
-  const CustomInput = React.forwardRef<unknown, CustomInputProps>((props, ref) => {
+  const CustomInput = forwardRef<unknown, CustomInputProps>((props, ref) => {
     const { label, ...otherProps } = props;
     return <TextField fullWidth {...otherProps} inputRef={ref} label={label} autoComplete='off' />;
   });
@@ -34,7 +34,7 @@ import { AddEducation } from 'src/Api/POST/POSTEducation';
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 700, 
-    height: 800,  
+    height: 'max-fit-content',   
     boxShadow: 24,
     p: 2,
   };
@@ -52,6 +52,8 @@ import { AddEducation } from 'src/Api/POST/POSTEducation';
     switch (action.type) {
       case 'reset':
         return initialState;
+      case 'updateState':
+          return { ...state, ...action.payload };  
       default:
         if (action.type in state) {
           return { ...state, [action.type]: action.payload };
@@ -61,22 +63,37 @@ import { AddEducation } from 'src/Api/POST/POSTEducation';
     }
   }
   
-const AddEducationModal = ({ open, setOpen }: any) => { 
-  const [state, dispatch] = React.useReducer(reducer, initialState); 
+const AddEdit_EducationModal = ({ open, setOpen ,dataEducation}: any) => { 
+  const [state, dispatch] = useReducer(reducer, initialState); 
  
+  useEffect(() => {
+    if(dataEducation!=null&& open==true){
+      dispatch({ type: 'updateState', payload: dataEducation});
+
+    }
+  }, [open]);
   const handleClose = () => setOpen(false);
 
    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+        if(dataEducation==null){
           console.log(state)
-            const response = await AddEducation(state);
-            console.log(response);
-            dispatch({ type: 'reset' });
-            handleClose(); 
+          const response = await AddEducation(state);
+          console.log(response);
+          dispatch({ type: 'reset' });
+          handleClose(); 
+        }else{
+          console.log(state)
+          const response = await UpdateEducation(state);
+          console.log(response);
+          dispatch({ type: 'reset' });
+          handleClose(); 
+        }
+       
   };
 
   return (
-   
+  
       <Modal
         open={open}
         onClose={handleClose}
@@ -84,7 +101,7 @@ const AddEducationModal = ({ open, setOpen }: any) => {
         aria-describedby="modal-modal-description"
       >
         <Card sx={style}>
-      <CardHeader title='Add Education' titleTypographyProps={{ variant: 'h6' }} />
+      <CardHeader title={dataEducation == null ? 'Add Education' : 'Update Education'} titleTypographyProps={{ variant: 'h6' }} />
       <CardContent>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={5}>
@@ -94,7 +111,7 @@ const AddEducationModal = ({ open, setOpen }: any) => {
                 label='School'
                 placeholder='Ex: Boston University'
                 onChange={(e) => dispatch({ type: 'institution', payload: e.target.value })}
-
+                value={state.institution}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position='start'>
@@ -109,6 +126,7 @@ const AddEducationModal = ({ open, setOpen }: any) => {
                 fullWidth 
                 onChange={(e) => dispatch({ type: 'degree', payload: e.target.value })}
                 label='Degree'
+                value={state.degree}
                 placeholder="Ex: Bachelor's"
                 InputProps={{
                   startAdornment: (
@@ -123,6 +141,7 @@ const AddEducationModal = ({ open, setOpen }: any) => {
               <TextField
                 fullWidth 
                 label='Field of study'
+                value={state.fieldOfStudy}
                 placeholder='Ex: Business'
                 onChange={(e) => dispatch({ type: 'fieldOfStudy', payload: e.target.value })}
                 InputProps={{
@@ -134,10 +153,26 @@ const AddEducationModal = ({ open, setOpen }: any) => {
                 }}
               />
             </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth 
+                value={state.location}
+                label='Location'
+                placeholder='Ex: London, United Kingdom'
+                onChange={(e) => dispatch({ type: 'location', payload: e.target.value })}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <MapMarker />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Grid>   
             <Grid item xs={12} sm={6}>
               <DatePicker 
-                selected={state.startDate} 
-                maxDate={state.endDate}
+                selected={new Date(state.startDate)} 
+                maxDate={new Date(state.endDate)}
                 showYearDropdown
                 showMonthDropdown  
                 customInput={<CustomInput label="Start date"/>}
@@ -147,11 +182,11 @@ const AddEducationModal = ({ open, setOpen }: any) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <DatePicker 
-                minDate={state.startDate}
+                selected={new Date(state.endDate)} 
+                minDate={new Date(state.startDate)}
                 showYearDropdown
-                showMonthDropdown 
-                selected={state.endDate} 
-                customInput={<CustomInput label="End date (or expected)"/>}
+                showMonthDropdown  
+                customInput={<CustomInput label="End date"/>}
                 onChange={(date) => dispatch({ type: 'endDate', payload: date })} 
 
                 id='form-layouts-separator-date' 
@@ -163,6 +198,7 @@ const AddEducationModal = ({ open, setOpen }: any) => {
                 multiline
                 minRows={3}
                 label='Description'
+                value={state.description}
                 placeholder='Description'
                 onChange={(e) => dispatch({ type: 'description', payload: e.target.value })} 
 
@@ -178,7 +214,7 @@ const AddEducationModal = ({ open, setOpen }: any) => {
             </Grid>
             <Grid item xs={12}>
             <Button type='submit' variant='contained' size='large'  sx={{ marginRight: 2 }} >
-                Save
+            {dataEducation== null ? 'Save' : 'Update'}
               </Button>
               <Button onClick={()=>setOpen(false)} variant='contained' sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
                 Close
@@ -193,6 +229,6 @@ const AddEducationModal = ({ open, setOpen }: any) => {
   );
 }
 
-export default AddEducationModal;
+export default AddEdit_EducationModal;
 
  

@@ -1,14 +1,8 @@
 import React from 'react'
 
-import { useEducationAll } from 'src/@core/hooks/useEducation';
-import EducationCard from '../../../views/cards/CardEducation';
- 
-type UseEducationAllReturn = {
-  educationList: IEducation[];
-  loading: boolean;
-  error: any;
-};
- 
+import { useEducationAll } from '@hooks/useEducation'; 
+import EducationCard from '@cards/CardEducation'; 
+import ActionEducationModal from '@modals/AddEdit_Education'; 
 // ** React Imports
 import { SyntheticEvent, useState } from 'react'
 
@@ -18,19 +12,18 @@ import Card from '@mui/material/Card'
 import { styled } from '@mui/material/styles'
 import MuiTab, { TabProps } from '@mui/material/Tab'
 
-// ** Icons Imports
-import AccountOutline from 'mdi-material-ui/AccountOutline' 
-
- 
+// ** Icons Import 
 // ** Third Party Styles Imports
-import 'react-datepicker/dist/react-datepicker.css'
-import ArrowDownDropCircleOutline from 'mdi-material-ui/ArrowDownDropCircleOutline'
-import Stack from '@mui/material/Stack'
+import 'react-datepicker/dist/react-datepicker.css' 
 import Plus from 'mdi-material-ui/Plus'
 import School from 'mdi-material-ui/School'
 import Button from '@mui/material/Button'
-import AddEducationModal from 'src/views/modals/AddEducation';
 
+type UseEducationAllReturn = {
+  educationList: IEducation[];
+  loading: boolean;
+  error: any;
+};
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     minWidth: 100
@@ -52,7 +45,7 @@ const TabName = styled('span')(({ theme }) => ({
 
 export default function education(){
   // ** State
-  const { educationList, loading, error }: UseEducationAllReturn = useEducationAll();
+  const { educationList, loading, error } = useEducationAll();
 
    const [openModal,setOpenModal] = useState(false)
  
@@ -62,7 +55,7 @@ export default function education(){
   const handleCreate =  () => {
      setOpenModal(true)
   };
-
+ 
   return (
     <Card>
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between' ,padding:"15px"}}>
@@ -76,11 +69,11 @@ export default function education(){
             </Button>  
         </div>
         <div >
-      {educationList?.map((item:IEducation) => (
-          <EducationCard  educationData={item} />
-      ))}
+      {educationList?.map((item: IEducation, index: number) => (
+        <EducationCard key={index} educationData={item} />
+      ))} 
     </div>
-    <AddEducationModal open={openModal} setOpen={setOpenModal}/>
+    <ActionEducationModal open={openModal} dataEducation={null} setOpen={setOpenModal}/>
 
     </Card>
   )

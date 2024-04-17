@@ -24,7 +24,7 @@ import ShareVariant from 'mdi-material-ui/ShareVariant'
 import Pen from 'mdi-material-ui/Pen'
 import Delete from 'mdi-material-ui/Delete'
 import { useDeleteExperience } from 'src/@core/hooks/useExperience'
-
+import AddEdit_Experience from "@modals/AddEdit_Experience"
 // Styled Grid component
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   display: 'flex',
@@ -42,7 +42,8 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const { message, loading, error,handleDelete } = useDeleteExperience(experienceData.id);
-
+  const [openModal,setOpenModal] = useState(false)
+ 
   const open = Boolean(anchorEl)
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -53,7 +54,7 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
   }
  
   const handleUpdate = () => {
-     
+    setOpenModal(true)
   }
   return (
     <Card sx={{margin:"10px"}}>
@@ -138,6 +139,8 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
                 <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
         </Button>
       </div>
+      <AddEdit_Experience open={openModal} dataExperience={experienceData} setOpen={setOpenModal}/>
+
     </Card>
   )
 }

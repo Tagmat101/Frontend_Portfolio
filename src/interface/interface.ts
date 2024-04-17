@@ -21,10 +21,17 @@ interface IEducation {
     skills:String[];
   }
   
-   interface Project {
+   interface IProject {
     id: String;
     name: String;
-  }
+    link:String; 
+    description:String;
+    startDate:Date;
+    endDate:Date; 
+    responsibilities:String[];
+    achievements:String[];
+    skills:String[]; 
+  } 
   
    interface Categorie {
     id: String;
@@ -40,7 +47,7 @@ interface IEducation {
     categories: Categorie[];
     educations: IEducation[];
     experiences: IExperience[];
-    projects: Project[];
+    projects: IProject[];
     skills: String[]; 
   }
   
@@ -49,7 +56,7 @@ interface IEducation {
       color: String;
       educations: IEducation[];
       experiences: IExperience[];
-      projects: Project[];
+      projects: IProject[];
       skills: String[]; 
   }
   

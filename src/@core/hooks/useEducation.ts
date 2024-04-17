@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { getEducationAll, getEducationByID } from '../../Api/GET/GetEducation'; // replace with your actual file path
-import { DeleteEducation } from 'src/Api/DELETE/DeleteEducation';
+import { getEducationAll, getEducationByID,DeleteEducation } from '../../Api/EducationService/Education';  
  
-
+ 
 export const useEducationAll = () => {
   const [educationList, setEducationList] = useState<IEducation[]>([]); 
-
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>();
 
@@ -13,19 +11,20 @@ export const useEducationAll = () => {
     const fetchData = async () => {
       try {
         const data = await getEducationAll();
-        setEducationList(data);
-        setLoading(false);
+         setEducationList(data);
+         setLoading(false);
       } catch (error) {
-        setError(error);
-        setLoading(false);
+         setError(error);
+         setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  return { educationList, loading, error };
+  return { educationList, loading, error};
 };
+ 
 export const useEducationByID = (idEducation:string) => {
     const [educationData, setEducationData] = useState<IEducation>();
     const [loading, setLoading] = useState<boolean>(true);

@@ -1,6 +1,6 @@
 import React from 'react'
-import CardExperience from '../cards/CardExperience'; 
-import { useExperienceAll } from 'src/@core/hooks/useExperience';
+import CardExperience from '@cards/CardExperience'; 
+import { useExperienceAll } from '@hooks/useExperience';
  
 export default function Experience() {
   const { ExperienceList, loading, error } = useExperienceAll();

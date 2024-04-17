@@ -1,35 +1,23 @@
 import React from 'react'
- 
-
-import { useEducationAll } from 'src/@core/hooks/useEducation';
-import EducationCard from '../../../views/cards/CardEducation';
- 
-
+  
 // ** React Imports
-import { SyntheticEvent, useState } from 'react'
+import {  useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card' 
 import { styled } from '@mui/material/styles'
 import MuiTab, { TabProps } from '@mui/material/Tab'
-
-// ** Icons Imports
-import AccountOutline from 'mdi-material-ui/AccountOutline' 
-
+ 
  
 // ** Third Party Styles Imports
-import 'react-datepicker/dist/react-datepicker.css'
-import ArrowDownDropCircleOutline from 'mdi-material-ui/ArrowDownDropCircleOutline'
-import Stack from '@mui/material/Stack'
-import Plus from 'mdi-material-ui/Plus'
-import School from 'mdi-material-ui/School'
+import 'react-datepicker/dist/react-datepicker.css'  
+import Plus from 'mdi-material-ui/Plus' 
 import Button from '@mui/material/Button'
-import { useExperienceAll } from 'src/@core/hooks/useExperience';
+import { useExperienceAll } from '@hooks/useExperience';
 import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline';
-import CardExperience from 'src/views/cards/CardExperience';
-import AddEducationModal from 'src/views/modals/AddEducation';
-import AddExperience from 'src/views/modals/AddExperience';
+import CardExperience from '@cards/CardExperience'; 
+import ActionExperienceModal from '@modals/AddEdit_Experience'; 
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -73,11 +61,12 @@ export default function experience(){
             </Button>  
         </div>
         <div>
-      {ExperienceList?.map((item:IExperience) => (
-          <CardExperience  experienceData={item} />
+      {ExperienceList?.map((item:IExperience, index: number) => (
+          <CardExperience key={index} experienceData={item} />
       ))}
+     
     </div>
-    <AddExperience open={openModal} setOpen={setOpenModal}/>
+    <ActionExperienceModal open={openModal} dataExperience={null} setOpen={setOpenModal}/>
 
     </Card>
   )

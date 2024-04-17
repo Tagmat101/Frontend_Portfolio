@@ -1,7 +1,7 @@
  
 import React from 'react';
-import { useEducationAll } from 'src/@core/hooks/useEducation';
-import EducationCard from '../cards/CardEducation';
+import { useEducationAll } from '@hooks/useEducation';
+import EducationCard from '@cards/CardEducation';
  
 type UseEducationAllReturn = {
   educationList: IEducation[];
@@ -10,7 +10,7 @@ type UseEducationAllReturn = {
 };
  
 export default function Education (){
-  const { educationList, loading, error }: UseEducationAllReturn = useEducationAll();
+  const { educationList, loading, error } = useEducationAll();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;

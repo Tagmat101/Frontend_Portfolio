@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'; 
-import { getExperienceAll, getExperienceByID,DeleteExperience } from '../../Api/ExperienceService/Experience';  
+import { useState, useEffect } from 'react';
+import { DeleteProject, getProjectAll, getProjectByID } from '../../Api/ProjectService/Project'; // replace with your actual file path
+  
 
-
-export const useExperienceAll = () => {
-  const [ExperienceList, setExperienceList] = useState<IExperience[]>([]); 
+export const useProjectAll = () => {
+  const [ProjectList, setProjectList] = useState<IProject[]>([]); 
 
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>();
@@ -11,8 +11,8 @@ export const useExperienceAll = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getExperienceAll();
-         setExperienceList(data);
+        const data = await getProjectAll();
+         setProjectList(data);
          setLoading(false);
       } catch (error) {
          setError(error);
@@ -23,18 +23,18 @@ export const useExperienceAll = () => {
     fetchData();
   }, []);
 
-  return { ExperienceList, loading, error };
+  return { ProjectList, loading, error };
 };
-export const useExperienceByID = (idExperience:string) => {
-    const [ExperienceData, setExperienceData] = useState<IExperience>();
+export const useProjectByID = (idProject:string) => {
+    const [ProjectData, setProjectData] = useState<IProject>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>();
   
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const data = await getExperienceByID(idExperience);
-          setExperienceData(data);
+          const data = await getProjectByID(idProject);
+          setProjectData(data);
           setLoading(false);
         } catch (error) {
           setError(error);
@@ -45,9 +45,9 @@ export const useExperienceByID = (idExperience:string) => {
       fetchData();
     }, []);
   
-    return { ExperienceData, loading, error };
+    return { ProjectData, loading, error };
   };
-  export const useDeleteExperience= (id:String) => {
+  export const useDeleteProject= (id:String) => {
   
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>();
@@ -55,7 +55,7 @@ export const useExperienceByID = (idExperience:string) => {
 
     const handleDelete = async () => {
       try {
-        const data = await DeleteExperience(id);
+        const data = await DeleteProject(id);
          setMessage(data);
          setLoading(false);
       } catch (error) {

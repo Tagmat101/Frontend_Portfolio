@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useReducer,useEffect,forwardRef,FormEvent} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button'; 
 import Modal from '@mui/material/Modal';
@@ -20,7 +20,7 @@ import EmailOutline from 'mdi-material-ui/EmailOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import { Briefcase, MapMarker } from 'mdi-material-ui';
 import DatePicker from 'react-datepicker'
-import { AddExperience } from 'src/Api/POST/POSTExperience';
+import { AddExperience,UpdateExperience } from 'src/Api/ExperienceService/Experience';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
  
@@ -38,7 +38,7 @@ const employmentTypes = [
     label: string;
     // other props...
   };
-  const CustomInput = React.forwardRef<unknown, CustomInputProps>((props, ref) => {
+  const CustomInput = forwardRef<unknown, CustomInputProps>((props, ref) => {
     const { label, ...otherProps } = props;
     return <TextField fullWidth {...otherProps} inputRef={ref} label={label} autoComplete='off' />;
   });
@@ -48,17 +48,15 @@ const employmentTypes = [
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '90%', 
-    height: '80%',  
+    height: 'max-fit-content',    
     boxShadow: 24,
     overflow: 'auto',
     p: 2, 
     '@media (min-width:600px)': {
-      width: '80%', 
-      height: '80%',  
+      width: '80%',    
     },
     '@media (min-width:960px)': {
-      width: 700, 
-      height: 800,  
+      width: 700,   
     },
   };
   
@@ -80,6 +78,8 @@ const employmentTypes = [
     switch (action.type) {
       case 'reset':
         return initialState;
+        case 'updateState':
+          return { ...state, ...action.payload };  
       default:
         if (action.type in state) {
           return { ...state, [action.type]: action.payload };
@@ -89,27 +89,34 @@ const employmentTypes = [
     }
   }
   
-const AddExperienceModal = ({ open, setOpen }: any) => { 
-  const [state, dispatch] = React.useReducer(reducer, initialState); 
-  const [select, setSelect] = React.useState(false);
+const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => { 
+  const [state, dispatch] = useReducer(reducer, initialState); 
+ 
+  useEffect(() => {
+    if(dataExperience!=null&& open==true){
+      dispatch({ type: 'updateState', payload: dataExperience}); 
+    }
+  }, [open]);
+
   const handleClose = () => setOpen(false);
 
-   const handleSubmit = async (event: React.FormEvent) => {
+   const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
+        if(dataExperience==null){
           console.log(state)
-            const response = await AddExperience(state);
-            console.log(response);
-            dispatch({ type: 'reset' });
-            handleClose(); 
+          const response = await AddExperience(state);
+          console.log(response);
+          dispatch({ type: 'reset' });
+          handleClose(); 
+        }else{
+          console.log(state)
+          const response = await UpdateExperience(state);
+          console.log(response);
+          dispatch({ type: 'reset' });
+          handleClose(); 
+        }
   };
-  function getStyles(name: string, personName: readonly string[], theme: Theme) {
-    return {
-      fontWeight:
-        personName.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-    };
-  }
+  
   return (
    
       <Modal
@@ -119,14 +126,15 @@ const AddExperienceModal = ({ open, setOpen }: any) => {
         aria-describedby="modal-modal-description"
       >
         <Card sx={style} >
-      <CardHeader title='Add Experience' titleTypographyProps={{ variant: 'h6' }} />
+        <CardHeader title={dataExperience== null ? 'Add Experience' : 'Update Experience'} titleTypographyProps={{ variant: 'h6' }} />
       <CardContent >
-        <form onSubmit={handleSubmit} required>
+        <form onSubmit={handleSubmit} >
           <Grid container spacing={5}>
             <Grid item xs={12}>
               <TextField 
                 fullWidth
                 label='Title'
+                value={state.jobTitle}
                 placeholder='Ex: Retail Sales Manager'
                 onChange={(e) => dispatch({ type: 'jobTitle', payload: e.target.value })}
 
@@ -142,6 +150,8 @@ const AddExperienceModal = ({ open, setOpen }: any) => {
             <Grid item xs={12}>
               <TextField
                 fullWidth 
+                value={state.companyName}
+
                 onChange={(e) => dispatch({ type: 'companyName', payload: e.target.value })}
                 label='Company name'
                 placeholder="Ex: Microsoft"
@@ -164,7 +174,7 @@ const AddExperienceModal = ({ open, setOpen }: any) => {
                   id='form-layouts-separator-select'
                   labelId='form-layouts-separator-select-label'
                   onChange={(e) => dispatch({ type: 'employmentType', payload: e.target.value })}
-              
+                  value={state.employmentType}
                 >
                   {
                     employmentTypes.map((item)=>
@@ -177,6 +187,7 @@ const AddExperienceModal = ({ open, setOpen }: any) => {
             <Grid item xs={12}>
               <TextField
                 fullWidth 
+                value={state.location}
                 label='Location'
                 placeholder='Ex: London, United Kingdom'
                 onChange={(e) => dispatch({ type: 'location', payload: e.target.value })}
@@ -188,11 +199,11 @@ const AddExperienceModal = ({ open, setOpen }: any) => {
                   )
                 }}
               />
-            </Grid>
+            </Grid>   
             <Grid item xs={12} sm={6}>
               <DatePicker 
-                selected={state.startDate} 
-                maxDate={state.endDate}
+                selected={new Date(state.startDate)} 
+                maxDate={new Date(state.endDate)}
                 showYearDropdown
                 showMonthDropdown  
                 customInput={<CustomInput label="Start date"/>}
@@ -202,11 +213,11 @@ const AddExperienceModal = ({ open, setOpen }: any) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <DatePicker 
-                minDate={state.startDate}
+                selected={new Date(state.endDate)} 
+                minDate={new Date(state.startDate)}
                 showYearDropdown
-                showMonthDropdown 
-                selected={state.endDate} 
-                customInput={<CustomInput label="End date (or expected)"/>}
+                showMonthDropdown  
+                customInput={<CustomInput label="End date"/>}
                 onChange={(date) => dispatch({ type: 'endDate', payload: date })} 
 
                 id='form-layouts-separator-date' 
@@ -252,6 +263,9 @@ const AddExperienceModal = ({ open, setOpen }: any) => {
             </Grid>
             <Grid item xs={12}>
               <Autocomplete multiple options={[]} freeSolo  
+               value={state.responsibilities}
+               onChange={(event ,newValue) => dispatch({ type: 'responsibilities', payload: newValue})}
+
                   renderTags={(value, getTagProps) =>
                     value.map((option, index) => (
                           <Chip
@@ -272,7 +286,10 @@ const AddExperienceModal = ({ open, setOpen }: any) => {
            </Grid> 
            <Grid item xs={12}>
             <Autocomplete multiple options={[]} freeSolo  
-                renderTags={(value, getTagProps) =>
+               value={state.achievements}
+               onChange={(event ,newValue) => dispatch({ type: 'achievements', payload: newValue})}
+
+                renderTags={(value, getTagProps) => 
                   value.map((option, index) => (
                         <Chip
                             variant="outlined"
@@ -298,7 +315,7 @@ const AddExperienceModal = ({ open, setOpen }: any) => {
                 label='Description'
                 placeholder='Description'
                 onChange={(e) => dispatch({ type: 'description', payload: e.target.value })} 
-
+                value={state.description}
                 sx={{ '& .MuiOutlinedInput-root': { alignItems: 'baseline' } }}
                 InputProps={{
                   startAdornment: (
@@ -311,7 +328,7 @@ const AddExperienceModal = ({ open, setOpen }: any) => {
             </Grid>
             <Grid item xs={12}> 
               <Button type='submit' variant='contained' size='large'  sx={{ marginRight: 2 }} >
-                Save
+              {dataExperience== null ? 'Save' : 'Update'}
               </Button>
               <Button onClick={()=>setOpen(false)} variant='contained' sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
                 Close
@@ -329,6 +346,6 @@ const AddExperienceModal = ({ open, setOpen }: any) => {
   );
 }
 
-export default AddExperienceModal;
+export default AddEdit_ExperienceModal;
 
  
