@@ -48,7 +48,7 @@ const FormCreation = () => {
   const [name, setName] = useState(modify ? dataPortfolioMod.name : '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [color, setColor] = useState("#aabbcc");
+  const [color, setColor] = useState(modify ? dataPortfolioMod.color : '#aabbcc');
   
   const [selectedCategorie, setSelectedCategorie] = useState<string>(modify ? dataPortfolioMod.categorie.id : "");
 

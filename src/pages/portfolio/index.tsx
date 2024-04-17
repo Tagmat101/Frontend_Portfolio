@@ -74,7 +74,7 @@ const Portfolio = () => {
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='portfolio'>
+        <TabPanel sx={{ p: 0 }} value='portfolio'>  
           <FormCreation />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='view'>
