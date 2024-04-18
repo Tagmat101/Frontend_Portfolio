@@ -10,9 +10,9 @@ const FormCreation = () => {
   const [openModal,setOpenModal] = useState(false)
   const {setModify,setDataCategorieMod} = useContext(CategorieContext)
   const handleCreate = async () => {
+     setDataCategorieMod({id: '',name: '',state: false})
      setOpenModal(true)
      setModify(false)
-     setDataCategorieMod({id: '',name: '',state: false})
   };
 
   return (

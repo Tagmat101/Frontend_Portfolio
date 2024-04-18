@@ -50,7 +50,7 @@ const style = {
 };
 
 const CategorieModal = ({ open, setOpen }: any) => {
-  const { modify,setModify, dataCategorieMod } = useContext(CategorieContext);
+  const { modify,setModify, dataCategorieMod , setDataCategorieMod } = useContext(CategorieContext);
   const [state, dispatch] = useReducer(reducer, initialState);
   const [errorMessage,setErrorMessage] = useState('')
 
@@ -65,6 +65,7 @@ const CategorieModal = ({ open, setOpen }: any) => {
   const handleClose = () => {
     dispatch({ type: 'RESET' });
     setOpen(false);
+    setDataCategorieMod({id: '',name: '',state: false})
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
