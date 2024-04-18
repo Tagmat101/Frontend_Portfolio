@@ -47,7 +47,7 @@ const CardPortfolio = ({ portfolio }: CardPortfolioProps) => {
         <Button onClick={handleModifyButton}>Modify</Button>
         <Button>View portfolio</Button>
       </CardContent>
-      <Button onClick={handleDeleteButton} variant='contained' sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 , background: 'red'}}>
+      <Button onClick={handleDeleteButton} variant='contained' sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
         Delete
       </Button>
     </Card>
