@@ -43,7 +43,7 @@ const CardPortfolio = ({ portfolio }: CardPortfolioProps) => {
         <Typography variant='h6' sx={{ marginBottom: 2 }}>
           {portfolio?.name}
         </Typography>
-        <Typography sx={{ marginBottom: 2 }}> {portfolio?.name}</Typography>
+        <Typography sx={{ marginBottom: 2 }}><span >Category : </span>{portfolio?.categorie.name}</Typography>
         <Button onClick={handleModifyButton}>Modify</Button>
         <Button>View portfolio</Button>
       </CardContent>
