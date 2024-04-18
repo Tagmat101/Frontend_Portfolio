@@ -13,7 +13,7 @@ import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogC
 import { GetCategoriesPort, DeleteCategoriePort } from 'src/pages/api/CategoriePortServices/Service';
 import { ThemeColor } from 'src/@core/layouts/types';
 import { Pencil, TrashCan } from 'mdi-material-ui';
-import CategorieModal from '../Modals/PortfolioModals/CategorieModal';
+import CategorieModal from '../Modals/CategorieModals/CategorieModal';
 import { CategorieContext } from 'src/@core/context/CategorieContext';
 import { Categorie } from 'src/utils/interfaces/int';
 import useDataFetching from 'src/@core/hooks/useFetchingData';
@@ -30,11 +30,8 @@ const statusObj: StatusObj = {
 };
 
 const CategoriesPortTable = () => {
-  const [openModal, setOpenModal] = React.useState(false);
   const [errorMessage,setErrorMessage] = React.useState('')
-  const [openDeleteConfirmation, setOpenDeleteConfirmation] = React.useState(false);
-  const [categoryIdToDelete, setCategoryIdToDelete] = React.useState<string | null>(null);
-  const { setModify, setDataCategorieMod } = React.useContext(CategorieContext);
+  const { setModify, setDataCategorieMod , setOpenCatModal , setOpenCatDelete , setIdDelete } = React.useContext(CategorieContext);
   const { data: categoriesData, loading } = useDataFetching(GetCategoriesPort);
 
   const handleUpdate = (data : Categorie) => {
@@ -44,28 +41,15 @@ const CategoriesPortTable = () => {
       name: data.name,
       state: data.state
     }
-    setOpenModal(true);
+    setOpenCatModal(true);
     setModify(true);
     setDataCategorieMod(constructData);
   };
 
+  
   const handleDelete = (categoryId: string) => {
-    setOpenDeleteConfirmation(true);
-    setCategoryIdToDelete(categoryId);
-  };
-
-  const handleConfirmDelete = async () => {
-    try 
-    {
-      if (categoryIdToDelete !== null) {
-        await DeleteCategoriePort(categoryIdToDelete);
-        document.location.reload()
-      }
-    } catch(error:any)
-    {
-      setErrorMessage(error.response.data.message)
-    }
-    finally {setOpenDeleteConfirmation(false);}
+    setOpenCatDelete(true);
+    setIdDelete(categoryId);
   };
 
   return (
@@ -119,29 +103,8 @@ const CategoriesPortTable = () => {
           </Table>
         </TableContainer>
       )}
-      <CategorieModal open={openModal} setOpen={setOpenModal} />
+      {/* <CategorieModal open={openModal} setOpen={setOpenModal} /> */}
       {/* just letting this here will help control it better (needs optimization ) */}
-      <Dialog
-        open={openDeleteConfirmation}
-        onClose={() => setOpenDeleteConfirmation(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this category?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDeleteConfirmation(false)} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Card>
   );
 };

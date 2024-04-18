@@ -49,11 +49,11 @@ const style = {
   p: 4,
 };
 
-const CategorieModal = ({ open, setOpen }: any) => {
-  const { modify,setModify, dataCategorieMod , setDataCategorieMod } = useContext(CategorieContext);
+const CategorieUCModal = () => {
+  const { modify,setModify, dataCategorieMod , setDataCategorieMod , openCatModal , setOpenCatModal} = useContext(CategorieContext);
   const [state, dispatch] = useReducer(reducer, initialState);
   const [errorMessage,setErrorMessage] = useState('')
-
+  console.log(openCatModal)
   useEffect(() => {
     if (modify) {
       dispatch({ type: 'SET_NAME', payload: dataCategorieMod.name });
@@ -64,7 +64,7 @@ const CategorieModal = ({ open, setOpen }: any) => {
 
   const handleClose = () => {
     dispatch({ type: 'RESET' });
-    setOpen(false);
+    setOpenCatModal(false);
     setDataCategorieMod({id: '',name: '',state: false})
   };
 
@@ -101,6 +101,9 @@ const CategorieModal = ({ open, setOpen }: any) => {
     {
       setErrorMessage(error.response.data.message)
     }
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 1000);
   };
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,9 +116,8 @@ const CategorieModal = ({ open, setOpen }: any) => {
 
   return (
     <div>
-      {errorMessage}
       <Modal
-        open={open}
+        open={openCatModal}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -148,6 +150,7 @@ const CategorieModal = ({ open, setOpen }: any) => {
             <Button type="submit" variant="contained" color="primary">
               {modify ? 'Modify' : 'Add'}
             </Button>
+           <p>{errorMessage}</p>
           </form>
         </Box>
       </Modal>
@@ -155,4 +158,4 @@ const CategorieModal = ({ open, setOpen }: any) => {
   );
 };
 
-export default CategorieModal;
+export default CategorieUCModal;

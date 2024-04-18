@@ -1,4 +1,3 @@
-
 import React, {
     createContext,
     useContext,
@@ -7,42 +6,54 @@ import React, {
     Dispatch,
     useState,
     useCallback
-  } from "react";
-  import { Categorie, PortfolioData } from "src/utils/interfaces/int";
-  
-  interface StateContextType {
-    modify:boolean;
+} from "react";
+import { Categorie } from "src/utils/interfaces/int";
+
+interface StateContextType {
+    modify: boolean;
+    openCatDelete: boolean;
     dataCategorieMod: Categorie;
+    openCatModal: boolean;
+    idToDelete: string;
     setDataCategorieMod: Dispatch<SetStateAction<Categorie>>;
+    setOpenCatDelete: Dispatch<SetStateAction<boolean>>;
     setModify: Dispatch<SetStateAction<boolean>>;
-  }
-  
-  export const CategorieContext = createContext<StateContextType>({
+    setOpenCatModal: Dispatch<SetStateAction<boolean>>;
+    setIdDelete: Dispatch<SetStateAction<string>>;
+}
+
+export const CategorieContext = createContext<StateContextType>({
     modify: false,
+    openCatDelete: false,
+    openCatModal: false,
+    dataCategorieMod: { id: "", name: "", state: false },
+    idToDelete: '',
+    setIdDelete: () => {},
     setModify: () => {},
     setDataCategorieMod: () => {},
-    dataCategorieMod: { id: "" , name: "" , state: false},
-  });
-  
-  type ContextProviderProps = {
+    setOpenCatDelete: () => {},
+    setOpenCatModal: () => {}
+});
+
+type ContextProviderProps = {
     children?: ReactNode;
-  };
-  
-  export const ContextCategorieProvider = ({ children }: ContextProviderProps) => {
+};
+
+export const ContextCategorieProvider = ({ children }: ContextProviderProps) => {
     const [dataCategorieMod, setDataCategorieMod] = useState<Categorie>({
-       id: "",
-       name: "",
-       state: false
+        id: "",
+        name: "",
+        state: false
     });
-    const [dataCategories,setDataCategories] = useState<Categorie[]>([])
     const [modify, setModify] = useState<boolean>(false);
-    
+    const [openCatModal, setOpenCatModal] = useState<boolean>(false);
+    const [openCatDelete,setOpenCatDelete] = useState<boolean>(false);
+    const [idToDelete,setIdDelete] = useState<string>('');
     return (
-      <CategorieContext.Provider value={{  setDataCategorieMod, dataCategorieMod , modify, setModify }}>
-        {children}
-      </CategorieContext.Provider>
+        <CategorieContext.Provider value={{ idToDelete, setIdDelete, openCatDelete,setOpenCatDelete, setOpenCatModal, openCatModal, setDataCategorieMod, dataCategorieMod, modify, setModify }}>
+            {children}
+        </CategorieContext.Provider>
     );
-  };
-  
-  export const useStateContext = () => useContext(CategorieContext);
-  
+};
+
+export const useStateContext = () => useContext(CategorieContext);

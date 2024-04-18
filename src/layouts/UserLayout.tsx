@@ -19,6 +19,8 @@ import VerticalAppBarContent from './components/vertical/AppBarContent'
 import { useSettings } from 'src/@core/hooks/useSettings'
 import { ContextPortfolioProvider } from 'src/@core/context/PortfolioContext'
 import { ContextCategorieProvider } from 'src/@core/context/CategorieContext'
+import CategorieUCModal from 'src/views/Modals/CategorieModals/CategorieUCModal'
+import CategorieDModal from 'src/views/Modals/CategorieModals/CategorieDModal'
 
 interface Props {
   children: ReactNode
@@ -74,6 +76,8 @@ const UserLayout = ({ children }: Props) => {
       >
         {children}
         {/* <UpgradeToProButton /> */}
+        <CategorieUCModal />
+        <CategorieDModal />
       </VerticalLayout>
       </ContextCategorieProvider>
     </ContextPortfolioProvider>
