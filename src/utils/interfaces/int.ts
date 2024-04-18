@@ -19,6 +19,11 @@ export interface Categorie {
   state: boolean;
 }
 
+export interface CategorieHelper {
+  name: string;
+  state: boolean;
+}
+
 export interface Categories {
   categories: Categorie[];
 }

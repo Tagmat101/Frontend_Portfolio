@@ -15,7 +15,7 @@ import React, {
     value: string,
     dataPortfolioMod: PortfolioData;
     setValue: Dispatch<SetStateAction<string>>;
-    setData: Dispatch<SetStateAction<PortfolioData>>;
+    setDataPortfolioMod: Dispatch<SetStateAction<PortfolioData>>;
     setModify: Dispatch<SetStateAction<boolean>>;
   }
   
@@ -23,7 +23,7 @@ import React, {
     modify: false,
     value: 'portfolio' ,
     setModify: () => {},
-    setData: () => {},
+    setDataPortfolioMod: () => {},
     setValue: () => {},
     dataPortfolioMod: {categorie: {id: "" , name: "" , state: false},id: "",name: "", color: "" , educations: [],experiences: [] , skills: [] , projects: []},
   });
@@ -32,8 +32,8 @@ import React, {
     children?: ReactNode;
   };
   
-  export const ContextProvider = ({ children }: ContextProviderProps) => {
-    const [dataPortfolioMod, setData] = useState<PortfolioData>({
+  export const ContextPortfolioProvider = ({ children }: ContextProviderProps) => {
+    const [dataPortfolioMod, setDataPortfolioMod] = useState<PortfolioData>({
         id: "",
         name: "",
         color: "",
@@ -47,7 +47,7 @@ import React, {
     const [value,setValue] = useState<string>('portfolio')
     
     return (
-      <PortfolioContext.Provider value={{ value,setValue, dataPortfolioMod , setData, modify, setModify }}>
+      <PortfolioContext.Provider value={{ value,setValue, dataPortfolioMod , setDataPortfolioMod, modify, setModify }}>
         {children}
       </PortfolioContext.Provider>
     );

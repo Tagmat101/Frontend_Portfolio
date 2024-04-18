@@ -6,7 +6,7 @@ import Cookies from 'universal-cookie';
 
 const root = 'api/portfolio';
 const cookie = new Cookies() 
-export const CreatePortfolioPost = async(data:any) => {
+export const CreatePortfolioPost = async(data:PortfolioData) => {
     try{
         console.log(data)
         const cookie_ = cookie.get('token-cookie')

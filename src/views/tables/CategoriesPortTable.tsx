@@ -1,67 +1,92 @@
-import { useEffect, useState } from 'react'
-import Box from '@mui/material/Box'
-import Card from '@mui/material/Card'
-import Chip from '@mui/material/Chip'
-import Table from '@mui/material/Table'
-import TableRow from '@mui/material/TableRow'
-import TableHead from '@mui/material/TableHead'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import Typography from '@mui/material/Typography'
-import TableContainer from '@mui/material/TableContainer'
-import { CircularProgress } from '@mui/material'
-import { GetCategoriesPort } from 'src/pages/api/CategoriePortServices/Service'
-import { ThemeColor } from 'src/@core/layouts/types'
-
-interface RowType {
-  id: number
-  name: string
-  state: string
-}
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Chip from '@mui/material/Chip';
+import Table from '@mui/material/Table';
+import TableRow from '@mui/material/TableRow';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import Typography from '@mui/material/Typography';
+import TableContainer from '@mui/material/TableContainer';
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { GetCategoriesPort, DeleteCategoriePort } from 'src/pages/api/CategoriePortServices/Service';
+import { ThemeColor } from 'src/@core/layouts/types';
+import { Pencil, TrashCan } from 'mdi-material-ui';
+import CategorieModal from '../Modals/PortfolioModals/CategorieModal';
+import { CategorieContext } from 'src/@core/context/CategorieContext';
+import { Categorie } from 'src/utils/interfaces/int';
+import useDataFetching from 'src/@core/hooks/useFetchingData';
 
 interface StatusObj {
   [key: string]: {
-    color: ThemeColor
-  }
+    color: ThemeColor;
+  };
 }
 
 const statusObj: StatusObj = {
   active: { color: 'info' },
   inactive: { color: 'error' },
-}
+};
 
 const CategoriesPortTable = () => {
-  const [categoriesData, setCategories] = useState<RowType[]>([])
-  const [loading, setLoading] = useState(false)
+  const [openModal, setOpenModal] = React.useState(false);
+  const [errorMessage,setErrorMessage] = React.useState('')
+  const [openDeleteConfirmation, setOpenDeleteConfirmation] = React.useState(false);
+  const [categoryIdToDelete, setCategoryIdToDelete] = React.useState<string | null>(null);
+  const { setModify, setDataCategorieMod } = React.useContext(CategorieContext);
+  const { data: categoriesData, loading } = useDataFetching(GetCategoriesPort);
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true)
-      const response = await GetCategoriesPort()
-      setCategories(response)
-      setLoading(false)
+  const handleUpdate = (data : Categorie) => {
+    //construct a categorie data cause having a mongodb dbref on that User
+    const constructData:Categorie = {
+      id: data.id,
+      name: data.name,
+      state: data.state
     }
+    setOpenModal(true);
+    setModify(true);
+    setDataCategorieMod(constructData);
+  };
 
-    fetchData()
-  }, [])
+  const handleDelete = (categoryId: string) => {
+    setOpenDeleteConfirmation(true);
+    setCategoryIdToDelete(categoryId);
+  };
+
+  const handleConfirmDelete = async () => {
+    try 
+    {
+      if (categoryIdToDelete !== null) {
+        await DeleteCategoriePort(categoryIdToDelete);
+        document.location.reload()
+      }
+    } catch(error:any)
+    {
+      setErrorMessage(error.response.data.message)
+    }
+    finally {setOpenDeleteConfirmation(false);}
+  };
 
   return (
     <Card>
+      {errorMessage}
       {loading ? (
         <CircularProgress size={24} />
       ) : (
         <TableContainer>
-          <Table sx={{ minWidth: 800 }} aria-label='table in dashboard'>
+          <Table sx={{ minWidth: 800 }} aria-label="table in dashboard">
             <TableHead>
               <TableRow>
                 <TableCell>Id</TableCell>
                 <TableCell>Name</TableCell>
                 <TableCell>State</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {categoriesData.map((row) => (
-                <TableRow hover key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
+              {categoriesData?.map((row:Categorie) => (
+                <TableRow key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                   <TableCell>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                       <Typography sx={{ fontWeight: 500, fontSize: '0.875rem !important' }}>{row.id}</Typography>
@@ -80,14 +105,45 @@ const CategoriesPortTable = () => {
                       }}
                     />
                   </TableCell>
+                  <TableCell>
+                    <Button onClick={() => handleDelete(row.id)}>
+                      <TrashCan color="error" />
+                    </Button>
+                    <Button onClick={() => handleUpdate(row)}>
+                      <Pencil />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       )}
+      <CategorieModal open={openModal} setOpen={setOpenModal} />
+      {/* just letting this here will help control it better (needs optimization ) */}
+      <Dialog
+        open={openDeleteConfirmation}
+        onClose={() => setOpenDeleteConfirmation(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this category?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDeleteConfirmation(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
-  )
-}
+  );
+};
 
-export default CategoriesPortTable
+export default CategoriesPortTable;

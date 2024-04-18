@@ -13,12 +13,12 @@ import VerticalLayout from 'src/@core/layouts/VerticalLayout'
 import VerticalNavItems from 'src/navigation/vertical'
 
 // ** Component Import
-import UpgradeToProButton from './components/UpgradeToProButton'
 import VerticalAppBarContent from './components/vertical/AppBarContent'
 
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
-import { ContextProvider } from 'src/@core/context/PortfolioContext'
+import { ContextPortfolioProvider } from 'src/@core/context/PortfolioContext'
+import { ContextCategorieProvider } from 'src/@core/context/CategorieContext'
 
 interface Props {
   children: ReactNode
@@ -53,7 +53,8 @@ const UserLayout = ({ children }: Props) => {
   }
 
   return (
-    <ContextProvider> {/* Wrap UserLayout with ContextProvider */}
+    <ContextPortfolioProvider>
+      <ContextCategorieProvider> {/* Wrap UserLayout with ContextProvider */}
       <VerticalLayout
         hidden={hidden}
         settings={settings}
@@ -74,7 +75,8 @@ const UserLayout = ({ children }: Props) => {
         {children}
         {/* <UpgradeToProButton /> */}
       </VerticalLayout>
-    </ContextProvider>
+      </ContextCategorieProvider>
+    </ContextPortfolioProvider>
   )
 }
 

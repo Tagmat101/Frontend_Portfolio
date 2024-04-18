@@ -10,20 +10,9 @@ import TabContext from '@mui/lab/TabContext'
 import { styled } from '@mui/material/styles'
 import MuiTab, { TabProps } from '@mui/material/Tab'
 
-// ** Icons Imports
-import AccountOutline from 'mdi-material-ui/AccountOutline'
-import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
-import InformationOutline from 'mdi-material-ui/InformationOutline'
 
-// ** Demo Tabs Imports
-import TabInfo from 'src/views/account-settings/TabInfo'
-import TabAccount from 'src/views/account-settings/TabAccount'
-import TabSecurity from 'src/views/account-settings/TabSecurity'
-
-// ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
 import { Pencil } from 'mdi-material-ui'
-import CustomizePortfolio from 'src/views/portfolio-settings/CustomizePortfolio'
 import FormCreation from 'src/views/categorie-settings/FormCreation'
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({

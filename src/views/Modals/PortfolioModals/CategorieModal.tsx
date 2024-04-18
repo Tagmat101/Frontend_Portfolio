@@ -1,11 +1,41 @@
-import * as React from 'react';
+import React, { useReducer, useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import { CreateCategoriePort } from 'src/pages/api/CategoriePortServices/Service';
+import { CreateCategoriePort, UpdateCategoriePort } from 'src/pages/api/CategoriePortServices/Service';
+import { CategorieContext } from 'src/@core/context/CategorieContext';
+import { Categorie, CategorieHelper } from 'src/utils/interfaces/int';
+
+interface State {
+  categoryName: string;
+  categoryState: 'active' | 'inactive';
+}
+
+type Action =
+  | { type: 'SET_NAME'; payload: string }
+  | { type: 'SET_STATE'; payload: 'active' | 'inactive' }
+  | { type: 'RESET' };
+
+const initialState: State = {
+  categoryName: '',
+  categoryState: 'active',
+};
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case 'SET_NAME':
+      return { ...state, categoryName: action.payload };
+    case 'SET_STATE':
+      return { ...state, categoryState: action.payload };
+    case 'RESET':
+      return initialState;
+    default:
+      return state;
+  }
+};
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -20,30 +50,69 @@ const style = {
 };
 
 const CategorieModal = ({ open, setOpen }: any) => {
-  const [categoryName, setCategoryName] = React.useState('');
-  const [categoryState, setCategoryState] = React.useState('active');
+  const { modify,setModify, dataCategorieMod } = useContext(CategorieContext);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [errorMessage,setErrorMessage] = useState('')
 
-  const handleClose = () => setOpen(false);
+  useEffect(() => {
+    if (modify) {
+      dispatch({ type: 'SET_NAME', payload: dataCategorieMod.name });
+      dispatch({ type: 'SET_STATE', payload: dataCategorieMod.state ? 'active' : 'inactive' });
+    }
+  }, [modify, dataCategorieMod]);
 
-   const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
-        if(categoryName != "")
-        {
-            const categoryObject = {
-                name: categoryName, 
-                state: categoryState == "active" ? true : false
-            };
-        
-            const response = await CreateCategoriePort(categoryObject)
-            console.log(response)
-            setCategoryName('');
-            setCategoryState('active');
-            handleClose();
+
+  const handleClose = () => {
+    dispatch({ type: 'RESET' });
+    setOpen(false);
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    try
+    {
+      event.preventDefault();
+      const { categoryName, categoryState } = state;
+      if (categoryName.trim() !== '') {
+      
+        if (modify) { 
+          const category:Categorie = {
+            id: dataCategorieMod.id,
+            name: categoryName,
+            state: categoryState === 'active' ? true : false,
+          };
+          console.log(category)
+          await UpdateCategoriePort(category);
+          document.location.reload()
+          setModify(false)
+        } else {
+          const categoryObject:CategorieHelper = {
+            name: categoryName,
+            state: categoryState === 'active' ? true : false,
+          };
+    
+          await CreateCategoriePort(categoryObject);
+          document.location.reload()
         }
+        dispatch({ type: 'RESET' });
+        handleClose();
+      }
+    } catch(error:any)
+    {
+      setErrorMessage(error.response.data.message)
+    }
+  };
+
+  const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch({ type: 'SET_NAME', payload: e.target.value });
+  };
+
+  const handleChangeState = (e: React.ChangeEvent<{ value: unknown }>) => {
+    dispatch({ type: 'SET_STATE', payload: e.target.value as 'active' | 'inactive' });
   };
 
   return (
     <div>
+      {errorMessage}
       <Modal
         open={open}
         onClose={handleClose}
@@ -52,7 +121,7 @@ const CategorieModal = ({ open, setOpen }: any) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Add Category
+            {modify ? 'Modify Category' : 'Add Category'}
           </Typography>
           <form onSubmit={handleSubmit}>
             <TextField
@@ -60,8 +129,8 @@ const CategorieModal = ({ open, setOpen }: any) => {
               label="Category Name"
               variant="outlined"
               margin="normal"
-              value={categoryName}
-              onChange={(e) => setCategoryName(e.target.value)}
+              value={state.categoryName}
+              onChange={handleChangeName}
             />
             <TextField
               select
@@ -69,20 +138,20 @@ const CategorieModal = ({ open, setOpen }: any) => {
               label="Category State"
               variant="outlined"
               margin="normal"
-              value={categoryState}
-              onChange={(e) => setCategoryState(e.target.value)}
+              value={state.categoryState}
+              onChange={handleChangeState}
             >
               <MenuItem value="active">Active</MenuItem>
               <MenuItem value="inactive">Inactive</MenuItem>
             </TextField>
             <Button type="submit" variant="contained" color="primary">
-              Add
+              {modify ? 'Modify' : 'Add'}
             </Button>
           </form>
         </Box>
       </Modal>
     </div>
   );
-}
+};
 
 export default CategorieModal;

@@ -16,12 +16,12 @@ interface CardPortfolioProps {
 
 const CardPortfolio = ({ portfolio }: CardPortfolioProps) => {
   // ** States
-  const {setModify,modify,setValue,setData} = useContext(PortfolioContext)
+  const {setModify,modify,setValue,setDataPortfolioMod} = useContext(PortfolioContext)
   // ** Functions 
   const handleModifyButton = () => {
     setModify(true)
     setValue('portfolio')
-    setData(portfolio)
+    setDataPortfolioMod(portfolio)
   }
 
   const handleDeleteButton = async () => {

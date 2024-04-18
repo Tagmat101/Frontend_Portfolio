@@ -11,7 +11,7 @@ import { GetData } from 'src/pages/api/EducationServices/Services';
 import { GetDataProjects } from 'src/pages/api/ProjectServices/Services';
 import { GetDataExperience } from 'src/pages/api/ExperienceServices/Service';
 import { HexColorPicker } from 'react-colorful';
-import { GetCategoriesPort } from 'src/pages/api/CategoriePortServices/Service';
+import { GetCategoriesPort, GetCategoriesPortActive } from 'src/pages/api/CategoriePortServices/Service';
 import { Categorie, Categories, Education, Experience, PortfolioData, PortfolioDataHelper, Project } from 'src/utils/interfaces/int';
 import { PortfolioContext } from 'src/@core/context/PortfolioContext';
 
@@ -36,8 +36,6 @@ const FormCreation = () => {
     experiences: modify ? dataPortfolioMod.experiences : [],
     projects: modify ? dataPortfolioMod.projects : []
   });
-  console.log(list)
-  console.log(dataPortfolioMod)
   const [dataPortfolio, setDataPortfolio] = useState<PortfolioDataHelper>({
     categories: [],
     educations: [],
@@ -50,7 +48,7 @@ const FormCreation = () => {
   const [error, setError] = useState('');
   const [color, setColor] = useState(modify ? dataPortfolioMod.color : '#aabbcc');
   
-  const [selectedCategorie, setSelectedCategorie] = useState<string>(modify ? dataPortfolioMod.categorie.id : "");
+  const [selectedCategorie, setSelectedCategorie] = useState<string>(modify ? (dataPortfolioMod.categorie != null ?  dataPortfolioMod.categorie.id : "" ) : "");
 
   const handleAddItem = (type: keyof ListState, value: string) => {
     if (!list[type].some(item => item.id === value)) {
@@ -154,9 +152,8 @@ const FormCreation = () => {
         const responseEducations = await GetData();
         const responseProjects = await GetDataProjects();
         const responseExperiences = await GetDataExperience();
-        const responseCategories = await GetCategoriesPort();
+        const responseCategories = await GetCategoriesPortActive();
         
-        // Only update state if the component is still mounted
         if (isMounted) {
           setDataPortfolio({
             ...dataPortfolio,
