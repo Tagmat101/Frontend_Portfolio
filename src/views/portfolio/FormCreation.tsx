@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
-import List from '@mui/material/List';
 import Button from '@mui/material/Button';
-import { Card, CardContent, CardHeader, MenuItem, Select, TextField, Typography, CircularProgress } from '@mui/material';
-import { Cross, Projector, TrashCan } from 'mdi-material-ui'
+import { Card, CardContent, CardHeader, MenuItem, Select, TextField, Typography, CircularProgress, Autocomplete, Chip } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import { CreatePortfolioPost, ModifyPortfolio } from 'src/pages/api/PortfolioServices/Services';
 import { GetData } from 'src/pages/api/EducationServices/Services';
 import { GetDataProjects } from 'src/pages/api/ProjectServices/Services';
 import { GetDataExperience } from 'src/pages/api/ExperienceServices/Service';
 import { HexColorPicker } from 'react-colorful';
-import { GetCategoriesPort, GetCategoriesPortActive } from 'src/pages/api/CategoriePortServices/Service';
-import { Categorie, Categories, Education, Experience, PortfolioData, PortfolioDataHelper, Project } from 'src/utils/interfaces/int';
+import {  GetCategoriesPortActive } from 'src/pages/api/CategoriePortServices/Service';
+import { Categorie, Categories, Education, Experience, PortfolioDataHelper, Project } from 'src/utils/interfaces/int';
 import { PortfolioContext } from 'src/@core/context/PortfolioContext';
 
 
@@ -278,56 +276,102 @@ const FormCreation = () => {
 
             {/* Render list items */}
             <Grid item xs={12}>
-              <FormControl fullWidth>
-                <List style={{ display: 'flex' }}>
-                  {list.experiences != null && list.experiences.map((experience, index) => (
-                    experience && (
-                      <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>
-                        {experience?.companyName}
-                        <Button onClick={() => handleDeleteItem('experiences', index)}>
-                          <TrashCan />
-                          </Button>
-                      </li>
-                    )
-                  ))}
-                </List>
-              </FormControl>
+              <Autocomplete
+                multiple
+                options={[]} 
+                freeSolo
+                value={list.projects}
+                onChange={(event, newValue) => {
+                  setList(prevState => ({
+                    ...prevState,
+                    projects: newValue
+                  }));
+                }}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      variant="outlined"
+                      label={option.name}
+                     
+                      {...getTagProps({ index })}
+                    />
+                  ))
+                } 
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Projects"
+                    placeholder="Projects..."
+                  />
+                )}
+              />   
             </Grid>
 
             <Grid item xs={12}>
-            <FormControl fullWidth>
-              <List style={{ display: 'flex' }}>
-                {list.projects.map((project, index) => (
-                  project && (
-                    <li key={index} style={{ margin: '12px', borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      
-                      {project.name}
-                      <Button onClick={() => handleDeleteItem('projects', index)}>
-                        <TrashCan />
-                      </Button>
-                    </li>
-                  )
-                ))}
-              </List>
-            </FormControl>
-          </Grid>
-
+              <Autocomplete
+                multiple
+                options={[]} 
+                freeSolo
+                value={list.educations}
+                onChange={(event, newValue) => {
+                  setList(prevState => ({
+                    ...prevState,
+                    educations: newValue
+                  }));
+                }}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      variant="outlined"
+                      label={option.institution}
+                     
+                      {...getTagProps({ index })}
+                    />
+                  ))
+                } 
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Educations"
+                    placeholder="Educations..."
+                  />
+                )}
+              />   
+            </Grid>
 
             <Grid item xs={12}>
-              <FormControl fullWidth>
-                <List style={{ display: 'flex' }}>
-                  {list.educations != null && list.educations.map((education, index) => (
-                    education && (
-                      <li key={index} style={{ margin: '12px',borderRadius: '10px', backgroundColor: '#F4F5FA', padding: '2px', display: 'flex', alignItems: 'center' }}>                      
-                      {education.institution}
-                      <Button onClick={() => handleDeleteItem('educations', index)}>
-                        <TrashCan />
-                      </Button>
-                    </li>
-                    )
-                  ))}
-                </List>
-              </FormControl>
+              <Autocomplete
+                multiple
+                options={[]} 
+                freeSolo
+                value={list.experiences}
+                onChange={(event, newValue) => {
+                  setList(prevState => ({
+                    ...prevState,
+                    experiences: newValue
+                  }));
+                }}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      variant="outlined"
+                      label={option.companyName}
+                     
+                      {...getTagProps({ index })}
+                    />
+                  ))
+                } 
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Experiences"
+                    placeholder="Experiences..."
+                  />
+                )}
+              />   
             </Grid>
+
+
 
             <Grid item xs={12}>
               <Button type='submit' variant='contained' size='large' onClick={handleCreate}>

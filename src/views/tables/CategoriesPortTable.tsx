@@ -13,7 +13,6 @@ import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogC
 import { GetCategoriesPort, DeleteCategoriePort } from 'src/pages/api/CategoriePortServices/Service';
 import { ThemeColor } from 'src/@core/layouts/types';
 import { Pencil, TrashCan } from 'mdi-material-ui';
-import CategorieModal from '../Modals/CategorieModals/CategorieModal';
 import { CategorieContext } from 'src/@core/context/CategorieContext';
 import { Categorie } from 'src/utils/interfaces/int';
 import useDataFetching from 'src/@core/hooks/useFetchingData';

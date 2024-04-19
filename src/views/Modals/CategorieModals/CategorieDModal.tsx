@@ -1,3 +1,5 @@
+{/* Delete Modal */}
+
 import React, { useReducer, useContext, useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import { CategorieContext } from 'src/@core/context/CategorieContext';
@@ -19,6 +21,9 @@ const CategorieDModal = () => {
       setErrorMessage(error.response.data.message)
     }
     finally {setOpenCatDelete(false);}
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 1000);
   };
   return (
     <Dialog
