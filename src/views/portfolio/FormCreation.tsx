@@ -279,7 +279,6 @@ const FormCreation = () => {
               <Autocomplete
                 multiple
                 options={[]} 
-                freeSolo
                 value={list.projects}
                 onChange={(event, newValue) => {
                   setList(prevState => ({
@@ -311,7 +310,6 @@ const FormCreation = () => {
               <Autocomplete
                 multiple
                 options={[]} 
-                freeSolo
                 value={list.educations}
                 onChange={(event, newValue) => {
                   setList(prevState => ({
@@ -343,7 +341,6 @@ const FormCreation = () => {
               <Autocomplete
                 multiple
                 options={[]} 
-                freeSolo
                 value={list.experiences}
                 onChange={(event, newValue) => {
                   setList(prevState => ({
