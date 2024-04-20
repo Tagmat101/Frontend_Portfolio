@@ -10,10 +10,10 @@ import TabContext from '@mui/lab/TabContext'
 import { styled } from '@mui/material/styles'
 import MuiTab, { TabProps } from '@mui/material/Tab'
 
-// ** Third Party Styles Imports
+
 import 'react-datepicker/dist/react-datepicker.css'
 import { Pencil } from 'mdi-material-ui'
-import CustomizePortfolio from 'src/views/portfolio-settings/CustomizePortfolio'
+import FormCreation from 'src/views/categorie-settings/FormCreation'
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -33,9 +33,9 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const PortfolioSettings = () => {
+const CategoriePortfolio = () => {
   // ** State
-  const [value, setValue] = useState<string>('account')
+  const [value, setValue] = useState<string>('categories')
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue)
@@ -46,26 +46,26 @@ const PortfolioSettings = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label='account-settings tabs'
+          aria-label='categories-settings tabs'
           sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value='account'
+            value='categories'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Pencil />
-                <TabName>General settings</TabName>
+                <TabName>Add a category</TabName>
               </Box>
             }
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='account'>
-          <CustomizePortfolio />
+        <TabPanel sx={{ p: 0 }} value='categories'>
+            <FormCreation />
         </TabPanel>
       </TabContext>
     </Card>
   )
 }
 
-export default PortfolioSettings
+export default CategoriePortfolio

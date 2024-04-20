@@ -9,16 +9,18 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 // ** Layout Imports
 // !Do not remove this Layout import
 import VerticalLayout from 'src/@core/layouts/VerticalLayout'
-
 // ** Navigation Imports
 import VerticalNavItems from 'src/navigation/vertical'
 
 // ** Component Import
-import UpgradeToProButton from './components/UpgradeToProButton'
 import VerticalAppBarContent from './components/vertical/AppBarContent'
 
 // ** Hook Import
 import { useSettings } from 'src/@core/hooks/useSettings'
+import { ContextPortfolioProvider } from 'src/@core/context/PortfolioContext'
+import { ContextCategorieProvider } from 'src/@core/context/CategorieContext'
+import CategorieUCModal from 'src/views/Modals/CategorieModals/CategorieUCModal'
+import CategorieDModal from 'src/views/Modals/CategorieModals/CategorieDModal'
 
 interface Props {
   children: ReactNode
@@ -53,26 +55,32 @@ const UserLayout = ({ children }: Props) => {
   }
 
   return (
-    <VerticalLayout
-      hidden={hidden}
-      settings={settings}
-      saveSettings={saveSettings}
-      verticalNavItems={VerticalNavItems()} // Navigation Items
-      afterVerticalNavMenuContent={UpgradeToProImg}
-      verticalAppBarContent={(
-        props // AppBar Content
-      ) => (
-        <VerticalAppBarContent
-          hidden={hidden}
-          settings={settings}
-          saveSettings={saveSettings}
-          toggleNavVisibility={props.toggleNavVisibility}
-        />
-      )}
-    >
-      {children}
-      <UpgradeToProButton />
-    </VerticalLayout>
+    <ContextPortfolioProvider>
+      <ContextCategorieProvider> {/* Wrap UserLayout with ContextProvider */}
+      <VerticalLayout
+        hidden={hidden}
+        settings={settings}
+        saveSettings={saveSettings}
+        verticalNavItems={VerticalNavItems()} // Navigation Items
+        afterVerticalNavMenuContent={UpgradeToProImg}
+        verticalAppBarContent={(
+          props // AppBar Content
+        ) => (
+          <VerticalAppBarContent
+            hidden={hidden}
+            settings={settings}
+            saveSettings={saveSettings}
+            toggleNavVisibility={props.toggleNavVisibility}
+          />
+        )}
+      >
+        {children}
+        {/* <UpgradeToProButton /> */}
+        <CategorieUCModal />
+        <CategorieDModal />
+      </VerticalLayout>
+      </ContextCategorieProvider>
+    </ContextPortfolioProvider>
   )
 }
 
