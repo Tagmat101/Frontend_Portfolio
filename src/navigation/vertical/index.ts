@@ -12,6 +12,7 @@ import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
+import { Folder, FolderCog } from 'mdi-material-ui'
 
 const navigation = (): VerticalNavItemsType => {
   return [
@@ -27,29 +28,21 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       title: 'Portfolio Settings',
-      icon: AccountCogOutline,
+      icon: FolderCog,
       path: '/portfolio-settings'
     },
     {
-      sectionTitle: 'Pages'
+      sectionTitle: 'Customize'
     },
     {
-      title: 'Login',
-      icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
+      title: 'Portfolio',
+      icon: Folder,
+      path: '/portfolio'
     },
     {
-      title: 'Register',
-      icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
-    },
-    {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
+      title: 'Portfolio categories',
+      icon: Folder,
+      path: '/categorie-portfolio'
     },
     {
       sectionTitle: 'User Interface'
