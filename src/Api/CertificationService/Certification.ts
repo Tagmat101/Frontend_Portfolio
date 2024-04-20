@@ -1,9 +1,9 @@
 import axios from "axios";  
 import {token} from "../token"
-export const AddProject= async(data:ICertification) => {
+export const AddCertification= async(data:ICertification) => {
     try{
         console.log(data)
-         const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project/create`;
+         const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/certification/create`;
         const response = await axios.post(url,data,{
             headers: {
                 'Authorization': token
@@ -15,10 +15,10 @@ export const AddProject= async(data:ICertification) => {
         console.log(error)
     }
 }
-export const UpdateProject= async(data:ICertification) => {
+export const UpdateCertification= async(data:ICertification) => {
   try{
       console.log(data)
-       const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project/${data.id}`;
+       const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/certification/${data.id}`;
       const response = await axios.put(url,data,{
           headers: {
               'Authorization': token
@@ -30,9 +30,9 @@ export const UpdateProject= async(data:ICertification) => {
       console.log(error)
   }
 }
-export async function getProjectByID(iCertification:string) {
+export async function getCertificationByID(iCertification:string) {
     try {   
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project/${iCertification}`, {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/certification/${iCertification}`, {
         headers: {
           'Authorization': token
         }
@@ -43,9 +43,9 @@ export async function getProjectByID(iCertification:string) {
     }
 }  
 
-export async function getProjectAll() {
+export async function getCertificationAll() {
   try {   
-    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project/GetAllCerts`;
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/certification/GetAllCerts`;
    
     const response = await axios.get(url,{
         headers: {
@@ -58,9 +58,9 @@ export async function getProjectAll() {
     throw error
   }
 } 
-export async function DeleteProject(idCertification:String) {
+export async function DeleteCertification(idCertification:String) {
   try {   
-    const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project/${idCertification}`, {
+    const response = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/certification/${idCertification}`, {
       headers: {
         'Authorization': token
       }
