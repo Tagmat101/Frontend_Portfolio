@@ -1,3 +1,11 @@
+interface ICertification {
+  id: String;
+  organization: String;
+  issue_data: Date;
+  end_data: Date;
+  url_certificate: String;
+}
+
 interface IEducation {
     id: String;
     institution: String; 
