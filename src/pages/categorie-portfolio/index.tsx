@@ -33,7 +33,7 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const PortfolioSettings = () => {
+const CategoriePortfolio = () => {
   // ** State
   const [value, setValue] = useState<string>('categories')
 
@@ -68,4 +68,4 @@ const PortfolioSettings = () => {
   )
 }
 
-export default PortfolioSettings
+export default CategoriePortfolio

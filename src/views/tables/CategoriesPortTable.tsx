@@ -9,13 +9,14 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TablePagination } from '@mui/material';
 import { GetCategoriesPort, DeleteCategoriePort } from 'src/pages/api/CategoriePortServices/Service';
 import { ThemeColor } from 'src/@core/layouts/types';
 import { Pencil, TrashCan } from 'mdi-material-ui';
 import { CategorieContext } from 'src/@core/context/CategorieContext';
 import { Categorie } from 'src/utils/interfaces/int';
 import useDataFetching from 'src/@core/hooks/useFetchingData';
+
 
 interface StatusObj {
   [key: string]: {
@@ -28,10 +29,13 @@ const statusObj: StatusObj = {
   inactive: { color: 'error' },
 };
 
+
 const CategoriesPortTable = () => {
   const [errorMessage,setErrorMessage] = React.useState('')
   const { setModify, setDataCategorieMod , setOpenCatModal , setOpenCatDelete , setIdDelete } = React.useContext(CategorieContext);
   const { data: categoriesData, loading } = useDataFetching(GetCategoriesPort);
+  const [page, setPage] = React.useState<number>(0)
+  const [rowsPerPage, setRowsPerPage] = React.useState<number>(10)
 
   const handleUpdate = (data : Categorie) => {
     //construct a categorie data cause having a mongodb dbref on that User
@@ -51,6 +55,14 @@ const CategoriesPortTable = () => {
     setIdDelete(categoryId);
   };
 
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value)
+    setPage(0)
+  }
   return (
     <Card>
       {errorMessage}
@@ -68,7 +80,7 @@ const CategoriesPortTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {categoriesData?.map((row:Categorie) => (
+              {categoriesData && categoriesData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row:Categorie) => (
                 <TableRow key={row.id} sx={{ '&:last-of-type td, &:last-of-type th': { border: 0 } }}>
                   <TableCell>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -100,6 +112,15 @@ const CategoriesPortTable = () => {
               ))}
             </TableBody>
           </Table>
+          <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component='div'
+              count={categoriesData && categoriesData.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
         </TableContainer>
       )}
       {/* <CategorieModal open={openModal} setOpen={setOpenModal} /> */}

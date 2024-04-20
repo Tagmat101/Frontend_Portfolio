@@ -17,7 +17,7 @@ const FormCreation = () => {
     <Card>
       <CardHeader titleTypographyProps={{ variant: 'h6' }} />
       <CardContent>
-        <Button type='submit' variant='contained' style={{marginBottom: '5px'}} size='large' onClick={handleCreate}>
+        <Button type='submit' variant='contained' style={{marginBottom: '20px'}} color='info' size='large' onClick={handleCreate}>
             Add categorie
         </Button>
         <CategoriesPortTable /> 
