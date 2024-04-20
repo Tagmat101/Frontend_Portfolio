@@ -9,8 +9,8 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TablePagination } from '@mui/material';
-import { GetCategoriesPort, DeleteCategoriePort } from 'src/pages/api/CategoriePortServices/Service';
+import { Button, CircularProgress, TablePagination } from '@mui/material';
+import { GetCategoriesPort } from 'src/pages/api/CategoriePortServices/Service';
 import { ThemeColor } from 'src/@core/layouts/types';
 import { Pencil, TrashCan } from 'mdi-material-ui';
 import { CategorieContext } from 'src/@core/context/CategorieContext';
@@ -59,7 +59,7 @@ const CategoriesPortTable = () => {
     setPage(newPage)
   }
 
-  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(+event.target.value)
     setPage(0)
   }
