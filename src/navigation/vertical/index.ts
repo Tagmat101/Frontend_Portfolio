@@ -29,11 +29,16 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: 'Portfolio Settings',
       icon: AccountCogOutline,
-      path: '/portfolio-settings'
+      path: '/portfolio'
     },
     {
       sectionTitle: 'My Personal Details'
     },
+    {
+      title: 'Project',
+      icon: SchoolIcon,
+      path: '/details/project'
+    }, 
     {
       title: 'Education',
       icon: SchoolIcon,
@@ -44,11 +49,7 @@ const navigation = (): VerticalNavItemsType => {
       icon: BriefcaseOutline,
       path: '/details/experience'
     }, 
-    {
-      title: 'Project',
-      icon: SchoolIcon,
-      path: '/details/project'
-    }, 
+   
     {
       sectionTitle: 'Pages'
     },
