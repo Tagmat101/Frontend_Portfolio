@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": ".", 
     "rootDir": "src",
     "target": "es6",
     "lib": [
@@ -21,6 +21,18 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
+      "@cards/*": [
+        "./src/views/cards/*"
+      ],
+      "@hooks/*":[
+        "./src/@core/hooks/*"
+      ],
+      "@modals/*":[
+        "./src/views/modals/*"
+      ],
+      "@api/*":[
+        "./src/pages/api/*"
+      ],
       "apexcharts": [
         "./node_modules/apexcharts-clevision"
       ],

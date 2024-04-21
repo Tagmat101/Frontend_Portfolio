@@ -5,9 +5,9 @@ import Button from '@mui/material/Button';
 import { Card, CardContent, CardHeader, MenuItem, Select, TextField, Typography, CircularProgress, Autocomplete, Chip } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import { CreatePortfolioPost, ModifyPortfolio } from 'src/pages/api/PortfolioServices/Services';
-import { GetData } from 'src/pages/api/EducationServices/Services';
-import { GetDataProjects } from 'src/pages/api/ProjectServices/Services';
-import { GetDataExperience } from 'src/pages/api/ExperienceServices/Service';
+import { getEducationAll } from 'src/pages/api/EducationServices/Services';
+import { getProjectAll } from 'src/pages/api/ProjectServices/Services';
+import { getExperienceAll } from 'src/pages/api/ExperienceServices/Service';
 import { HexColorPicker } from 'react-colorful';
 import {  GetCategoriesPortActive } from 'src/pages/api/CategoriePortServices/Service';
 import { Categorie, Categories, Education, Experience, PortfolioDataHelper, Project } from 'src/utils/interfaces/int';
@@ -148,9 +148,9 @@ const FormCreation = () => {
   
     async function GettingData() {
       try {
-        const responseEducations = await GetData();
-        const responseProjects = await GetDataProjects();
-        const responseExperiences = await GetDataExperience();
+        const responseEducations = await getEducationAll();
+        const responseProjects = await getProjectAll();
+        const responseExperiences = await getExperienceAll();
         const responseCategories = await GetCategoriesPortActive();
         
         if (isMounted) {

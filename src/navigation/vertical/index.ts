@@ -8,11 +8,11 @@ import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
 import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
-import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
-
+import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended' 
+import SchoolIcon from 'mdi-material-ui/School';
+import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline'; 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
-import { Folder, FolderCog } from 'mdi-material-ui'
 
 const navigation = (): VerticalNavItemsType => {
   return [
@@ -28,21 +28,48 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       title: 'Portfolio Settings',
-      icon: FolderCog,
-      path: '/portfolio-settings'
-    },
-    {
-      sectionTitle: 'Customize'
-    },
-    {
-      title: 'Portfolio',
-      icon: Folder,
+      icon: AccountCogOutline,
       path: '/portfolio'
     },
     {
-      title: 'Portfolio categories',
-      icon: Folder,
-      path: '/categorie-portfolio'
+      sectionTitle: 'My Personal Details'
+    },
+    {
+      title: 'Project',
+      icon: SchoolIcon,
+      path: '/details/project'
+    }, 
+    {
+      title: 'Education',
+      icon: SchoolIcon,
+      path: '/details/education'
+    },  
+    {
+      title: 'Experience',
+      icon: BriefcaseOutline,
+      path: '/details/experience'
+    }, 
+   
+    {
+      sectionTitle: 'Pages'
+    },
+    {
+      title: 'Login',
+      icon: Login,
+      path: '/pages/login',
+      openInNewTab: true
+    },
+    {
+      title: 'Register',
+      icon: AccountPlusOutline,
+      path: '/pages/register',
+      openInNewTab: true
+    },
+    {
+      title: 'Error',
+      icon: AlertCircleOutline,
+      path: '/pages/error',
+      openInNewTab: true
     },
     {
       sectionTitle: 'User Interface'
