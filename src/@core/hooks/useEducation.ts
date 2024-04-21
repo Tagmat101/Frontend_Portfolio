@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getEducationAll, getEducationByID,DeleteEducation } from '../../Api/EducationService/Education';  
+import { getEducationAll, getEducationByID,DeleteEducation } from '@api/EducationServices/Services';  
  
  
 export const useEducationAll = () => {

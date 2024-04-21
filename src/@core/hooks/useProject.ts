@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { DeleteProject, getProjectAll, getProjectByID } from '../../Api/ProjectService/Project'; // replace with your actual file path
+import { DeleteProject, getProjectAll, getProjectByID } from '@api/ProjectServices/Services'; // replace with your actual file path
   
 
 export const useProjectAll = () => {

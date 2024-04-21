@@ -1,10 +1,9 @@
-import React from 'react'
+import {useState} from 'react'
 
 import { useEducationAll } from '@hooks/useEducation'; 
 import EducationCard from '@cards/CardEducation'; 
 import ActionEducationModal from '@modals/AddEdit_Education'; 
-// ** React Imports
-import { SyntheticEvent, useState } from 'react'
+// ** React Imports 
 
 // ** MUI Imports
 import Box from '@mui/material/Box'

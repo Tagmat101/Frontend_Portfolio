@@ -22,7 +22,7 @@ import { Briefcase, MapMarker } from 'mdi-material-ui';
 import DatePicker from 'react-datepicker' 
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { AddProject,UpdateProject } from 'src/Api/ProjectService/Project';
+import { AddProject,UpdateProject } from '@api/ProjectServices/Services';
   
  
 const employmentTypes = [

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'; 
-import { getExperienceAll, getExperienceByID,DeleteExperience } from '../../Api/ExperienceService/Experience';  
+import { getExperienceAll, getExperienceByID,DeleteExperience } from '@api/ExperienceServices/Service';  
 
 
 export const useExperienceAll = () => {

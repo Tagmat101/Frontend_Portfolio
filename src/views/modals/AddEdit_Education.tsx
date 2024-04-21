@@ -18,7 +18,7 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import { MapMarker, School } from 'mdi-material-ui';
 import DatePicker from 'react-datepicker'
-import { AddEducation,UpdateEducation } from 'src/Api/EducationService/Education';
+import { AddEducation,UpdateEducation } from '@api/EducationServices/Services';
 
   type CustomInputProps = {
     label: string;

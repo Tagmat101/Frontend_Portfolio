@@ -30,6 +30,9 @@
       "@modals/*":[
         "./src/views/modals/*"
       ],
+      "@api/*":[
+        "./src/pages/api/*"
+      ],
       "apexcharts": [
         "./node_modules/apexcharts-clevision"
       ],
