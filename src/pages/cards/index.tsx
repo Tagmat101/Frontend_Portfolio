@@ -1,23 +1,23 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
+import CardAppleWatch from 'src/views/cards/Helpers/CardAppleWatch'
+import CardFacebook from 'src/views/cards/Helpers/CardFacebook'
+import CardHorizontalRatings from 'src/views/cards/Helpers/CardHorizontalRatings'
+import CardImgTop from 'src/views/cards/Helpers/CardImgTop'
+import CardInfluencer from 'src/views/cards/Helpers/CardInfluencer'
+import CardLinkedIn from 'src/views/cards/Helpers/CardLinkedIn'
+import CardMembership from 'src/views/cards/Helpers/CardMembership'
+import CardMobile from 'src/views/cards/Helpers/CardMobile'
+import CardNavigation from 'src/views/cards/Helpers/CardNavigation'
+import CardNavigationCenter from 'src/views/cards/Helpers/CardNavigationCenter'
+import CardSupport from 'src/views/cards/Helpers/CardSupport'
+import CardTwitter from 'src/views/cards/Helpers/CardTwitter'
+import CardUser from 'src/views/cards/Helpers/CardUser'
+import CardVerticalRatings from 'src/views/cards/Helpers/CardVerticalRatings'
+import CardWithCollapse from 'src/views/cards/Helpers/CardWithCollapse'
 
 // ** Demo Components Imports
-import CardUser from 'src/views/cards/CardUser'
-import CardImgTop from 'src/views/cards/CardImgTop'
-import CardMobile from 'src/views/cards/CardMobile'
-import CardSupport from 'src/views/cards/CardSupport'
-import CardTwitter from 'src/views/cards/CardTwitter'
-import CardFacebook from 'src/views/cards/CardFacebook'
-import CardLinkedIn from 'src/views/cards/CardLinkedIn'
-import CardAppleWatch from 'src/views/cards/CardAppleWatch'
-import CardMembership from 'src/views/cards/CardMembership'
-import CardInfluencer from 'src/views/cards/CardInfluencer'
-import CardNavigation from 'src/views/cards/CardNavigation'
-import CardWithCollapse from 'src/views/cards/CardWithCollapse'
-import CardVerticalRatings from 'src/views/cards/CardVerticalRatings'
-import CardNavigationCenter from 'src/views/cards/CardNavigationCenter'
-import CardHorizontalRatings from 'src/views/cards/CardHorizontalRatings'
 
 const CardBasic = () => {
   return (
