@@ -35,7 +35,7 @@ const CategoriesPortTable = () => {
   const { setModify, setDataCategorieMod , setOpenCatModal , setOpenCatDelete , setIdDelete } = React.useContext(CategorieContext);
   const { data: categoriesData, loading } = useDataFetching(GetCategoriesPort);
   const [page, setPage] = React.useState<number>(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState<number>(10)
+  const [rowsPerPage, setRowsPerPage] = React.useState<number>(5)
 
   const handleUpdate = (data : Categorie) => {
     //construct a categorie data cause having a mongodb dbref on that User
