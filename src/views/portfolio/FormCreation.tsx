@@ -150,7 +150,7 @@ const FormCreation = () => {
       try {
         const responseEducations = await getEducationAll();
         const responseProjects = await getProjectAll();
-        const responseExperiences = await getEducationAll();
+        const responseExperiences = await getExperienceAll();
         const responseCategories = await GetCategoriesPortActive();
         
         if (isMounted) {
