@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import { CreateCategoriePort, UpdateCategoriePort } from 'src/pages/api/CategoriePortServices/Service';
+import { CreateCategoriePort, UpdateCategoriePort } from '@api/CategoriePortServices/Service';
 import { CategorieContext } from 'src/@core/context/CategorieContext';
 import { Categorie, CategorieHelper } from 'src/utils/interfaces/int';
 
