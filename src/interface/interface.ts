@@ -1,40 +1,40 @@
 interface IEducation {
-    id: String;
-    institution: String; 
-    degree:String;
+    id: string;
+    institution: string; 
+    degree:string;
     startDate:Date;
     endDate:Date;
-    fieldOfStudy:String;
-    location:String;
-    description:String;
+    fieldOfStudy:string;
+    location:string;
+    description:string;
   }
   
    interface IExperience {
-    id: String;
-    companyName: String; 
-    jobTitle:String;
+    id: string;
+    companyName: string; 
+    jobTitle:string;
     startDate:Date;
     endDate:Date;
-    description:String;
-    responsibilities:String[];
-    achievements:String[];
-    skills:String[];
+    description:string;
+    responsibilities:string[];
+    achievements:string[];
+    skills:string[];
   }
   
    interface IProject {
-    id: String;
-    name: String;
-    link:String; 
-    description:String;
+    id: string;
+    name: string;
+    link:string; 
+    description:string;
     startDate:Date;
     endDate:Date; 
-    responsibilities:String[];
-    achievements:String[];
-    skills:String[]; 
+    responsibilities:string[];
+    achievements:string[];
+    skills:string[]; 
   } 
   
    interface Categorie {
-    id: String;
+    id: string;
     name: String;
     state: boolean;
   }
@@ -43,20 +43,45 @@ interface IEducation {
     categories: Categorie[];
   }
   
-   interface PortfolioDataHelper { //this interface helps me to get data from db 
-    categories: Categorie[];
+  
+  
+
+
+  //these interfaces will help for displaying only for portfolio
+
+interface Education {
+    id: string;
+    institution: string; 
+}
+  
+interface Experience {
+  id: string;
+  companyName: string; 
+}
+  
+interface Project {
+  id: string;
+  name: string;
+} 
+  
+interface PortfolioDataHelper { //this interface helps me to get data from db 
+  categories: Categorie[];
+  educations: Education[];
+  experiences: Experience[];
+  projects: Project[];
+  skills: String[]; 
+}
+
+ interface PortfolioData {  
+    name: string;
+    color: string;
     educations: IEducation[];
     experiences: IExperience[];
     projects: IProject[];
-    skills: String[]; 
-  }
-  
-   interface PortfolioData {  
-      name: String;
-      color: String;
-      educations: IEducation[];
-      experiences: IExperience[];
-      projects: IProject[];
-      skills: String[]; 
-  }
-  
+    skills: string[]; 
+}
+
+
+
+
+
