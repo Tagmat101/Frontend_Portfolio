@@ -11,6 +11,8 @@ import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended' 
 import SchoolIcon from 'mdi-material-ui/School';
 import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline'; 
+import { Book, Folder } from 'mdi-material-ui'
+import BookAlphabet from 'mdi-material-ui'
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 
@@ -29,7 +31,7 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: 'Portfolio Settings',
       icon: AccountCogOutline,
-      path: '/portfolio'
+      path: '/portfolio-settings'
     },
     {
       sectionTitle: 'My Personal Details'
@@ -49,27 +51,18 @@ const navigation = (): VerticalNavItemsType => {
       icon: BriefcaseOutline,
       path: '/details/experience'
     }, 
-   
     {
-      sectionTitle: 'Pages'
+      sectionTitle: 'Portfolio details'
     },
     {
-      title: 'Login',
-      icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
+      title: 'Portfolio',
+      icon: Folder,
+      path: '/portfolio',
     },
     {
-      title: 'Register',
-      icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
-    },
-    {
-      title: 'Error',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
+      title: 'Portfolio Categories',
+      icon: Folder,
+      path: '/categorie-portfolio',
     },
     {
       sectionTitle: 'User Interface'

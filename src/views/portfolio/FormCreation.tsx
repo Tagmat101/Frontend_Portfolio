@@ -9,23 +9,17 @@ import { getEducationAll } from 'src/pages/api/EducationServices/Services';
 import { getProjectAll } from 'src/pages/api/ProjectServices/Services';
 import { getExperienceAll } from 'src/pages/api/ExperienceServices/Service';
 import { HexColorPicker } from 'react-colorful';
-import {  GetCategoriesPortActive } from '@api/CategoriePortServices/Service';
-import { Categorie, Categories, Education, Experience, PortfolioDataHelper, Project } from 'src/utils/interfaces/int';
+import {  GetCategoriesPortActive } from 'src/pages/api/CategoriePortServices/Service';
 import { PortfolioContext } from 'src/@core/context/PortfolioContext';
 import { PlusCircle } from 'mdi-material-ui';
- 
+
+
 
 interface ListState {
   educations: any[];
   experiences: any[];
   projects: any[];
 }
-
-const initialList: ListState = {
-  educations: [],
-  experiences: [],
-  projects: [],
-};
 
 const FormCreation = () => {
   const {modify,dataPortfolioMod,setModify,setValue} = useContext(PortfolioContext)
@@ -55,7 +49,7 @@ const FormCreation = () => {
   
       switch (type) {
         case 'educations':
-          const foundEducation = dataPortfolio.educations.find(edu => edu.id === value);
+          const foundEducation = dataPortfolio.educations.find((edu:Education) => edu.id === value);
           itemName = foundEducation ? foundEducation.institution : '';
           newItem = {
             id: value,
@@ -63,7 +57,7 @@ const FormCreation = () => {
           };
           break;
         case 'experiences':
-          const foundExperience = dataPortfolio.experiences.find(exp => exp.id === value);
+          const foundExperience = dataPortfolio.experiences.find((exp:Experience) => exp.id === value);
           itemName = foundExperience ? foundExperience.companyName : '';
           newItem = {
             id: value,
@@ -71,7 +65,7 @@ const FormCreation = () => {
           };
           break;
         case 'projects':
-          const foundProject = dataPortfolio.projects.find(proj => proj.id === value);
+          const foundProject = dataPortfolio.projects.find((proj:Project) => proj.id === value);
           itemName = foundProject ? foundProject.name : '';
           newItem = {
             id: value,
@@ -127,7 +121,10 @@ const FormCreation = () => {
         payload.selectedItems.id = dataPortfolioMod.id;
         response = ModifyPortfolio(payload.selectedItems)
 
-      } else response = await CreatePortfolioPost(payload.selectedItems);
+      } else {
+        response = await CreatePortfolioPost(payload.selectedItems)
+        document.location.reload()
+      };
 
       if(modify) {
         setModify(false)
@@ -280,7 +277,7 @@ const FormCreation = () => {
                 multiple
                 options={[]} 
                 value={list.projects}
-                onChange={(event, newValue) => {
+                onChange={(event, newValue) => { //this one charged for deleting items clicked by user
                   setList(prevState => ({
                     ...prevState,
                     projects: newValue
