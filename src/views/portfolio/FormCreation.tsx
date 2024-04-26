@@ -56,7 +56,7 @@ const FormCreation = () => {
   
       switch (type) {
         case 'educations':
-          const foundEducation = dataPortfolio.educations.find(edu => edu.id === value);
+          const foundEducation = dataPortfolio.educations.find((edu:any) => edu.id === value);
           itemName = foundEducation ? foundEducation.institution : '';
           newItem = {
             id: value,
@@ -64,7 +64,7 @@ const FormCreation = () => {
           };
           break;
         case 'experiences':
-          const foundExperience = dataPortfolio.experiences.find(exp => exp.id === value);
+          const foundExperience = dataPortfolio.experiences.find((exp:any) => exp.id === value);
           itemName = foundExperience ? foundExperience.companyName : '';
           newItem = {
             id: value,
@@ -72,7 +72,7 @@ const FormCreation = () => {
           };
           break;
         case 'projects':
-          const foundProject = dataPortfolio.projects.find(proj => proj.id === value);
+          const foundProject = dataPortfolio.projects.find((proj:any) => proj.id === value);
           itemName = foundProject ? foundProject.name : '';
           newItem = {
             id: value,
@@ -128,7 +128,10 @@ const FormCreation = () => {
         payload.selectedItems.id = dataPortfolioMod.id;
         response = ModifyPortfolio(payload.selectedItems)
 
-      } else response = await CreatePortfolioPost(payload.selectedItems);
+      } else {
+        response = await CreatePortfolioPost(payload.selectedItems)
+        document.location.reload()
+      };
 
       if(modify) {
         setModify(false)
