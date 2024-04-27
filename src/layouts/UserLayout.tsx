@@ -21,6 +21,7 @@ import { ContextPortfolioProvider } from 'src/@core/context/PortfolioContext'
 import { ContextCategorieProvider } from 'src/@core/context/CategorieContext'
 import CategorieUCModal from 'src/views/Modals/CategorieModals/CategorieUCModal'
 import CategorieDModal from 'src/views/Modals/CategorieModals/CategorieDModal'
+import Confirmation from 'src/views/Modals/PortfolioModals/Confirmation'
 
 interface Props {
   children: ReactNode
@@ -78,6 +79,7 @@ const UserLayout = ({ children }: Props) => {
         {/* <UpgradeToProButton /> */}
         <CategorieUCModal />
         <CategorieDModal />
+        <Confirmation />
       </VerticalLayout>
       </ContextCategorieProvider>
     </ContextPortfolioProvider>

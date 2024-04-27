@@ -18,7 +18,7 @@ const FooterContent = () => {
         </Box>
         {` by `}
         <Link target='_blank' href='https://themeselection.com/'>
-          ThemeSelection
+          Gang of Three
         </Link>
       </Typography>
       {hidden ? null : (
@@ -30,7 +30,7 @@ const FooterContent = () => {
             MIT License
           </Link>
           <Link target='_blank' href='https://themeselection.com/'>
-            More Themes
+            More Portfolios
           </Link>
           <Link
             target='_blank'

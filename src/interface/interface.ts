@@ -33,7 +33,7 @@ interface IEducation {
     skills:string[]; 
   } 
   
-   interface Categorie {
+interface Categorie {
     id: string;
     name: String;
     state: boolean;
@@ -43,7 +43,10 @@ interface IEducation {
     categories: Categorie[];
   }
   
-  
+interface CategorieHelper {
+  name: String;
+  state: boolean;
+}
   
 
 
@@ -72,15 +75,16 @@ interface PortfolioDataHelper { //this interface helps me to get data from db
   skills: String[]; 
 }
 
- interface PortfolioData {  
+interface PortfolioData {  
     id: string;
     name: string;
     color: string;
     educations: IEducation[];
     experiences: IExperience[];
     projects: IProject[];
-    skills: string[]; 
+    // skills: string[]; 
     categorie: Categorie;
+    visible: boolean;
 }
 
 

@@ -1,6 +1,4 @@
 import axios from "axios";
-import { ConsoleNetworkOutline } from "mdi-material-ui";
-import { PortfolioData } from "src/utils/interfaces/int";
 import Cookies from 'universal-cookie';
 
 

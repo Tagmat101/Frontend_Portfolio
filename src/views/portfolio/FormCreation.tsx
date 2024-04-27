@@ -22,7 +22,7 @@ interface ListState {
 }
 
 const FormCreation = () => {
-  const {modify,dataPortfolioMod,setModify,setValue} = useContext(PortfolioContext)
+  const {modify,dataPortfolioMod,setModify,setValue , setOpenPortCrea , setDataPortfolioCrea} = useContext(PortfolioContext)
   const [list, setList] = useState<ListState>({
     educations: modify ? dataPortfolioMod.educations : [],
     experiences: modify ? dataPortfolioMod.experiences : [],
@@ -36,10 +36,11 @@ const FormCreation = () => {
     skills: [],
   });
   const [name, setName] = useState(modify ? dataPortfolioMod.name : '');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [color, setColor] = useState(modify ? dataPortfolioMod.color : '#aabbcc');
-  
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const [color, setColor] = useState<string>(modify ? dataPortfolioMod.color : '#aabbcc');
+  const [visi,setVisi] = useState<string>(modify ? (dataPortfolioMod.visible == true ? 'Public' : 'Private') : 'Public')
+  console.log(dataPortfolioMod)
   const [selectedCategorie, setSelectedCategorie] = useState<string>(modify ? (dataPortfolioMod.categorie != null ?  dataPortfolioMod.categorie.id : "" ) : "");
 
   const handleAddItem = (type: keyof ListState, value: string) => {
@@ -108,6 +109,7 @@ const FormCreation = () => {
         selectedItems: {
           name: name,
           color: color,
+          visible: visi === 'Public' ? true : false, 
           educations: list.educations.map(edu => ({ id: edu.id })),
           experiences: list.experiences.map(exp => ({ id: exp.id })),
           projects: list.projects.map(proj => ({ id: proj.id })),
@@ -115,15 +117,32 @@ const FormCreation = () => {
         }
       };
 
+      const display:any = {
+        selectedItems: {
+          name: name,
+          color: color,
+          visible: visi, 
+          educations: list.educations.map(edu => ({ institution: edu.institution })),
+          experiences: list.experiences.map(exp => ({ companyName: exp.companyName })),
+          projects: list.projects.map(proj => ({ name: proj.name })),
+          categorie: {id: selectedCategorie}
+        }
+      }
+
       let response:any = "";
       //adding the id if it is a modified one : 
       if(modify) {
         payload.selectedItems.id = dataPortfolioMod.id;
         response = ModifyPortfolio(payload.selectedItems)
-
+        alert(`Portfolio : modified ${dataPortfolioMod.id} `);
       } else {
-        response = await CreatePortfolioPost(payload.selectedItems)
-        document.location.reload()
+        // response = await CreatePortfolioPost(payload.selectedItems)
+        // document.location.reload()
+        setOpenPortCrea(true)
+        setDataPortfolioCrea({
+          create: payload.selectedItems,
+          display: display.selectedItems
+        })
       };
 
       if(modify) {
@@ -131,7 +150,7 @@ const FormCreation = () => {
         setValue('view')
       }
       setLoading(false);
-      alert(`Portfolio : ${modify ? "modified" + dataPortfolioMod.id : "Created" + response.id}`);
+      
     } catch (error) {
       setLoading(false);
       setError('Error creating portfolio. Please try again later.');
@@ -256,9 +275,8 @@ const FormCreation = () => {
                 </Select>
               </FormControl>
             </Grid>
-
-
-
+            
+           
             <Grid item xs={12} sm={6}>
               <TextField
                   fullWidth
@@ -365,7 +383,24 @@ const FormCreation = () => {
               />   
             </Grid>
 
-
+          {/* Visibility */}
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel>Visibility</InputLabel>
+                <Select
+                  label='Visibility'
+                  value={visi} 
+                  onChange={(event: any) => setVisi(event.target.value as string)}
+                >
+                    <MenuItem value="Public">
+                       Public
+                    </MenuItem>
+                    <MenuItem value="Private">
+                       Private
+                    </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
 
             <Grid item xs={12}>
               <Button type='submit' variant='contained' size='large' onClick={handleCreate}>

@@ -8,24 +8,31 @@ import React, {
     useState,
     useCallback
   } from "react";
-  import { Categorie, PortfolioData } from "src/utils/interfaces/int";
   
   interface StateContextType {
     modify:boolean;
-    value: string,
+    value: string;
     dataPortfolioMod: PortfolioData;
+    dataPortfolioCrea: any;
+    openPortCrea: boolean;
     setValue: Dispatch<SetStateAction<string>>;
     setDataPortfolioMod: Dispatch<SetStateAction<PortfolioData>>;
     setModify: Dispatch<SetStateAction<boolean>>;
+    setDataPortfolioCrea: Dispatch<SetStateAction<any>>;
+    setOpenPortCrea: Dispatch<SetStateAction<boolean>>;
   }
   
   export const PortfolioContext = createContext<StateContextType>({
     modify: false,
     value: 'portfolio' ,
+    openPortCrea: false,
+    dataPortfolioMod: {categorie: {id: "" , name: "" , state: false},id: "",visible: false,name: "", color: "" , educations: [],experiences: [] , projects: []},
+    dataPortfolioCrea: {},
     setModify: () => {},
     setDataPortfolioMod: () => {},
     setValue: () => {},
-    dataPortfolioMod: {categorie: {id: "" , name: "" , state: false},id: "",name: "", color: "" , educations: [],experiences: [] , skills: [] , projects: []},
+    setDataPortfolioCrea: () => {},
+    setOpenPortCrea: () => {}
   });
   
   type ContextProviderProps = {
@@ -36,18 +43,19 @@ import React, {
     const [dataPortfolioMod, setDataPortfolioMod] = useState<PortfolioData>({
         id: "",
         name: "",
+        visible: false,
         color: "",
         educations: [],
         experiences: [],
         projects: [],
-        skills: [],
         categorie: {id: "" , name: "" , state: false}
     });
+    const [dataPortfolioCrea , setDataPortfolioCrea] = useState<any>({})
     const [modify, setModify] = useState<boolean>(false);
     const [value,setValue] = useState<string>('portfolio')
-    
+    const [openPortCrea , setOpenPortCrea] = useState<boolean>(false)
     return (
-      <PortfolioContext.Provider value={{ value,setValue, dataPortfolioMod , setDataPortfolioMod, modify, setModify }}>
+      <PortfolioContext.Provider value={{ openPortCrea, setOpenPortCrea, dataPortfolioCrea, setDataPortfolioCrea, value,setValue, dataPortfolioMod , setDataPortfolioMod, modify, setModify }}>
         {children}
       </PortfolioContext.Provider>
     );
