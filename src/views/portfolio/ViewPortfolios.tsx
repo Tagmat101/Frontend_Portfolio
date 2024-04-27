@@ -13,12 +13,14 @@ const ViewPortfolios = () => {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [colorFilter, setColorFilter] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-
+  const [visibility , setVisibility] = useState('')
   const filteredData = portfolioData?.filter(portfolio => {
     const categoryMatch = !categoryFilter || portfolio.categorie.name === categoryFilter;
     const colorMatch = !colorFilter || portfolio.color === colorFilter;
     const searchTermMatch = !searchTerm || portfolio.name.toLowerCase().includes(searchTerm.toLowerCase());
-    return categoryMatch && colorMatch && searchTermMatch;
+    const portfolioVis = portfolio.visible ? "Public" : "Private"
+    const visibilityMatch = !visibility || visibility === portfolioVis
+    return categoryMatch && colorMatch && searchTermMatch && visibilityMatch;
   }) || [];
 
   return (
@@ -52,6 +54,21 @@ const ViewPortfolios = () => {
                 )
             })
           }
+        </TextField>
+      </Grid>
+
+      <Grid item xs={12} sx={{ paddingBottom: 2 }}>
+        <TextField
+          select
+          label="Filter by Visibility"
+          variant="outlined"
+          fullWidth
+          value={visibility}
+          onChange={(e) => setVisibility(e.target.value)}
+        >
+          <MenuItem value="">All</MenuItem>
+          <MenuItem value="Public">Public</MenuItem>
+          <MenuItem value="Private">Private</MenuItem>
         </TextField>
       </Grid>
       {portfolioLoading || categoryLoading ? (
