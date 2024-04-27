@@ -79,7 +79,6 @@ interface PortfolioDataHelper { //this interface helps me to get data from db
     experiences: IExperience[];
     projects: IProject[];
     skills: string[]; 
-    categorie: Categorie;
 }
 
 
