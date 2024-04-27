@@ -290,7 +290,9 @@ const FormCreation = () => {
             </Grid>
 
             {/* Render list items */}
-            <Grid item xs={12}>
+            {
+              list.projects ? 
+              <Grid item xs={12}>
               <Autocomplete
                 multiple
                 options={[]} 
@@ -319,9 +321,14 @@ const FormCreation = () => {
                   />
                 )}
               />   
-            </Grid>
+            </Grid> : <></>
+            }
 
-            <Grid item xs={12}>
+            {/* Educations list */}
+
+           {
+              list.educations ? 
+              <Grid item xs={12}>
               <Autocomplete
                 multiple
                 options={[]} 
@@ -350,9 +357,14 @@ const FormCreation = () => {
                   />
                 )}
               />   
-            </Grid>
+            </Grid> : <></>
+           }
 
-            <Grid item xs={12}>
+          {/* Experiences */}
+          
+          {
+             list.experiences ? 
+             <Grid item xs={12}>
               <Autocomplete
                 multiple
                 options={[]} 
@@ -381,7 +393,8 @@ const FormCreation = () => {
                   />
                 )}
               />   
-            </Grid>
+            </Grid> : <></>
+          }
 
           {/* Visibility */}
             <Grid item xs={12}>
