@@ -99,7 +99,6 @@ const RegisterPage = () => {
         isValid = false
       }
     }
-    console.log(errorMessage)
     setValues({ ...values, [prop]: {value: event.target.value,error: errorMessage,isValid: !isValid} }) // reverse logic 
   }
   const handleClickShowPassword = () => {

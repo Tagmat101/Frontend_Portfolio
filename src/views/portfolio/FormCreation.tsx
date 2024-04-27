@@ -10,7 +10,6 @@ import { getProjectAll } from 'src/pages/api/ProjectServices/Services';
 import { getExperienceAll } from 'src/pages/api/ExperienceServices/Service';
 import { HexColorPicker } from 'react-colorful';
 import {  GetCategoriesPortActive } from 'src/pages/api/CategoriePortServices/Service';
-import { Categorie, Categories, Education, Experience, PortfolioDataHelper, Project } from 'src/utils/interfaces/int';
 import { PortfolioContext } from 'src/@core/context/PortfolioContext';
 import { PlusCircle } from 'mdi-material-ui';
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import CardPortfolio from '../cards/PortfolioCards/CardPortfolio';
-import { Categorie, PortfolioData } from 'src/utils/interfaces/int';
 import { GetAllPortfolios } from 'src/pages/api/PortfolioServices/Services';
 import { CircularProgress, TextField, MenuItem } from '@mui/material';
 import useDataFetching from 'src/@core/hooks/useFetchingData';
