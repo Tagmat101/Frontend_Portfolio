@@ -29,17 +29,18 @@ interface IEducation {
     skills:string[];
   }
   
-   interface IProject {
-    id: string;
+  interface IProject {
+    id?: string;
     name: string;
-    link:string; 
-    description:string;
-    startDate:Date;
-    endDate:Date; 
-    responsibilities:string[];
-    achievements:string[];
-    skills:string[]; 
-  } 
+    link: string;
+    description: string;
+    startDate: Date;
+    endDate: Date;
+    responsibilities: string[];
+    achievements: string[];
+    skills: string[];
+    images?: any[];
+  }
   
    interface Categorie {
     id: string;

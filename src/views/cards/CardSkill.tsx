@@ -31,7 +31,11 @@ export default function CardSkill({ skillData }: { skillData: ISkill }) {
   const handleClose = () => {
     setAnchorEl(null)
   }
- 
+  
+  const handleDeleteBtn = () => {
+    handleDelete();
+    window.location.reload(); 
+  }
   const handleUpdate = () => {
     setOpenModal(true)
   }
@@ -75,7 +79,7 @@ export default function CardSkill({ skillData }: { skillData: ISkill }) {
                   <Pen fontSize='medium' sx={{ marginRight: 2 }} />
               
             </Button> 
-          <Button onClick={handleDelete}>
+          <Button onClick={handleDeleteBtn}>
                   <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
           </Button>
       </div>

@@ -57,6 +57,10 @@ export default function CardProject ({ projectData }: { projectData: IProject })
   const handleUpdate = () => {
     setOpenModal(true)
   }
+  const handleDeleteBtn = () => {
+    handleDelete();
+    window.location.reload(); 
+  }
   return (
     <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>
@@ -136,7 +140,7 @@ export default function CardProject ({ projectData }: { projectData: IProject })
                 <Pen fontSize='medium' sx={{ marginRight: 2 }} />
             
           </Button> 
-        <Button onClick={handleDelete}>
+        <Button onClick={handleDeleteBtn}>
                 <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
         </Button>
       </div>
