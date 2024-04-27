@@ -106,15 +106,16 @@ const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => {
           console.log(state)
           const response = await AddExperience(state);
           console.log(response);
-          dispatch({ type: 'reset' });
-          handleClose(); 
+          dispatch({ type: 'reset' }); 
         }else{
           console.log(state)
           const response = await UpdateExperience(state);
           console.log(response);
           dispatch({ type: 'reset' });
-          handleClose(); 
         }
+        handleClose(); 
+        window.location.reload();
+
   };
   
   return (

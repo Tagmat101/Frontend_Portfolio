@@ -1,10 +1,8 @@
 import {useReducer,useEffect,forwardRef} from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+ 
+import Button from '@mui/material/Button'; 
 import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem'; 
+import TextField from '@mui/material/TextField'; 
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid' 
 import CardHeader from '@mui/material/CardHeader'
@@ -13,8 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 
 // ** Icons Imports
 import Phone from 'mdi-material-ui/Phone'
-import EmailOutline from 'mdi-material-ui/EmailOutline'
-import AccountOutline from 'mdi-material-ui/AccountOutline'
+import EmailOutline from 'mdi-material-ui/EmailOutline' 
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import { MapMarker, School } from 'mdi-material-ui';
 import DatePicker from 'react-datepicker'
@@ -80,15 +77,15 @@ const AddEdit_EducationModal = ({ open, setOpen ,dataEducation}: any) => {
           console.log(state)
           const response = await AddEducation(state);
           console.log(response);
-          dispatch({ type: 'reset' });
-          handleClose(); 
+          dispatch({ type: 'reset' }); 
         }else{
           console.log(state)
           const response = await UpdateEducation(state);
           console.log(response);
-          dispatch({ type: 'reset' });
-          handleClose(); 
+          dispatch({ type: 'reset' }); 
         }
+        handleClose(); 
+        window.location.reload();
        
   };
 

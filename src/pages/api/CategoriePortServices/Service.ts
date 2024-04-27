@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import { Categorie } from "src/utils/interfaces/int";
+
 import Cookies from 'universal-cookie';
 
 

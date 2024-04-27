@@ -1,3 +1,11 @@
+interface ISkill{
+    id: string;
+    name:string;
+    icon:string; 
+    type:string;
+    category:string; 
+}
+
 interface IEducation {
     id: string;
     institution: string; 
@@ -7,7 +15,7 @@ interface IEducation {
     fieldOfStudy:string;
     location:string;
     description:string;
-  }
+}
   
    interface IExperience {
     id: string;
@@ -42,12 +50,8 @@ interface IEducation {
    interface Categories {
     categories: Categorie[];
   }
-  
-  
-  
-
-
-  //these interfaces will help for displaying only for portfolio
+   
+//these interfaces will help for displaying only for portfolio
 
 interface Education {
     id: string;

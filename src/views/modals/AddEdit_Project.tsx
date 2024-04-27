@@ -99,19 +99,15 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
   const handleClose = () => setOpen(false);
    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        if(dataProject==null){
-      
-          const response = await AddProject(state);
-  
-          dispatch({ type: 'reset' });
-          handleClose(); 
+        if(dataProject==null){ 
+          const response = await AddProject(state); 
+          dispatch({ type: 'reset' }); 
         }else{
-  
           const response = await UpdateProject(state);
-   
-          dispatch({ type: 'reset' });
-          handleClose(); 
+          dispatch({ type: 'reset' }); 
         }
+        handleClose(); 
+        window.location.reload(); 
   };
   
   return (
