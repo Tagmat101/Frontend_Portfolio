@@ -5,7 +5,7 @@ import CardPortfolio from '../cards/PortfolioCards/CardPortfolio';
 import { GetAllPortfolios } from 'src/pages/api/PortfolioServices/Services';
 import { CircularProgress, TextField, MenuItem } from '@mui/material';
 import useDataFetching from 'src/@core/hooks/useFetchingData';
-import { GetCategoriesPortActive } from 'src/pages/api/CategoriePortServices/Service';
+import { GetCategoriesPortActive } from '@api/CategoriePortServices/Service';
 
 const ViewPortfolios = () => {
   const { data: portfolioData, loading: portfolioLoading, error: portfolioError } = useDataFetching<PortfolioData[]>(GetAllPortfolios);

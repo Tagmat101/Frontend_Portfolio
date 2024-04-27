@@ -52,6 +52,11 @@ const navigation = (): VerticalNavItemsType => {
       path: '/details/experience'
     }, 
     {
+      title: 'Skill',
+      icon: BriefcaseOutline,
+      path: '/details/skill'
+    }, 
+    {
       sectionTitle: 'Portfolio details'
     },
     {

@@ -10,7 +10,7 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import { Button, CircularProgress, TablePagination } from '@mui/material';
-import { GetCategoriesPort } from 'src/pages/api/CategoriePortServices/Service';
+import { GetCategoriesPort } from '@api/CategoriePortServices/Service';
 import { ThemeColor } from 'src/@core/layouts/types';
 import { Pencil, TrashCan } from 'mdi-material-ui';
 import { CategorieContext } from 'src/@core/context/CategorieContext';

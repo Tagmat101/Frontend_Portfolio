@@ -3,7 +3,7 @@
 import React, { useReducer, useContext, useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import { CategorieContext } from 'src/@core/context/CategorieContext';
-import { DeleteCategoriePort } from 'src/pages/api/CategoriePortServices/Service';
+import { DeleteCategoriePort } from '@api/CategoriePortServices/Service';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 const CategorieDModal = () => {
