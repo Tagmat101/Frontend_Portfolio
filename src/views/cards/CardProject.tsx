@@ -42,9 +42,9 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
 export default function CardProject ({ projectData }: { projectData: IProject }) {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { message, loading, error,handleDelete } = useDeleteProject(projectData.id);
+  const { message, loading, error,handleDelete } = useDeleteProject(projectData?.id);
   const [openModal,setOpenModal] = useState(false)
-
+ 
   const open = Boolean(anchorEl) 
  
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -66,7 +66,20 @@ export default function CardProject ({ projectData }: { projectData: IProject })
       <Grid container spacing={6}>
         <StyledGrid item md={5} xs={12}>
           <CardContent sx={{ display: 'flex', alignItems: 'center' ,justifyContent: 'center', }}>
-            <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' />
+            {/* <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' /> */}
+            {projectData.images?.length > 0 &&
+              projectData.images?.map((item, index) => (
+                <img
+                  key={index}
+                  width={300}
+                  className="object-cover shadow-md rounded-lg"
+                  src={item ? `data:image/png;base64,${item}` : ""}
+                  alt={`Image ${index + 1}`} // Provide a meaningful alt text
+                />
+              ))
+            }
+
+
           </CardContent>
         </StyledGrid>
         <Grid

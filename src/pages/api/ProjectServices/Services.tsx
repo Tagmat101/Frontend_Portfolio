@@ -22,23 +22,51 @@ export const GetDataProjects = async() => {
 }
  
 /////////////////////////////////////////////////////////////////////////////
-export const AddProject= async(data:IProject) => {
-    try{
-        console.log(data)
-        const cookie_ = cookie.get('token-cookie')
+export const AddProject = async (data: IProject) => {
+  try {
+    console.log(data);
+    const cookie_ = cookie.get('token-cookie');
 
-         const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project/create`;
-        const response = await axios.post(url,data,{
-            headers: {
-                'Authorization': cookie_
-            }
-        })
-        return response.data
-    } catch(error:any)
-    {
-        console.log(error)
+    const formData = new FormData(); 
+    formData.append('project', JSON.stringify(data));
+
+    // if (data.images && data.images.length > 0) {
+    //   data.images.forEach((image,index) => {
+    //     formData.append('images', image, `image-${index}`); 
+    //     const blob = new Blob([image], { type: 'image/*' });
+    //     formData.append('images', blob, image.name); 
+    //   });
+    // } else {
+    //   Append an empty array to indicate no images
+    //   const blob = new Blob([], { type: 'image/*' });
+    //   formData.append('images',blob);
+    // } 
+
+    if (data.images && data.images.length > 0) {
+      // Append images
+      data.images.forEach((image, index) => {
+          formData.append('images', image, `image-${index}`);
+      });
+    } else {
+        // Append empty array
+        formData.append('images', JSON.stringify([]));
     }
+    const config = {
+      headers: { 
+        'Content-Type': 'multipart/form-data',
+        'Authorization': cookie_
+      }
+    };
+
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project/create`;
+    const response = await axios.post(url, formData, config);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error.response.data);
+  } 
 }
+
 export const UpdateProject= async(data:IProject) => {
   try{
       console.log(data)

@@ -1,4 +1,4 @@
-import {useReducer,useEffect,forwardRef,FormEvent} from 'react';
+import {useReducer,useState,useEffect,forwardRef,FormEvent} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button'; 
 import Modal from '@mui/material/Modal';
@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import InputAdornment from '@mui/material/InputAdornment'
-import Select from '@mui/material/Select';
+import Select from '@mui/material/Select'; 
 import { 
   Autocomplete,
   Chip,
@@ -69,6 +69,7 @@ const employmentTypes = [
     startDate: new Date(),
     endDate:new Date(),
     responsibilities:[],  
+    images:[]
   };
   function reducer(state, action) {
     switch (action.type) {
@@ -88,7 +89,8 @@ const employmentTypes = [
   
 const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => { 
   const [state, dispatch] = useReducer(reducer, initialState); 
- 
+  const [value, setValue] = useState(null)
+
   useEffect(() => {
     if(dataProject!=null && open==true){
       console.log("dataProject")
@@ -107,9 +109,12 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
           dispatch({ type: 'reset' }); 
         }
         handleClose(); 
-        window.location.reload(); 
+        // window.location.reload(); 
   };
-  
+
+  const handleChange = (newValue) => {
+    setValue(newValue)
+  } 
   return (
    
       <Modal
@@ -290,6 +295,7 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
               </Button> 
             </Grid>
             
+ 
           </Grid>
         </form> 
       </CardContent>
