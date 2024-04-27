@@ -73,6 +73,7 @@ interface PortfolioDataHelper { //this interface helps me to get data from db
 }
 
  interface PortfolioData {  
+    id: string;
     name: string;
     color: string;
     educations: IEducation[];
