@@ -42,9 +42,9 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
 export default function CardProject ({ projectData }: { projectData: IProject }) {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { message, loading, error,handleDelete } = useDeleteProject(projectData.id);
+  const { message, loading, error,handleDelete } = useDeleteProject(projectData?.id);
   const [openModal,setOpenModal] = useState(false)
-
+ 
   const open = Boolean(anchorEl) 
  
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -57,13 +57,21 @@ export default function CardProject ({ projectData }: { projectData: IProject })
   const handleUpdate = () => {
     setOpenModal(true)
   }
+  const handleDeleteBtn = () => {
+    handleDelete();
+    window.location.reload(); 
+  }
   return (
     <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>
-        <StyledGrid item md={5} xs={12}>
-          <CardContent sx={{ display: 'flex', alignItems: 'center' ,justifyContent: 'center', }}>
-            <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' />
-          </CardContent>
+        <StyledGrid  md={3} >
+       
+            {/* <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' /> */}
+            <img
+            style={{ maxWidth: '100%', maxHeight: '200px' }}
+            src={projectData.images?.length > 0 ? `data:image/png;base64,${projectData.images[0]}` : ""}
+          />           
+      
         </StyledGrid>
         <Grid
           item
@@ -136,7 +144,7 @@ export default function CardProject ({ projectData }: { projectData: IProject })
                 <Pen fontSize='medium' sx={{ marginRight: 2 }} />
             
           </Button> 
-        <Button onClick={handleDelete}>
+        <Button onClick={handleDeleteBtn}>
                 <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
         </Button>
       </div>
