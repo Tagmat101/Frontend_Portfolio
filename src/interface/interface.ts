@@ -88,5 +88,8 @@ interface PortfolioDataHelper { //this interface helps me to get data from db
 
 
 
-
+interface CategorieHelper {
+  name: String;
+  state: boolean;
+}
 
