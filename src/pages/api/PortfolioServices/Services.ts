@@ -74,3 +74,21 @@ export const DeletePortfolio = async(id:string) => {
 }
 
 
+export const GetPortfolioById = async(id:string) => {
+    try{
+        const cookie_ = cookie.get('token-cookie')
+        const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${root}/${id}`;
+        const response = await axios.get(url,{
+            headers: {
+                'Authorization': cookie_
+            }
+        })
+        console.log(response.data)
+        return response.data.data
+    } catch(error:any)
+    {
+        throw error
+    }
+}
+
+

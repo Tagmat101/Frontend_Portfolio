@@ -26,3 +26,8 @@ export async function SignupUser(data:any): Promise<any> {
         throw error
     }
 }
+
+export function logoutUser() {
+    const cookies = new Cookies();
+    cookies.remove('token-cookie', { path: '/' });
+}

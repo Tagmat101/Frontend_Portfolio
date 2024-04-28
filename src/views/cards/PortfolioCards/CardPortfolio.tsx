@@ -10,6 +10,7 @@ import { PortfolioContext } from 'src/@core/context/PortfolioContext'
 import { DeletePortfolio } from 'src/pages/api/PortfolioServices/Services'
 import { ThemeColor } from 'src/@core/layouts/types'
 import Chip from '@mui/material/Chip';
+import router from 'next/router'
 
 interface CardPortfolioProps {
   portfolio: PortfolioData;
@@ -47,6 +48,10 @@ const CardPortfolio = ({ portfolio }: CardPortfolioProps) => {
          alert(error.response.data.message)
       }
   }
+
+  const handleViewButton = () => {
+    router.push(`/${portfolio.id}`)
+  }
   return (
     <Card>
       <div style={{ height: '9.375rem', backgroundColor: portfolio.color }} ></div>
@@ -68,7 +73,7 @@ const CardPortfolio = ({ portfolio }: CardPortfolioProps) => {
         </div>
         <Typography sx={{ marginBottom: 2 }}><span >Category : </span>{portfolio?.categorie.name}</Typography>
         <Button onClick={handleModifyButton}>Modify</Button>
-        <Button>View portfolio</Button>
+        <Button onClick={handleViewButton}>View portfolio</Button>
       </CardContent>
       <Button onClick={handleDeleteButton} variant='contained' sx={{ py: 2.5, width: '100%', borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
         Delete

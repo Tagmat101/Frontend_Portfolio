@@ -62,6 +62,12 @@ id: string;
 name: string;
 } 
 
+interface User {
+  name:string;
+  tel:string;
+  email:string;
+}
+
 interface PortfolioDataHelper { //this interface helps me to get data from db 
 categories: Categorie[];
 educations: Education[];
@@ -80,6 +86,7 @@ interface PortfolioData {
   // skills: string[]; 
   categorie: Categorie;
   visible: boolean;
+  user: User;
 }
 
 
@@ -92,4 +99,10 @@ interface CategorieHelper {
 
  interface Categories {
   categories: Categorie[];
+}
+
+interface User {
+   name:string;
+   tel:string;
+   email:string;
 }

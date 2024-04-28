@@ -22,6 +22,7 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
+import { logoutUser } from '@api/UserServices/Services'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -45,6 +46,14 @@ const UserDropdown = () => {
 
   const handleDropdownClose = (url?: string) => {
     if (url) {
+      try
+      {
+         logoutUser()
+         router.push(url)
+      } catch(error:any) 
+      {
+        console.log(error)
+      }
       router.push(url)
     }
     setAnchorEl(null)

@@ -1,23 +1,23 @@
 // ** MUI Imports
+import CardAppleWatch from '@cards/Helpers/CardAppleWatch'
+import CardFacebook from '@cards/Helpers/CardFacebook'
+import CardHorizontalRatings from '@cards/Helpers/CardHorizontalRatings'
+import CardImgTop from '@cards/Helpers/CardImgTop'
+import CardInfluencer from '@cards/Helpers/CardInfluencer'
+import CardLinkedIn from '@cards/Helpers/CardLinkedIn'
+import CardMembership from '@cards/Helpers/CardMembership'
+import CardMobile from '@cards/Helpers/CardMobile'
+import CardNavigation from '@cards/Helpers/CardNavigation'
+import CardNavigationCenter from '@cards/Helpers/CardNavigationCenter'
+import CardSupport from '@cards/Helpers/CardSupport'
+import CardTwitter from '@cards/Helpers/CardTwitter'
+import CardUser from '@cards/Helpers/CardUser'
+import CardVerticalRatings from '@cards/Helpers/CardVerticalRatings'
+import CardWithCollapse from '@cards/Helpers/CardWithCollapse'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 
 // ** Demo Components Imports
-import CardUser from 'src/views/cards/CardUser'
-import CardImgTop from 'src/views/cards/CardImgTop'
-import CardMobile from 'src/views/cards/CardMobile'
-import CardSupport from 'src/views/cards/CardSupport'
-import CardTwitter from 'src/views/cards/CardTwitter'
-import CardFacebook from 'src/views/cards/CardFacebook'
-import CardLinkedIn from 'src/views/cards/CardLinkedIn'
-import CardAppleWatch from 'src/views/cards/CardAppleWatch'
-import CardMembership from 'src/views/cards/CardMembership'
-import CardInfluencer from 'src/views/cards/CardInfluencer'
-import CardNavigation from 'src/views/cards/CardNavigation'
-import CardWithCollapse from 'src/views/cards/CardWithCollapse'
-import CardVerticalRatings from 'src/views/cards/CardVerticalRatings'
-import CardNavigationCenter from 'src/views/cards/CardNavigationCenter'
-import CardHorizontalRatings from 'src/views/cards/CardHorizontalRatings'
 
 const CardBasic = () => {
   return (

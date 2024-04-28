@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
-import { Card, CardContent, CardHeader, MenuItem, Select, TextField, Typography, CircularProgress, Autocomplete, Chip } from '@mui/material';
+import { Card, CardContent, CardHeader, MenuItem, Select, TextField, Typography, CircularProgress, Autocomplete, Chip, InputAdornment } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import { CreatePortfolioPost, ModifyPortfolio } from 'src/pages/api/PortfolioServices/Services';
 import { getEducationAll } from 'src/pages/api/EducationServices/Services';
@@ -11,7 +11,7 @@ import { getExperienceAll } from 'src/pages/api/ExperienceServices/Service';
 import { HexColorPicker } from 'react-colorful';
 import {  GetCategoriesPortActive } from 'src/pages/api/CategoriePortServices/Service';
 import { PortfolioContext } from 'src/@core/context/PortfolioContext';
-import { PlusCircle } from 'mdi-material-ui';
+import { AccountOutline, Palette, PlusCircle } from 'mdi-material-ui';
 
 
 
@@ -205,6 +205,13 @@ const FormCreation = () => {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 helperText={error}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <AccountOutline />
+                    </InputAdornment>
+                  )
+                }}
               />
             </Grid>
 
@@ -260,7 +267,7 @@ const FormCreation = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <FormControl fullWidth>
+              <FormControl variant='outlined' fullWidth>
                 <InputLabel>Categories</InputLabel>
                 <Select
                   label='Categories'
@@ -285,6 +292,13 @@ const FormCreation = () => {
                   value={color} 
                   onChange={(e) => setColor(e.target.value)} 
                   disabled={true}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Palette />
+                      </InputAdornment>
+                    )
+                  }}
                 />
               <HexColorPicker color={color} onChange={setColor} />
             </Grid>
