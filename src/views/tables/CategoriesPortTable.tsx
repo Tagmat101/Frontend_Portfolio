@@ -14,7 +14,7 @@ import { GetCategoriesPort } from '@api/CategoriePortServices/Service';
 import { ThemeColor } from 'src/@core/layouts/types';
 import { Pencil, TrashCan } from 'mdi-material-ui';
 import { CategorieContext } from 'src/@core/context/CategorieContext';
-import useDataFetching from 'src/@core/hooks/useFetchingData';
+import {useDataFetching} from 'src/@core/hooks/useFetchingData';
 
 
 interface StatusObj {
