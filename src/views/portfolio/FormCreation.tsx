@@ -13,8 +13,6 @@ import {  GetCategoriesPortActive } from 'src/pages/api/CategoriePortServices/Se
 import { PortfolioContext } from 'src/@core/context/PortfolioContext';
 import { AccountOutline, Palette, PlusCircle } from 'mdi-material-ui';
 
-
-
 interface ListState {
   educations: any[];
   experiences: any[];

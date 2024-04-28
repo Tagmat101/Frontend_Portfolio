@@ -51,15 +51,22 @@ const Header = ({data}:{data:PortfolioData}) => {
         </Link>
       </Box>
       <Box sx={{ marginTop: 3 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ marginLeft: 2, marginRight: 2 }}
-          onClick={handleViewResume}
-          startIcon={<Eye />}
+       <button
+          style={{
+            backgroundColor: data.color,
+            padding: '13px',
+            border: 'none',
+            borderRadius: '4px',
+            color: '#000',
+            fontSize: '16px',
+            cursor: 'pointer',
+            transition: 'background-color 0.3s',
+            marginLeft: '10px',
+            marginRight: '10px',
+          }}
         >
           View Resume
-        </Button>
+        </button>
         <Button
           variant="outlined"
           color="primary"

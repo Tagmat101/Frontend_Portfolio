@@ -12,7 +12,7 @@ const Navbar = ({data}:{data:User}) => {
   };
 
   return (
-    <AppBar position="static" color={darkMode ? 'inherit' : 'primary'}>
+    <AppBar position="static" color='default'>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           ~ {data?.name}
