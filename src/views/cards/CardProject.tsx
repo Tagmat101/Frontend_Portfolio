@@ -64,23 +64,14 @@ export default function CardProject ({ projectData }: { projectData: IProject })
   return (
     <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>
-        <StyledGrid item md={5} xs={12}>
-          <CardContent sx={{ display: 'flex', alignItems: 'center' ,justifyContent: 'center', }}>
+        <StyledGrid  md={3} >
+       
             {/* <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' /> */}
-            {projectData.images?.length > 0 &&
-              projectData.images?.map((item, index) => (
-                <img
-                  key={index}
-                  width={300}
-                  className="object-cover shadow-md rounded-lg"
-                  src={item ? `data:image/png;base64,${item}` : ""}
-                  alt={`Image ${index + 1}`} // Provide a meaningful alt text
-                />
-              ))
-            }
-
-
-          </CardContent>
+            <img
+            style={{ maxWidth: '100%', maxHeight: '200px' }}
+            src={projectData.images?.length > 0 ? `data:image/png;base64,${projectData.images[0]}` : ""}
+          />           
+      
         </StyledGrid>
         <Grid
           item
