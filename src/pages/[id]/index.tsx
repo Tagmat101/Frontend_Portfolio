@@ -5,9 +5,10 @@ import Header from 'src/views/Template/Header';
 import ProjectsTemp from 'src/views/Template/Projects';
 import EducationsTemp from 'src/views/Template/Educations';
 import { useRouter } from 'next/router';
-import useDataFetching from '@hooks/useFetchingData';
+import { useDataFetchingById } from '@hooks/useFetchingData';
 import { GetPortfolioById } from '@api/PortfolioServices/Services';
 import Contact from 'src/views/Template/Contact';
+import { Identifier } from 'mdi-material-ui';
 
 const Frame = styled(Box)({
   border: '1px solid #ccc',
@@ -16,7 +17,14 @@ const Frame = styled(Box)({
 const HomeFrame = () => {
   const router = useRouter()
   const {id} = router.query
-  const { data, error, loading } = useDataFetching<PortfolioData>(() => GetPortfolioById(id as string));
+  const { data, error, loading } = useDataFetchingById<PortfolioData>(GetPortfolioById,id as string);
+
+  if(error)
+    return <>{error}</>
+  
+  if(loading) 
+    return <>Loading ...</>
+
 
   return (
     <Frame>
@@ -27,7 +35,7 @@ const HomeFrame = () => {
           <Header data={data.user}/>
           <ProjectsTemp data={data.projects}/>
           <EducationsTemp data={data.educations}/>
-          <Contact />
+          {/* <Contact /> */}
         </> 
        }
     </Frame>

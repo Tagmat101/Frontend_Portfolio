@@ -6,7 +6,7 @@ interface DataFetchingResult<T> {
   error: Error | null;
 }
 
-const useDataFetching = <T>(fetchDataFunction: () => Promise<T>): DataFetchingResult<T> => {
+export const useDataFetching = <T>(fetchDataFunction: () => Promise<T>): DataFetchingResult<T> => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -42,4 +42,45 @@ const useDataFetching = <T>(fetchDataFunction: () => Promise<T>): DataFetchingRe
   return { data, loading, error };
 };
 
-export default useDataFetching;
+
+export const useDataFetchingById = <T>(fetchDataFunction: (id:string) => Promise<T>,id:string): DataFetchingResult<T> => {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        if(id)
+        {
+          const result = await fetchDataFunction(id);
+          if (isMounted) {
+            setData(result);
+          }
+        }
+      } catch (error:any) {
+        if (isMounted) {
+          setError(error);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [fetchDataFunction,id]);
+
+  return { data, loading, error };
+};
+
+
+
