@@ -7,8 +7,6 @@ import EducationsTemp from 'src/views/Template/Educations';
 import { useRouter } from 'next/router';
 import { useDataFetchingById } from '@hooks/useFetchingData';
 import { GetPortfolioById } from '@api/PortfolioServices/Services';
-import Contact from 'src/views/Template/Contact';
-import { Identifier } from 'mdi-material-ui';
 
 const Frame = styled(Box)({
   border: '1px solid #ccc',
@@ -32,7 +30,7 @@ const HomeFrame = () => {
          data && 
          <>
           <Navbar data={data.user}/>
-          <Header data={data.user}/>
+          <Header data={data}/>
           <ProjectsTemp data={data.projects}/>
           <EducationsTemp data={data.educations}/>
           {/* <Contact /> */}

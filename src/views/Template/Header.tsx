@@ -3,7 +3,7 @@ import { Button, Typography, Link, Box, styled } from '@mui/material';
 import { Typewriter } from 'react-simple-typewriter';
 import { Eye, Github, Linkedin } from 'mdi-material-ui';
 
-const Header = ({data}:{data:User}) => {
+const Header = ({data}:{data:PortfolioData}) => {
   const [view, setView] = useState(false);
   const [fr, setFr] = useState(true);
 
@@ -26,13 +26,13 @@ const Header = ({data}:{data:User}) => {
     >
       <Typography variant="h1" sx={{ fontWeight: 500, fontSize: { md: '4.5rem', xs: '3rem' } }}>
         Hey 👋🏽, I'm{' '}
-        <span style={{ color: '#60A5FA' }}>
+        <span style={{ color: data.color }}>
           <Typewriter
-            words={[data.name]}
+            words={[data.user.name]}
             loop={0}
             cursor
             cursorStyle='|'
-            cursorColor="#60A5FA"
+            cursorColor={data.color}
             typeSpeed={50}
             deleteSpeed={200}
             delaySpeed={1000}
