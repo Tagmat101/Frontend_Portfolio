@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, IconButton, useTheme, useMediaQuery } from '@mui/material';
 import { MoonFull, SunSnowflake } from 'mdi-material-ui';
 
-const Navbar: React.FC = () => {
+const Navbar = ({data}:{data:User}) => {
   const [darkMode, setDarkMode] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
     <AppBar position="static" color={darkMode ? 'inherit' : 'primary'}>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          ~ Hamza Ouabiba
+          ~ {data?.name}
         </Typography>
         <Button
           variant="contained"
