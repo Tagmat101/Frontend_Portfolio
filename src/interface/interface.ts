@@ -28,7 +28,7 @@ interface IEducation {
     description:string;
     responsibilities:string[];
     achievements:string[];
-    skills:string[];
+    skills:ISkill[];
   }
   
   interface IProject {
@@ -40,7 +40,7 @@ interface IEducation {
     endDate: Date;
     responsibilities: string[];
     achievements: string[];
-    skills: string[];
+    skills: ISkill[];
     images?: any[];
   }
   

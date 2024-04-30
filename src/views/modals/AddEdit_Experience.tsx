@@ -24,6 +24,7 @@ import { AddExperience,UpdateExperience } from '@api/ExperienceServices/Service'
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext';
+import { useSkill } from '@hooks/useDetails';
  
  
 const employmentTypes = [
@@ -82,7 +83,8 @@ const employmentTypes = [
         case 'updateState':
           return { ...state, ...action.payload };  
       default:
-        if (action.type in state) {
+        if (action.type in state) { 
+          console.log(JSON.stringify(state.skills) )
           return { ...state, [action.type]: action.payload };
         } else {
           throw new Error(`Unhandled action type: ${action.type}`);
@@ -93,6 +95,7 @@ const employmentTypes = [
 const AddEdit_ExperienceModal = () => { 
   const [state, dispatch] = useReducer(reducer, initialState); 
   const {dataExperienceMod, setDataExperienceMod,openExperience,setOpenExperience} = useContext(DetailsPortfolioContext); 
+  const { skillList} = useSkill();
 
   useEffect(() => {
     if(dataExperienceMod!=null && openExperience==true){
@@ -236,18 +239,27 @@ const AddEdit_ExperienceModal = () => {
                 <InputLabel id='form-layouts-separator-multiple-select-label'>Skills</InputLabel>
                 <Select
                   multiple
-                  value={state.skills}
-                  onChange={(event)=> dispatch({ type: 'skills', payload: event.target.value as string[] })}
-                  id='form-layouts-separator-multiple-select'
+                  value={state.skills.map((skill:ISkill) => skill.id)} // Assuming state.skills is an array of skill objects with an 'id' property
+                  onChange={(event) => {
+                    const selectedSkillIds = event.target.value as string[];   
+                    const selectedSkills = skillList.filter(skill => selectedSkillIds.includes(skill.id));
+                    dispatch({ type: 'skills', payload: selectedSkills });
+                  }}                 
+                  id='form-layouts-separator-multiple-select'   
                   labelId='form-layouts-separator-multiple-select-label'
                   input={<OutlinedInput label='Language' id='select-multiple-language' />}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
+                  renderValue={(selected) => { 
+                    return (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.map((skillId: string) => {
+                          const skill = skillList.find(skill => skill.id === skillId);
+                          return (
+                            <Chip key={skillId} label={skill ? skill.name : 'Unknown Skill'} />
+                          );
+                        })}
                     </Box>
-                  )} 
+                    );
+                  }}
                   MenuProps={{
                     style: {
                       maxHeight: 48 * 4.5 + 8,
@@ -255,17 +267,12 @@ const AddEdit_ExperienceModal = () => {
                     },
                   }}
                 >
-                  <MenuItem value='Proficiency in Programming Languages'>Proficiency in Programming Languages</MenuItem>
-                  <MenuItem value='Software Development and Lifecycle Management'>Software Development and Lifecycle Management</MenuItem>
-                  <MenuItem value='Algorithm Design and Optimization'>Algorithm Design and Optimization</MenuItem>
-                  <MenuItem value='Technical Writing'>Technical Writing</MenuItem>
-                  <MenuItem value='Social Media Management'>Social Media Management</MenuItem>
-                  <MenuItem value='Network Configuration'>Network Configuration</MenuItem>
-                  <MenuItem value='Hardware Deployment'>Hardware Deployment</MenuItem>
-                  <MenuItem value='Security'>Security</MenuItem>
-                  <MenuItem value='Systems and Networks'>Systems and Networks</MenuItem>
-                  <MenuItem value='Data Analysis'>Data Analysis</MenuItem>
-
+                  {
+                    skillList?.map((skill, index) => (
+                      <MenuItem key={index} value={skill.id}>{skill.name}</MenuItem>
+                    ))
+                  }
+            
                 </Select>
               </FormControl>
             </Grid>

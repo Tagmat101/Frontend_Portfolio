@@ -48,8 +48,8 @@ export default function CardProject ({ projectData }: { projectData: IProject })
     const { loading, error,message,deleteProject } = useProject(); 
  
   
-    const handleDeleteBtn = async() => {
-      await deleteProject(projectData.id);
+    const handleDeleteBtn = () => {
+       deleteProject(projectData.id);
       window.location.reload(); 
     }
   

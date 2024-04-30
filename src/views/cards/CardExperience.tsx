@@ -46,8 +46,8 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
   const { message, loading, error,deleteExperience } = useExperience();
   
   const { setDataExperienceMod,setOpenExperience} = useContext(DetailsPortfolioContext); 
-  const handleDeleteBtn = async() => {
-   await  deleteExperience(experienceData.id);
+  const handleDeleteBtn =() => {
+     deleteExperience(experienceData.id);
     window.location.reload(); 
   }
   const handleUpdate = () => {  

@@ -49,8 +49,8 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
  
   const { setDataEducationMod,setOpenEducation} = useContext(DetailsPortfolioContext); 
   
-  const handleDeleteBtn = async () => {
-    await deleteEducation(educationData.id);
+  const handleDeleteBtn =  () => {
+     deleteEducation(educationData.id);
     window.location.reload(); 
   }
   const handleUpdate = () => {  

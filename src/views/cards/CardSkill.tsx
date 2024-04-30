@@ -37,8 +37,8 @@ export default function CardSkill({ skillData }: { skillData: ISkill }) {
     setAnchorEl(null)
   }
   
-  const handleDeleteBtn = async() => { 
-    await deleteSkill(skillData.id);
+  const handleDeleteBtn = () => { 
+     deleteSkill(skillData.id);
  
   }
   if (loading) return <div>Loading...</div>;
