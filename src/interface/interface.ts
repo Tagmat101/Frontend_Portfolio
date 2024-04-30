@@ -23,6 +23,8 @@ interface IEducation {
     jobTitle:string;
     startDate:Date;
     endDate:Date;
+    location:string ;
+    employmentType:string,
     description:string;
     responsibilities:string[];
     achievements:string[];

@@ -1,5 +1,5 @@
 // ** React Imports
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useContext, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -25,6 +25,7 @@ import Pen from 'mdi-material-ui/Pen'
 import Delete from 'mdi-material-ui/Delete'
 import { useDeleteProject } from 'src/@core/hooks/useProject'
 import AddEdit_Project from "@modals/AddEdit_Project"
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
 
 // Styled Grid component
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
@@ -42,9 +43,14 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
 export default function CardProject ({ projectData }: { projectData: IProject }) {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { message, loading, error,handleDelete } = useDeleteProject(projectData?.id);
-  const [openModal,setOpenModal] = useState(false)
- 
+  const { message, loading, error,handleDelete } = useDeleteProject(projectData?.id); 
+  const { setOpenProject,setDataProjectMod} = useContext(DetailsPortfolioContext); 
+
+  const handleUpdate = () => {  
+    setDataProjectMod(projectData)
+    setOpenProject(true)
+  }
+
   const open = Boolean(anchorEl) 
  
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -54,9 +60,7 @@ export default function CardProject ({ projectData }: { projectData: IProject })
     setAnchorEl(null)
   }
  
-  const handleUpdate = () => {
-    setOpenModal(true)
-  }
+ 
   const handleDeleteBtn = () => {
     handleDelete();
     window.location.reload(); 
@@ -148,8 +152,7 @@ export default function CardProject ({ projectData }: { projectData: IProject })
                 <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
         </Button>
       </div>
-      <AddEdit_Project open={openModal} dataProject={projectData} setOpen={setOpenModal}/>
-
+ 
     </Card>
   )
 }

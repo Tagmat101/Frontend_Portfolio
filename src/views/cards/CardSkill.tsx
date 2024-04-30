@@ -1,4 +1,4 @@
-import {useState} from 'react' 
+import {useState,useContext} from 'react' 
 import Card from '@mui/material/Card' 
  import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent' 
@@ -11,6 +11,7 @@ import Pen from 'mdi-material-ui/Pen'
 import Delete from 'mdi-material-ui/Delete'
 import { useDeleteSkill } from '@hooks/useSkill'
 import AddEdit_Skill from '@modals/AddEdit_Skill'
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -25,8 +26,12 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
 export default function CardSkill({ skillData }: { skillData: ISkill }) {
   const { message, loading, error,handleDelete } = useDeleteSkill(skillData.id);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null) 
-  const [openModal,setOpenModal] = useState(false)
+   const { setOpenSkill,setDataSkillMod} = useContext(DetailsPortfolioContext); 
 
+  const handleUpdate = () => {  
+    setDataSkillMod(skillData)
+    setOpenSkill(true)
+  }
   const open = Boolean(anchorEl) 
   const handleClose = () => {
     setAnchorEl(null)
@@ -36,9 +41,7 @@ export default function CardSkill({ skillData }: { skillData: ISkill }) {
     handleDelete();
     window.location.reload(); 
   }
-  const handleUpdate = () => {
-    setOpenModal(true)
-  }
+ 
   return (
    <Card>  
       <Grid container spacing={10}> 
@@ -83,8 +86,7 @@ export default function CardSkill({ skillData }: { skillData: ISkill }) {
                   <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
           </Button>
       </div>
-    <AddEdit_Skill open={openModal} dataSkill={skillData} setOpen={setOpenModal}/>
-
+ 
   </Card> 
   )
 }

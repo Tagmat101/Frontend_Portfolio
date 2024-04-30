@@ -19,8 +19,15 @@ import VerticalAppBarContent from './components/vertical/AppBarContent'
 import { useSettings } from 'src/@core/hooks/useSettings'
 import { ContextPortfolioProvider } from 'src/@core/context/PortfolioContext'
 import { ContextCategorieProvider } from 'src/@core/context/CategorieContext'
-import CategorieUCModal from 'src/views/Modals/CategorieModals/CategorieUCModal'
-import CategorieDModal from 'src/views/Modals/CategorieModals/CategorieDModal'
+import { ContextPortfolioDetailsProvider } from 'src/@core/context/PortfolioDetailsContext'
+
+import CategorieUCModal from '@modals/CategorieModals/CategorieUCModal'
+import CategorieDModal from '@modals/CategorieModals/CategorieDModal'
+
+import AddEdit_EducationModal from '@modals/AddEdit_Education'
+import AddEdit_Experience from '@modals/AddEdit_Experience'
+import AddEdit_Project from '@modals/AddEdit_Project'
+import AddEdit_Skill from '@modals/AddEdit_Skill'
 
 interface Props {
   children: ReactNode
@@ -55,6 +62,7 @@ const UserLayout = ({ children }: Props) => {
   }
 
   return (
+    <ContextPortfolioDetailsProvider>
     <ContextPortfolioProvider>
       <ContextCategorieProvider> {/* Wrap UserLayout with ContextProvider */}
       <VerticalLayout
@@ -78,9 +86,15 @@ const UserLayout = ({ children }: Props) => {
         {/* <UpgradeToProButton /> */}
         <CategorieUCModal />
         <CategorieDModal />
+        <AddEdit_EducationModal/>
+        <AddEdit_Experience/>
+        <AddEdit_Project/>
+        <AddEdit_Skill/>
+
       </VerticalLayout>
       </ContextCategorieProvider>
-    </ContextPortfolioProvider>
+    </ContextPortfolioProvider> 
+    </ContextPortfolioDetailsProvider>
   )
 }
 

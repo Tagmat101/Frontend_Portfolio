@@ -7,8 +7,7 @@ import React, {
     useState,
     useCallback
 } from "react";
-import { Categorie } from "src/utils/interfaces/int";
-
+ 
 interface StateContextType {
     modify: boolean;
     openCatDelete: boolean;

@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useContext, useState} from 'react'
 
 import { useEducationAll } from '@hooks/useEducation'; 
 import EducationCard from '@cards/CardEducation'; 
@@ -17,6 +17,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import Plus from 'mdi-material-ui/Plus'
 import School from 'mdi-material-ui/School'
 import Button from '@mui/material/Button'
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext';
 
 type UseEducationAllReturn = {
   educationList: IEducation[];
@@ -45,19 +46,19 @@ const TabName = styled('span')(({ theme }) => ({
 export default function education(){
   // ** State
   const { educationList, loading, error } = useEducationAll();
-
-   const [openModal,setOpenModal] = useState(false)
+  const { setOpenEducation} = useContext(DetailsPortfolioContext); 
+ 
  
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   const handleCreate =  () => {
-     setOpenModal(true)
+    setOpenEducation(true)
   };
  
   return (
     <Card>
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between' ,padding:"15px"}}>
+        <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between' ,padding:"15px"}}>
  
            <Box sx={{ display: 'flex', alignItems: 'center' }}> 
                 <School />
@@ -66,13 +67,13 @@ export default function education(){
             <Button variant="outlined" onClick={handleCreate} endIcon={<Plus />}> 
                Add 
             </Button>  
-        </div>
-        <div >
+        </Box>
+        <Box >
       {educationList?.map((item: IEducation, index: number) => (
         <EducationCard key={index} educationData={item} />
       ))} 
-    </div>
-    <ActionEducationModal open={openModal} dataEducation={null} setOpen={setOpenModal}/>
+    </Box>
+    <ActionEducationModal />
 
     </Card>
   )

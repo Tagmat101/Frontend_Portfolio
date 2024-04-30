@@ -1,4 +1,4 @@
-import {useEffect,useReducer,forwardRef,FormEvent} from 'react'
+import {useEffect,useReducer,forwardRef,FormEvent, useContext} from 'react'
 import CardContent from '@mui/material/CardContent'
 import InputAdornment from '@mui/material/InputAdornment'
 import Select from '@mui/material/Select';
@@ -23,6 +23,7 @@ import Grid from '@mui/material/Grid'
 import CardHeader from '@mui/material/CardHeader'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext';
 
   type CustomInputProps = {
     label: string;
@@ -56,6 +57,7 @@ import Button from '@mui/material/Button';
     category:"",
     type:""
   };
+  
   function reducer(state, action) {
     switch (action.type) {
       case 'reset':
@@ -71,20 +73,26 @@ import Button from '@mui/material/Button';
         }
     }
   }
-export default function AddEdit_Skill({ open, setOpen, dataSkill}: any) {
+export default function AddEdit_Skill() {
   const [state, dispatch] = useReducer(reducer, initialState); 
- 
-  useEffect(() => {
-    if(dataSkill!=null && open==true){
-      console.log("dataSkill")
-      dispatch({ type: 'updateState', payload: dataSkill}); 
-    }
-  }, [open]);
+  const {dataSkillMod,openSkill,setOpenSkill,setDataSkillMod} = useContext(DetailsPortfolioContext); 
 
-  const handleClose = () => setOpen(false);
+  useEffect(() => {
+    if(dataSkillMod!=null && openSkill==true){
+      dispatch({ type: 'updateState', payload: dataSkillMod});
+    } 
+  }, [openSkill]);
+  
+  const handleClose = ()=>{
+     dispatch({ type: 'reset' }); 
+     setDataSkillMod(null);
+     setOpenSkill(false);
+  };
+
+ 
    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        if(dataSkill==null){ 
+        if(dataSkillMod==null){ 
           const response = await AddSkill(state); 
           dispatch({ type: 'reset' }); 
         }else{
@@ -98,13 +106,13 @@ export default function AddEdit_Skill({ open, setOpen, dataSkill}: any) {
   return (
    
       <Modal
-        open={open}
+        open={openSkill}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
       <Card sx={style} >
-      <CardHeader title={dataSkill== null ? 'Add Skill' : 'Update Skill'} titleTypographyProps={{ variant: 'h6' }} />
+      <CardHeader title={dataSkillMod== null ? 'Add Skill' : 'Update Skill'} titleTypographyProps={{ variant: 'h6' }} />
       <CardContent >
         <form onSubmit={handleSubmit}>
           <Grid container spacing={5}>
@@ -174,9 +182,9 @@ export default function AddEdit_Skill({ open, setOpen, dataSkill}: any) {
             
             <Grid item xs={12}> 
               <Button type='submit' variant='contained' size='large'  sx={{ marginRight: 2 }} >
-              {dataSkill== null ? 'Save' : 'Update'}
+              {dataSkillMod== null ? 'Save' : 'Update'}
               </Button>
-              <Button onClick={()=>setOpen(false)} variant='contained' sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
+              <Button onClick={()=>setOpenSkill(false)} variant='contained' sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
                 Close
               </Button> 
             </Grid>

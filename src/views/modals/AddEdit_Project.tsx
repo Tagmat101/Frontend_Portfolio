@@ -1,4 +1,4 @@
-import {useReducer,useState,useEffect,forwardRef,FormEvent} from 'react';
+import {useReducer,useState,useEffect,forwardRef,FormEvent, useContext} from 'react';
 import Box from '@mui/material/Box'; 
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
@@ -17,6 +17,7 @@ import DatePicker from 'react-datepicker'
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { AddProject,UpdateProject } from '@api/ProjectServices/Services';
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext';
    
 
 const employmentTypes = [
@@ -81,27 +82,47 @@ const employmentTypes = [
     }
   }
   
-const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => { 
+const AddEdit_ProjectModal = () => { 
   const [state, dispatch] = useReducer(reducer, initialState); 
-  const [value, setValue] = useState(null)
-  const [selectedFiles, setSelectedFiles] = useState([]);
+ 
   const [previewImages, setPreviewImages] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]); 
+
+  const {dataProjectMod, setDataProjectMod,openProject,setOpenProject} = useContext(DetailsPortfolioContext); 
 
   useEffect(() => {
-    if(dataProject!=null && open==true){
-      console.log("dataProject")
-      dispatch({ type: 'updateState', payload: dataProject}); 
-    }
-  }, [open]);
+    if(dataProjectMod!=null && openProject==true){
+      dispatch({ type: 'updateState', payload: dataProjectMod});
+    } 
+  }, [openProject]);
+  
+  const handleClose = ()=>{
+     dispatch({ type: 'reset' }); 
+     setDataProjectMod(null);
+     setOpenProject(false);
+  };
 
-  const handleClose = () => setOpen(false);
    const handleSubmit = async (event: FormEvent) => {
-        event.preventDefault();
-        if(dataProject==null){ 
-          const response = await AddProject(state); 
+        event.preventDefault(); 
+   
+
+      // const formData = new FormData();
+          
+      // formData.append('link', state.link);  
+      // formData.append('name', state.name);  
+      // formData.append('description', state.description);  
+      // formData.append('achievements', state.achievements);  
+      // formData.append('responsibilities', state.responsibilities);  
+      // formData.append('skills', state.skills);  
+      // formData.append('endDate', state.endDate);  
+      // formData.append('startDate', state.startDate);  
+      // formData.append('images', state.images);   
+   
+        if(dataProjectMod==null){  
+          const response = await AddProject(state,previewImages); 
           dispatch({ type: 'reset' }); 
         }else{
-          const response = await UpdateProject(state);
+          const response = await UpdateProject(formData);
           dispatch({ type: 'reset' }); 
         }
         handleClose(); 
@@ -128,19 +149,21 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
  
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
-    // setSelectedFiles((selectedFile) => [...selectedFile, file]);
+    setSelectedFiles((selectedFile) => [...selectedFile, file]);
      if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         const result = reader.result;
         if (result && typeof result === 'string') {
           setPreviewImages((prevPreviewImages) => [...prevPreviewImages, result]);
+          // dispatch({ type: 'images', payload: [...previewImages, result] });  
         }
       };
       reader.readAsDataURL(file);
     } else {
       setPreviewImages(null);
-    }
+    } 
+    
   };
   const handleDeleteImage = (indexToDelete:number) => {
     console.log(previewImages)
@@ -151,19 +174,19 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
   const handleChangeImages = (newValue) => { 
     console.log(newValue)
     setPreviewImages(newValue);
-
+    // dispatch({ type: 'images', payload: newValue });  
    };
 
   return (
    
       <Modal
-        open={open}
+        open={openProject}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
       <Card sx={style} >
-      <CardHeader title={dataProject== null ? 'Add Project' : 'Update Project'} titleTypographyProps={{ variant: 'h6' }} />
+      <CardHeader title={dataProjectMod== null ? 'Add Project' : 'Update Project'} titleTypographyProps={{ variant: 'h6' }} />
       <CardContent >
         <form onSubmit={handleSubmit}>
           <Grid container spacing={5}>
@@ -305,10 +328,9 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
                     )}
             /> 
             </Grid>
-            <Grid item xs={12} spacing={2}  >
-           
+            <Grid item xs={12} spacing={2}  > 
                   <Autocomplete
-                      multiple
+                      multiple={true}
                       disableInput 
                       freeSolo
                       sx={{ display: 'flex', flexDirection: 'row' }}
@@ -318,7 +340,7 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
                         value.map((option, index) => (
                           <Chip
                             key={index}
-                            sx={{ width: '100%', height: '100px' }}
+                            sx={{ width: '20%', height: '100px' }}
                             variant="outlined"
                             label={<img src={option} alt={`selectedFile-${index}`} style={{ maxWidth: '100%', maxHeight: '100px' }} />}
                             onDelete={() => handleDeleteImage(index)}  
@@ -329,8 +351,7 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
                       }
                       renderInput={(params) => (
                         <TextField
-                          {...params}
-                          disableInput
+                          {...params} 
                           label="Images"
                           placeholder="Images..."
                         /> 
@@ -400,9 +421,9 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
             </Grid>
             <Grid item xs={12}> 
             <Button color="primary" variant="contained" type='submit'   size='large' disabled={previewImages.length==0} sx={{ marginRight: 2 }} >
-              {dataProject== null ? 'Save' : 'Update'}
+              {dataProjectMod== null ? 'Save' : 'Update'}
               </Button>
-              <Button    color="primary" variant="contained" onClick={()=>setOpen(false)}  sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
+              <Button    color="primary" variant="contained" onClick={()=>setOpenProject(false)}  sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
                 Close
               </Button> 
             </Grid>

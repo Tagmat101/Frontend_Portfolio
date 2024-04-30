@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
   
 // ** React Imports
 import {  useState } from 'react'
@@ -18,6 +18,7 @@ import { useExperienceAll } from '@hooks/useExperience';
 import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline';
 import CardExperience from '@cards/CardExperience'; 
 import ActionExperienceModal from '@modals/AddEdit_Experience'; 
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -41,12 +42,14 @@ export default function experience(){
   // ** State
   const { ExperienceList, loading, error  }= useExperienceAll();
   const [openModal,setOpenModal] = useState(false)
-  
+  const { setOpenExperience} = useContext(DetailsPortfolioContext); 
+
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   const handleCreate =  () => {
-    setOpenModal(true)
+    setOpenExperience(true)
  };
   return (
     <Card>
@@ -66,8 +69,7 @@ export default function experience(){
       ))}
      
     </div>
-    <ActionExperienceModal open={openModal} dataExperience={null} setOpen={setOpenModal}/>
-
+ 
     </Card>
   )
 }

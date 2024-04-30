@@ -1,7 +1,7 @@
  
 
 // ** React Imports
-import { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useContext, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -22,6 +22,7 @@ import { useProjectAll } from '@hooks/useProject';
 import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline';
 import CardProject from '@cards/CardProject';
 import AddProject from '@modals/AddEdit_Project';
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -44,13 +45,14 @@ const TabName = styled('span')(({ theme }) => ({
 export default function project(){
   // ** State
   const { ProjectList, loading, error  }= useProjectAll();
-  const [openModal,setOpenModal] = useState(false)
+   const { setOpenProject} = useContext(DetailsPortfolioContext); 
+ 
   
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   const handleCreate =  () => {
-    setOpenModal(true)
+    setOpenProject(true)
  };
   return (
     <Card>
@@ -70,8 +72,7 @@ export default function project(){
       ))}
       
     </div>
-    <AddProject open={openModal} dataProject={null} setOpen={setOpenModal}/>
-
+ 
     </Card>
   )
 }

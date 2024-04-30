@@ -1,5 +1,5 @@
 // ** React Imports
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useContext, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -25,6 +25,7 @@ import Pen from 'mdi-material-ui/Pen'
 import Delete from 'mdi-material-ui/Delete'
 import { useDeleteExperience } from 'src/@core/hooks/useExperience'
 import AddEdit_Experience from "@modals/AddEdit_Experience"
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
 // Styled Grid component
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   display: 'flex',
@@ -42,8 +43,14 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const { message, loading, error,handleDelete } = useDeleteExperience(experienceData.id);
-  const [openModal,setOpenModal] = useState(false)
- 
+  
+  const { setDataExperienceMod,setOpenExperience} = useContext(DetailsPortfolioContext); 
+
+  const handleUpdate = () => {  
+    setDataExperienceMod(experienceData)
+    setOpenExperience(true)
+  }
+
   const open = Boolean(anchorEl)
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -53,9 +60,7 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
     setAnchorEl(null)
   }
  
-  const handleUpdate = () => {
-    setOpenModal(true)
-  }
+ 
   const handleDeleteBtn = () => {
     handleDelete();
     window.location.reload(); 
@@ -143,8 +148,7 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
                 <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
         </Button>
       </div>
-      <AddEdit_Experience open={openModal} dataExperience={experienceData} setOpen={setOpenModal}/>
-
+ 
     </Card>
   )
 }

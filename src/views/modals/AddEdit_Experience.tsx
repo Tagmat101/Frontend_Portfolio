@@ -1,4 +1,4 @@
-import {useReducer,useEffect,forwardRef,FormEvent} from 'react';
+import {useReducer,useEffect,forwardRef,FormEvent, useContext} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button'; 
 import Modal from '@mui/material/Modal';
@@ -23,6 +23,7 @@ import DatePicker from 'react-datepicker'
 import { AddExperience,UpdateExperience } from '@api/ExperienceServices/Service';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext';
  
  
 const employmentTypes = [
@@ -89,20 +90,26 @@ const employmentTypes = [
     }
   }
   
-const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => { 
+const AddEdit_ExperienceModal = () => { 
   const [state, dispatch] = useReducer(reducer, initialState); 
- 
-  useEffect(() => {
-    if(dataExperience!=null&& open==true){
-      dispatch({ type: 'updateState', payload: dataExperience}); 
-    }
-  }, [open]);
+  const {dataExperienceMod, setDataExperienceMod,openExperience,setOpenExperience} = useContext(DetailsPortfolioContext); 
 
-  const handleClose = () => setOpen(false);
+  useEffect(() => {
+    if(dataExperienceMod!=null && openExperience==true){
+      dispatch({ type: 'updateState', payload: dataExperienceMod});
+    } 
+  }, [openExperience]);
+  
+  const handleClose = ()=>{
+    dispatch({ type: 'reset' }); 
+     setDataExperienceMod(null);
+     setOpenExperience(false);
+  };
+
 
    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        if(dataExperience==null){
+        if(dataExperienceMod==null){
           console.log(state)
           const response = await AddExperience(state);
           console.log(response);
@@ -121,13 +128,13 @@ const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => {
   return (
    
       <Modal
-        open={open}
+        open={openExperience}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Card sx={style} >
-        <CardHeader title={dataExperience== null ? 'Add Experience' : 'Update Experience'} titleTypographyProps={{ variant: 'h6' }} />
+        <CardHeader title={dataExperienceMod== null ? 'Add Experience' : 'Update Experience'} titleTypographyProps={{ variant: 'h6' }} />
       <CardContent >
         <form onSubmit={handleSubmit} >
           <Grid container spacing={5}>
@@ -329,9 +336,9 @@ const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => {
             </Grid>
             <Grid item xs={12}> 
               <Button type='submit' variant='contained' size='large'  sx={{ marginRight: 2 }} >
-              {dataExperience== null ? 'Save' : 'Update'}
+              {dataExperienceMod== null ? 'Save' : 'Update'}
               </Button>
-              <Button onClick={()=>setOpen(false)} variant='contained' sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
+              <Button onClick={()=>setOpenExperience(false)} variant='contained' sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
                 Close
               </Button> 
             </Grid>
@@ -348,5 +355,6 @@ const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => {
 }
 
 export default AddEdit_ExperienceModal;
+
 
  
