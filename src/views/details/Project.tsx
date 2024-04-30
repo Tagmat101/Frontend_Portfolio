@@ -1,16 +1,16 @@
 import React from 'react'
 import CardProject from '@cards/CardProject'; 
-import { useProjectAll } from '@hooks/useProject';
+import { useProject } from '@hooks/useDetails';
  
 export default function Project() {
-  const { ProjectList, loading, error } = useProjectAll();
+  const { projectList, loading, error } = useProject();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>
-      {ProjectList?.map((item:IProject) => (
+      {projectList?.map((item:IProject) => (
             <CardProject  projectData={item} />
       ))}
     </div>

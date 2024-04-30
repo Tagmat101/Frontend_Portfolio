@@ -1,6 +1,6 @@
-import {useContext, useState} from 'react'
+import {useContext} from 'react'
 
-import { useEducationAll } from '@hooks/useEducation'; 
+import { useEducation } from '@hooks/useDetails'; 
 import EducationCard from '@cards/CardEducation'; 
 import ActionEducationModal from '@modals/AddEdit_Education'; 
 // ** React Imports 
@@ -18,12 +18,9 @@ import Plus from 'mdi-material-ui/Plus'
 import School from 'mdi-material-ui/School'
 import Button from '@mui/material/Button'
 import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext';
+ 
 
-type UseEducationAllReturn = {
-  educationList: IEducation[];
-  loading: boolean;
-  error: any;
-};
+ 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     minWidth: 100
@@ -45,9 +42,8 @@ const TabName = styled('span')(({ theme }) => ({
 
 export default function education(){
   // ** State
-  const { educationList, loading, error } = useEducationAll();
+  const { educationList, loading, error } = useEducation();
   const { setOpenEducation} = useContext(DetailsPortfolioContext); 
- 
  
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;

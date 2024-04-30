@@ -1,16 +1,16 @@
 import React from 'react'
 import CardExperience from '@cards/CardExperience'; 
-import { useExperienceAll } from '@hooks/useExperience';
+import { useExperience } from '@hooks/useDetails';
  
 export default function Experience() {
-  const { ExperienceList, loading, error } = useExperienceAll();
+  const { experienceList, loading, error } = useExperience();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>
-      {ExperienceList?.map((item:IExperience) => (
+      {experienceList?.map((item:IExperience) => (
             <CardExperience  experienceData={item} />
       ))}
     </div>

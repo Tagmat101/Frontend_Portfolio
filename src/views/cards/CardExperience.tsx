@@ -26,6 +26,7 @@ import Delete from 'mdi-material-ui/Delete'
 import { useDeleteExperience } from 'src/@core/hooks/useExperience'
 import AddEdit_Experience from "@modals/AddEdit_Experience"
 import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
+import { useExperience } from '@hooks/useDetails'
 // Styled Grid component
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   display: 'flex',
@@ -42,10 +43,13 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
 export default function CardExperience ({ experienceData }: { experienceData: IExperience }) {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { message, loading, error,handleDelete } = useDeleteExperience(experienceData.id);
+  const { message, loading, error,deleteExperience } = useExperience();
   
   const { setDataExperienceMod,setOpenExperience} = useContext(DetailsPortfolioContext); 
-
+  const handleDeleteBtn = async() => {
+   await  deleteExperience(experienceData.id);
+    window.location.reload(); 
+  }
   const handleUpdate = () => {  
     setDataExperienceMod(experienceData)
     setOpenExperience(true)
@@ -61,10 +65,7 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
   }
  
  
-  const handleDeleteBtn = () => {
-    handleDelete();
-    window.location.reload(); 
-  }
+
   return (
     <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>

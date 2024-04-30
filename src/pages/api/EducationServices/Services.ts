@@ -1,7 +1,7 @@
 import axios from "axios"; 
 const root = 'api/education'; 
-import Cookies from 'universal-cookie';
- 
+import Cookies from 'universal-cookie'; 
+
 const cookie = new Cookies() 
 export async function getEducationByID(idEducation:string) {
     try {   
@@ -16,7 +16,7 @@ export async function getEducationByID(idEducation:string) {
       throw error
     }
 }  
-
+ 
 export async function getEducationAll() {
   try {   
     const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${root}/all`; 

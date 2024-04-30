@@ -18,7 +18,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import Stack from '@mui/material/Stack'
 import Plus from 'mdi-material-ui/Plus'
 import Button from '@mui/material/Button'
-import { useProjectAll } from '@hooks/useProject';
+import { useProject } from '@hooks/useDetails';
 import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline';
 import CardProject from '@cards/CardProject';
 import AddProject from '@modals/AddEdit_Project';
@@ -44,7 +44,7 @@ const TabName = styled('span')(({ theme }) => ({
  
 export default function project(){
   // ** State
-  const { ProjectList, loading, error  }= useProjectAll();
+  const { projectList, loading, error  }= useProject();
    const { setOpenProject} = useContext(DetailsPortfolioContext); 
  
   
@@ -67,7 +67,7 @@ export default function project(){
             </Button>  
         </div>
         <div>
-      {ProjectList?.map((item:IProject, index: number) => (
+      {projectList?.map((item:IProject, index: number) => (
           <CardProject key={index} projectData={item} />
       ))}
       

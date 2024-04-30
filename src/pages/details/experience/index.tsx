@@ -14,7 +14,7 @@ import MuiTab, { TabProps } from '@mui/material/Tab'
 import 'react-datepicker/dist/react-datepicker.css'  
 import Plus from 'mdi-material-ui/Plus' 
 import Button from '@mui/material/Button'
-import { useExperienceAll } from '@hooks/useExperience';
+import { useExperience } from '@hooks/useDetails';
 import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline';
 import CardExperience from '@cards/CardExperience'; 
 import ActionExperienceModal from '@modals/AddEdit_Experience'; 
@@ -40,9 +40,8 @@ const TabName = styled('span')(({ theme }) => ({
  
 export default function experience(){
   // ** State
-  const { ExperienceList, loading, error  }= useExperienceAll();
-  const [openModal,setOpenModal] = useState(false)
-  const { setOpenExperience} = useContext(DetailsPortfolioContext); 
+  const { experienceList, loading, error  }= useExperience();
+   const { setOpenExperience} = useContext(DetailsPortfolioContext); 
 
 
   if (loading) return <div>Loading...</div>;
@@ -64,7 +63,7 @@ export default function experience(){
             </Button>  
         </div>
         <div>
-      {ExperienceList?.map((item:IExperience, index: number) => (
+      {experienceList?.map((item:IExperience, index: number) => (
           <CardExperience key={index} experienceData={item} />
       ))}
      

@@ -1,6 +1,5 @@
 import axios from "axios";
-import Cookies from 'universal-cookie';
-
+import Cookies from 'universal-cookie'; 
 
 const root = 'api/project';
 const cookie = new Cookies() 
@@ -81,12 +80,11 @@ export async function getProjectByID(iProject:string) {
       throw error
     }
 }  
-
 export async function getProjectAll() {
   try {   
     const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project/all`;
-    const cookie_ = cookie.get('token-cookie')
-
+    const cookie_ = cookie.get('token-cookie') 
+ 
     const response = await axios.get(url,{
         headers: {
             'Authorization': cookie_
@@ -98,6 +96,8 @@ export async function getProjectAll() {
     throw error
   }
 } 
+ 
+ 
 export async function DeleteProject(idProject:String) {
   try {   
     const cookie_ = cookie.get('token-cookie')

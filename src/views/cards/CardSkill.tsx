@@ -9,7 +9,7 @@ import Button from '@mui/material/Button'
 import Grid, { GridProps } from '@mui/material/Grid' 
 import Pen from 'mdi-material-ui/Pen'
 import Delete from 'mdi-material-ui/Delete'
-import { useDeleteSkill } from '@hooks/useSkill'
+import { useSkill } from '@hooks/useDetails'
 import AddEdit_Skill from '@modals/AddEdit_Skill'
 import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
@@ -24,7 +24,7 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   }
 }))
 export default function CardSkill({ skillData }: { skillData: ISkill }) {
-  const { message, loading, error,handleDelete } = useDeleteSkill(skillData.id);
+   const { loading, error,message,deleteSkill ,setLoading} = useSkill();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null) 
    const { setOpenSkill,setDataSkillMod} = useContext(DetailsPortfolioContext); 
 
@@ -37,10 +37,13 @@ export default function CardSkill({ skillData }: { skillData: ISkill }) {
     setAnchorEl(null)
   }
   
-  const handleDeleteBtn = () => {
-    handleDelete();
-    window.location.reload(); 
+  const handleDeleteBtn = async() => { 
+    await deleteSkill(skillData.id);
+ 
   }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+ 
  
   return (
    <Card>  

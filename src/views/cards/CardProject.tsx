@@ -23,7 +23,7 @@ import GooglePlus from 'mdi-material-ui/GooglePlus'
 import ShareVariant from 'mdi-material-ui/ShareVariant'
 import Pen from 'mdi-material-ui/Pen'
 import Delete from 'mdi-material-ui/Delete'
-import { useDeleteProject } from 'src/@core/hooks/useProject'
+import { useProject } from '@hooks/useDetails'
 import AddEdit_Project from "@modals/AddEdit_Project"
 import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
 
@@ -42,10 +42,17 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
  
 export default function CardProject ({ projectData }: { projectData: IProject }) {
   // ** State
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { message, loading, error,handleDelete } = useDeleteProject(projectData?.id); 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null) 
   const { setOpenProject,setDataProjectMod} = useContext(DetailsPortfolioContext); 
-
+ 
+    const { loading, error,message,deleteProject } = useProject(); 
+ 
+  
+    const handleDeleteBtn = async() => {
+      await deleteProject(projectData.id);
+      window.location.reload(); 
+    }
+  
   const handleUpdate = () => {  
     setDataProjectMod(projectData)
     setOpenProject(true)
@@ -61,10 +68,7 @@ export default function CardProject ({ projectData }: { projectData: IProject })
   }
  
  
-  const handleDeleteBtn = () => {
-    handleDelete();
-    window.location.reload(); 
-  }
+  
   return (
     <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>

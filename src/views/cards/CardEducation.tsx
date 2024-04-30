@@ -28,6 +28,7 @@ import {useDeleteEducation, useEducationAll} from '@hooks/useEducation'
  
 import AddEdit_Education from "@modals/AddEdit_Education"
 import {  DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
+import { useEducation } from '@hooks/useDetails'
 // Styled Grid component
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   display: 'flex',
@@ -44,10 +45,14 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
 const EducationCard = ({ educationData }: { educationData: IEducation }) => {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { message, loading, error ,handleDelete} = useDeleteEducation(educationData.id);
+  const { message, loading, error ,deleteEducation} = useEducation();
  
   const { setDataEducationMod,setOpenEducation} = useContext(DetailsPortfolioContext); 
-
+  
+  const handleDeleteBtn = async () => {
+    await deleteEducation(educationData.id);
+    window.location.reload(); 
+  }
   const handleUpdate = () => {  
     setDataEducationMod(educationData)
     setOpenEducation(true)
@@ -134,7 +139,7 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
                 <Pen fontSize='medium' sx={{ marginRight: 2 }} />
             
           </Button> 
-        <Button onClick={handleDelete}>
+        <Button onClick={handleDeleteBtn}>
                 <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
         </Button>
       </div> 
