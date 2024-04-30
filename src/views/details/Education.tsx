@@ -1,6 +1,6 @@
  
 import React from 'react';
-import { useEducationAll } from '@hooks/useEducation';
+import { useEducation } from '@hooks/useDetails';
 import EducationCard from '@cards/CardEducation';
  
 type UseEducationAllReturn = {
@@ -10,7 +10,7 @@ type UseEducationAllReturn = {
 };
  
 export default function Education (){
-  const { educationList, loading, error } = useEducationAll();
+  const { educationList, loading, error } = useEducation();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;

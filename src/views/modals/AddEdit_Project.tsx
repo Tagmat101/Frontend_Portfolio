@@ -1,4 +1,4 @@
-import {useReducer,useState,useEffect,forwardRef,FormEvent} from 'react';
+import {useReducer,useState,useEffect,forwardRef,FormEvent, useContext} from 'react';
 import Box from '@mui/material/Box'; 
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
@@ -17,6 +17,8 @@ import DatePicker from 'react-datepicker'
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { AddProject,UpdateProject } from '@api/ProjectServices/Services';
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext';
+import { useSkill } from '@hooks/useDetails';
    
 
 const employmentTypes = [
@@ -81,27 +83,48 @@ const employmentTypes = [
     }
   }
   
-const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => { 
+const AddEdit_ProjectModal = () => { 
   const [state, dispatch] = useReducer(reducer, initialState); 
-  const [value, setValue] = useState(null)
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const { skillList} = useSkill();
+
   const [previewImages, setPreviewImages] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]); 
+
+  const {dataProjectMod, setDataProjectMod,openProject,setOpenProject} = useContext(DetailsPortfolioContext); 
 
   useEffect(() => {
-    if(dataProject!=null && open==true){
-      console.log("dataProject")
-      dispatch({ type: 'updateState', payload: dataProject}); 
-    }
-  }, [open]);
+    if(dataProjectMod!=null && openProject==true){
+      dispatch({ type: 'updateState', payload: dataProjectMod});
+    } 
+  }, [openProject]);
+  
+  const handleClose = ()=>{
+     dispatch({ type: 'reset' }); 
+     setDataProjectMod(null);
+     setOpenProject(false);
+  };
 
-  const handleClose = () => setOpen(false);
    const handleSubmit = async (event: FormEvent) => {
-        event.preventDefault();
-        if(dataProject==null){ 
-          const response = await AddProject(state); 
+        event.preventDefault(); 
+   
+
+      // const formData = new FormData();
+          
+      // formData.append('link', state.link);  
+      // formData.append('name', state.name);  
+      // formData.append('description', state.description);  
+      // formData.append('achievements', state.achievements);  
+      // formData.append('responsibilities', state.responsibilities);  
+      // formData.append('skills', state.skills);  
+      // formData.append('endDate', state.endDate);  
+      // formData.append('startDate', state.startDate);  
+      // formData.append('images', state.images);   
+   
+        if(dataProjectMod==null){  
+          const response = await AddProject(state,previewImages); 
           dispatch({ type: 'reset' }); 
         }else{
-          const response = await UpdateProject(state);
+          const response = await UpdateProject(formData);
           dispatch({ type: 'reset' }); 
         }
         handleClose(); 
@@ -128,19 +151,21 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
  
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
-    // setSelectedFiles((selectedFile) => [...selectedFile, file]);
+    setSelectedFiles((selectedFile) => [...selectedFile, file]);
      if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         const result = reader.result;
         if (result && typeof result === 'string') {
           setPreviewImages((prevPreviewImages) => [...prevPreviewImages, result]);
+          // dispatch({ type: 'images', payload: [...previewImages, result] });  
         }
       };
       reader.readAsDataURL(file);
     } else {
       setPreviewImages(null);
-    }
+    } 
+    
   };
   const handleDeleteImage = (indexToDelete:number) => {
     console.log(previewImages)
@@ -151,19 +176,19 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
   const handleChangeImages = (newValue) => { 
     console.log(newValue)
     setPreviewImages(newValue);
-
+    // dispatch({ type: 'images', payload: newValue });  
    };
 
   return (
    
       <Modal
-        open={open}
+        open={openProject}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
       <Card sx={style} >
-      <CardHeader title={dataProject== null ? 'Add Project' : 'Update Project'} titleTypographyProps={{ variant: 'h6' }} />
+      <CardHeader title={dataProjectMod== null ? 'Add Project' : 'Update Project'} titleTypographyProps={{ variant: 'h6' }} />
       <CardContent >
         <form onSubmit={handleSubmit}>
           <Grid container spacing={5}>
@@ -224,22 +249,31 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel id='form-layouts-separator-multiple-select-label'>Skills</InputLabel>
+            <FormControl fullWidth>
+            <InputLabel id='form-layouts-separator-multiple-select-label'>Skills</InputLabel>
                 <Select
                   multiple
-                  value={state.skills}
-                  onChange={(event)=> dispatch({ type: 'skills', payload: event.target.value as string[] })}
-                  id='form-layouts-separator-multiple-select'
+                  value={state.skills.map((skill:ISkill) => skill.id)} // Assuming state.skills is an array of skill objects with an 'id' property
+                  onChange={(event) => {
+                    const selectedSkillIds = event.target.value as string[];   
+                    const selectedSkills = skillList.filter(skill => selectedSkillIds.includes(skill.id));
+                    dispatch({ type: 'skills', payload: selectedSkills });
+                  }}                 
+                  id='form-layouts-separator-multiple-select'   
                   labelId='form-layouts-separator-multiple-select-label'
                   input={<OutlinedInput label='Language' id='select-multiple-language' />}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
+                  renderValue={(selected) => { 
+                    return (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.map((skillId: string) => {
+                          const skill = skillList.find(skill => skill.id === skillId);
+                          return (
+                            <Chip key={skillId} label={skill ? skill.name : 'Unknown Skill'} />
+                          );
+                        })}
                     </Box>
-                  )} 
+                    );
+                  }}
                   MenuProps={{
                     style: {
                       maxHeight: 48 * 4.5 + 8,
@@ -247,17 +281,12 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
                     },
                   }}
                 >
-                  <MenuItem value='Proficiency in Programming Languages'>Proficiency in Programming Languages</MenuItem>
-                  <MenuItem value='Software Development and Lifecycle Management'>Software Development and Lifecycle Management</MenuItem>
-                  <MenuItem value='Algorithm Design and Optimization'>Algorithm Design and Optimization</MenuItem>
-                  <MenuItem value='Technical Writing'>Technical Writing</MenuItem>
-                  <MenuItem value='Social Media Management'>Social Media Management</MenuItem>
-                  <MenuItem value='Network Configuration'>Network Configuration</MenuItem>
-                  <MenuItem value='Hardware Deployment'>Hardware Deployment</MenuItem>
-                  <MenuItem value='Security'>Security</MenuItem>
-                  <MenuItem value='Systems and Networks'>Systems and Networks</MenuItem>
-                  <MenuItem value='Data Analysis'>Data Analysis</MenuItem>
-
+                  {
+                    skillList?.map((skill, index) => (
+                      <MenuItem key={index} value={skill.id}>{skill.name}</MenuItem>
+                    ))
+                  }
+            
                 </Select>
               </FormControl>
             </Grid>
@@ -305,10 +334,9 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
                     )}
             /> 
             </Grid>
-            <Grid item xs={12} spacing={2}  >
-           
+            <Grid item xs={12} spacing={2}  > 
                   <Autocomplete
-                      multiple
+                      multiple={true}
                       disableInput 
                       freeSolo
                       sx={{ display: 'flex', flexDirection: 'row' }}
@@ -318,7 +346,7 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
                         value.map((option, index) => (
                           <Chip
                             key={index}
-                            sx={{ width: '100%', height: '100px' }}
+                            sx={{ width: '20%', height: '100px' }}
                             variant="outlined"
                             label={<img src={option} alt={`selectedFile-${index}`} style={{ maxWidth: '100%', maxHeight: '100px' }} />}
                             onDelete={() => handleDeleteImage(index)}  
@@ -329,8 +357,7 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
                       }
                       renderInput={(params) => (
                         <TextField
-                          {...params}
-                          disableInput
+                          {...params} 
                           label="Images"
                           placeholder="Images..."
                         /> 
@@ -400,9 +427,9 @@ const AddEdit_ProjectModal = ({ open, setOpen, dataProject}: any) => {
             </Grid>
             <Grid item xs={12}> 
             <Button color="primary" variant="contained" type='submit'   size='large' disabled={previewImages.length==0} sx={{ marginRight: 2 }} >
-              {dataProject== null ? 'Save' : 'Update'}
+              {dataProjectMod== null ? 'Save' : 'Update'}
               </Button>
-              <Button    color="primary" variant="contained" onClick={()=>setOpen(false)}  sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
+              <Button    color="primary" variant="contained" onClick={()=>setOpenProject(false)}  sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
                 Close
               </Button> 
             </Grid>

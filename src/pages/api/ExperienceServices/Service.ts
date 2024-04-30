@@ -1,6 +1,6 @@
 import axios from "axios"; 
 const root = 'api/experience';
-import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie'; 
 
 const cookie = new Cookies() 
 export const AddExperience = async(data:IExperience) => {
@@ -51,12 +51,11 @@ export async function getExperienceByID(iExperience:string) {
       throw error
     }
 }  
-
+  
 export async function getExperienceAll() {
   try {   
     const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${root}/all`;
     const cookie_ = cookie.get('token-cookie')
-
 
     const response = await axios.get(url,{
         headers: {

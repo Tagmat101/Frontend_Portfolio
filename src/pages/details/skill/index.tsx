@@ -1,8 +1,7 @@
-import {useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 
-import { useSkillAll } from '@hooks/useSkill'; 
-import CardSkill from '@cards/CardSkill'; 
-import AddEdit_Skill from '@modals/AddEdit_Skill'; 
+import { useSkill } from '@hooks/useDetails'; 
+import CardSkill from '@cards/CardSkill';  
 // ** React Imports 
 
 // ** MUI Imports
@@ -17,7 +16,8 @@ import 'react-datepicker/dist/react-datepicker.css'
 import Plus from 'mdi-material-ui/Plus'
 import School from 'mdi-material-ui/School'
 import Button from '@mui/material/Button'
-
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext';
+ 
  
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -40,16 +40,17 @@ const TabName = styled('span')(({ theme }) => ({
 
 export default function page(){
   // ** State
-  const { skillList, loading, error } = useSkillAll();
-
-   const [openModal,setOpenModal] = useState(false)
+  const { skillList, loading, error} = useSkill();
+  
+   const { setOpenSkill} = useContext(DetailsPortfolioContext); 
+  
  
+  const handleCreate =  () => {
+    setOpenSkill(true)
+ };
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-
-  const handleCreate =  () => {
-     setOpenModal(true)
-  };
+ 
  
   return (
     <Card>
@@ -71,7 +72,7 @@ export default function page(){
           </div>
     
     </div>
-    <AddEdit_Skill open={openModal} dataskill={null} setOpen={setOpenModal}/>
+  
 
     </Card>
   )

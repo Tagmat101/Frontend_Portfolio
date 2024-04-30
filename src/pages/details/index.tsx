@@ -1,6 +1,6 @@
 // ** React Imports
  
-import { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useContext, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -19,10 +19,15 @@ import InformationOutline from 'mdi-material-ui/InformationOutline'
 import TabInfo from 'src/views/account-settings/TabInfo'
 import Education from 'src/views/details/Education'
 import Experience from 'src/views/details/Experience'
+import Project from 'src/views/details/Project'
+import Skill from 'src/views/details/Skill'
+
+import Button from '@mui/material/Button'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-import { School,BriefcaseOutline} from 'mdi-material-ui'  
+import { School,BriefcaseOutline, Plus} from 'mdi-material-ui'  
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     minWidth: 100
@@ -41,63 +46,114 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const AccountSettings = () => {
+const page = () => {
   // ** State
-  const [value, setValue] = useState<string>('account')
- 
+  const [value, setValue] = useState<string>('education')
+  const { setOpenExperience,setOpenEducation,setOpenProject,setOpenSkill} = useContext(DetailsPortfolioContext); 
+  
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue)
   }
+  const handleCreate =  () => {
+    
+    if(value=="education"){
+      setOpenEducation(true)
+    }
+    else if(value=="experience"){
+      setOpenExperience(true)
+    }
+    else if(value=="project"){
+      setOpenProject(true)
+    }
+    else if(value=="skill"){
+      setOpenSkill(true)
+    }
+
+
+  };
 
   return (
     <Card>
       <TabContext value={value}>
-        <TabList
-          onChange={handleChange}
-          aria-label='education tabs'
-          sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
-        >
-          <Tab
-            value='education'
-            label={ 
-              <Box sx={{ display: 'flex', alignItems: 'center' }}> 
-                <School />
-                <TabName>Education</TabName>
-              </Box>  
-            }
-          />
-          <Tab
-            value='experience'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <BriefcaseOutline   />
-                <TabName>Experience</TabName>
-              </Box>
-            }
-          />
-          <Tab
-            value='info'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <InformationOutline />
-                <TabName>Info</TabName>
-              </Box>
-            }
-          />
-        </TabList>
-
+        <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between' ,paddingX:"15px"}}>
+            <TabList
+              onChange={handleChange}
+              aria-label='education tabs'
+              sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
+            > 
+                  <Tab
+                    value='education'
+                    label={ 
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}> 
+                        <School />
+                        <TabName>Education</TabName>
+                      </Box>  
+                    }
+                  />
+                  <Tab
+                    value='experience'
+                    label={
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <BriefcaseOutline   />
+                        <TabName>Experience</TabName>
+                      </Box>
+                    }
+                  />
+                   <Tab
+                    value='project'
+                    label={
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <BriefcaseOutline   />
+                        <TabName>Project</TabName>
+                      </Box>
+                    }
+                  />
+                   <Tab
+                    value='skill'
+                    label={
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <BriefcaseOutline   />
+                        <TabName>Skill</TabName>
+                      </Box>
+                    }
+                  />
+                  
+            </TabList>
+          <Box>
+            <Tab value='add' label={
+              // <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              //   <InformationOutline />
+              //   <TabName>Add</TabName>
+              // </Box>
+                   <Button variant="outlined" onClick={handleCreate} endIcon={<Plus />}> 
+                   Add 
+                </Button>  
+            } />
+          </Box>
+        </Box>
         <TabPanel sx={{ p: 0 }} value='education'>
           <Education />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='experience'>
           <Experience />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='info'>
-          <TabInfo />
+        <TabPanel sx={{ p: 0 }} value='project'>
+              <Project />
         </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='skill'>
+          <Skill />
+        </TabPanel>
+        
+       
+     
+              
+           
+           
+        
       </TabContext>
+       
     </Card>
   )
 }
 
-export default AccountSettings
+export default page

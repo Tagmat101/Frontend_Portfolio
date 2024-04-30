@@ -1,26 +1,35 @@
-interface IEducation {
-  id: string;
-  institution: string; 
-  degree:string;
-  startDate:Date;
-  endDate:Date;
-  fieldOfStudy:string;
-  location:string;
-  description:string;
+interface ISkill{
+    id: string;
+    name:string;
+    icon:string; 
+    type:string;
+    category:string; 
 }
 
- interface IExperience {
-  id: string;
-  companyName: string; 
-  jobTitle:string;
-  startDate:Date;
-  endDate:Date;
-  description:string;
-  responsibilities:string[];
-  achievements:string[];
-  skills:string[];
+interface IEducation {
+    id: string;
+    institution: string; 
+    degree:string;
+    startDate:Date;
+    endDate:Date;
+    fieldOfStudy:string;
+    location:string;
+    description:string;
 }
   
+   interface IExperience {
+    id: string;
+    companyName: string; 
+    jobTitle:string;
+    startDate:Date;
+    endDate:Date;
+    location:string ;
+    employmentType:string,
+    description:string;
+    responsibilities:string[];
+    achievements:string[];
+    skills:ISkill[];
+  }
   
   interface IProject {
     id?: string;
@@ -31,7 +40,7 @@ interface IEducation {
     endDate: Date;
     responsibilities: string[];
     achievements: string[];
-    skills: string[];
+    skills: ISkill[];
     images?: any[];
   }
   
@@ -48,45 +57,35 @@ interface IEducation {
 //these interfaces will help for displaying only for portfolio
 
 interface Education {
-  id: string;
-  institution: string; 
+    id: string;
+    institution: string; 
 }
-
+  
 interface Experience {
-id: string;
-companyName: string; 
+  id: string;
+  companyName: string; 
 }
-
+  
 interface Project {
-id: string;
-name: string;
-} 
-
-interface User {
-  name:string;
-  tel:string;
-  email:string;
-}
-
-interface PortfolioDataHelper { //this interface helps me to get data from db 
-categories: Categorie[];
-educations: Education[];
-experiences: Experience[];
-projects: Project[];
-skills: String[]; 
-}
-
-interface PortfolioData {  
   id: string;
   name: string;
-  color: string;
-  educations: IEducation[];
-  experiences: IExperience[];
-  projects: IProject[];
-  // skills: string[]; 
-  categorie: Categorie;
-  visible: boolean;
-  user: User;
+} 
+  
+interface PortfolioDataHelper { //this interface helps me to get data from db 
+  categories: Categorie[];
+  educations: Education[];
+  experiences: Experience[];
+  projects: Project[];
+  skills: String[]; 
+}
+
+ interface PortfolioData {  
+    name: string;
+    color: string;
+    educations: IEducation[];
+    experiences: IExperience[];
+    projects: IProject[];
+    skills: string[]; 
 }
 
 
@@ -96,13 +95,3 @@ interface CategorieHelper {
   state: boolean;
 }
 
-
- interface Categories {
-  categories: Categorie[];
-}
-
-interface User {
-   name:string;
-   tel:string;
-   email:string;
-}

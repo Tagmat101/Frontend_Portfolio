@@ -19,9 +19,14 @@ import VerticalAppBarContent from './components/vertical/AppBarContent'
 import { useSettings } from 'src/@core/hooks/useSettings'
 import { ContextPortfolioProvider } from 'src/@core/context/PortfolioContext'
 import { ContextCategorieProvider } from 'src/@core/context/CategorieContext'
+import { ContextPortfolioDetailsProvider } from 'src/@core/context/PortfolioDetailsContext'
 import CategorieUCModal from 'src/views/Modals/CategorieModals/CategorieUCModal'
 import CategorieDModal from 'src/views/Modals/CategorieModals/CategorieDModal'
 import Confirmation from 'src/views/Modals/PortfolioModals/Confirmation'
+import AddEdit_EducationModal from '@modals/AddEdit_Education'
+import AddEdit_ExperienceModal from '@modals/AddEdit_Experience'
+import AddEdit_ProjectModal from '@modals/AddEdit_Project'
+import AddEdit_Skill from '@modals/AddEdit_Skill'
 
 interface Props {
   children: ReactNode
@@ -56,6 +61,7 @@ const UserLayout = ({ children }: Props) => {
   }
 
   return (
+    <ContextPortfolioDetailsProvider>
     <ContextPortfolioProvider>
       <ContextCategorieProvider> {/* Wrap UserLayout with ContextProvider */}
       <VerticalLayout
@@ -80,9 +86,15 @@ const UserLayout = ({ children }: Props) => {
         <CategorieUCModal />
         <CategorieDModal />
         <Confirmation />
+        <AddEdit_EducationModal/>
+        <AddEdit_ExperienceModal/>
+        <AddEdit_ProjectModal/>
+        <AddEdit_Skill/>
+
       </VerticalLayout>
       </ContextCategorieProvider>
-    </ContextPortfolioProvider>
+    </ContextPortfolioProvider> 
+    </ContextPortfolioDetailsProvider>
   )
 }
 

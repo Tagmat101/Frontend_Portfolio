@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
   
 // ** React Imports
 import {  useState } from 'react'
@@ -14,10 +14,11 @@ import MuiTab, { TabProps } from '@mui/material/Tab'
 import 'react-datepicker/dist/react-datepicker.css'  
 import Plus from 'mdi-material-ui/Plus' 
 import Button from '@mui/material/Button'
-import { useExperienceAll } from '@hooks/useExperience';
+import { useExperience } from '@hooks/useDetails';
 import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline';
 import CardExperience from '@cards/CardExperience'; 
 import ActionExperienceModal from '@modals/AddEdit_Experience'; 
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -39,14 +40,15 @@ const TabName = styled('span')(({ theme }) => ({
  
 export default function experience(){
   // ** State
-  const { ExperienceList, loading, error  }= useExperienceAll();
-  const [openModal,setOpenModal] = useState(false)
-  
+  const { experienceList, loading, error  }= useExperience();
+   const { setOpenExperience} = useContext(DetailsPortfolioContext); 
+
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   const handleCreate =  () => {
-    setOpenModal(true)
+    setOpenExperience(true)
  };
   return (
     <Card>
@@ -61,13 +63,12 @@ export default function experience(){
             </Button>  
         </div>
         <div>
-      {ExperienceList?.map((item:IExperience, index: number) => (
+      {experienceList?.map((item:IExperience, index: number) => (
           <CardExperience key={index} experienceData={item} />
       ))}
      
     </div>
-    <ActionExperienceModal open={openModal} dataExperience={null} setOpen={setOpenModal}/>
-
+ 
     </Card>
   )
 }

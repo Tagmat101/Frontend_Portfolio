@@ -1,4 +1,4 @@
-import {useReducer,useEffect,forwardRef,FormEvent} from 'react';
+import {useReducer,useEffect,forwardRef,FormEvent, useContext} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button'; 
 import Modal from '@mui/material/Modal';
@@ -23,6 +23,8 @@ import DatePicker from 'react-datepicker'
 import { AddExperience,UpdateExperience } from '@api/ExperienceServices/Service';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext';
+import { useSkill } from '@hooks/useDetails';
  
  
 const employmentTypes = [
@@ -81,7 +83,8 @@ const employmentTypes = [
         case 'updateState':
           return { ...state, ...action.payload };  
       default:
-        if (action.type in state) {
+        if (action.type in state) { 
+          console.log(JSON.stringify(state.skills) )
           return { ...state, [action.type]: action.payload };
         } else {
           throw new Error(`Unhandled action type: ${action.type}`);
@@ -89,20 +92,27 @@ const employmentTypes = [
     }
   }
   
-const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => { 
+const AddEdit_ExperienceModal = () => { 
   const [state, dispatch] = useReducer(reducer, initialState); 
- 
-  useEffect(() => {
-    if(dataExperience!=null&& open==true){
-      dispatch({ type: 'updateState', payload: dataExperience}); 
-    }
-  }, [open]);
+  const {dataExperienceMod, setDataExperienceMod,openExperience,setOpenExperience} = useContext(DetailsPortfolioContext); 
+  const { skillList} = useSkill();
 
-  const handleClose = () => setOpen(false);
+  useEffect(() => {
+    if(dataExperienceMod!=null && openExperience==true){
+      dispatch({ type: 'updateState', payload: dataExperienceMod});
+    } 
+  }, [openExperience]);
+  
+  const handleClose = ()=>{
+    dispatch({ type: 'reset' }); 
+     setDataExperienceMod(null);
+     setOpenExperience(false);
+  };
+
 
    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        if(dataExperience==null){
+        if(dataExperienceMod==null){
           console.log(state)
           const response = await AddExperience(state);
           console.log(response);
@@ -121,13 +131,13 @@ const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => {
   return (
    
       <Modal
-        open={open}
+        open={openExperience}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Card sx={style} >
-        <CardHeader title={dataExperience== null ? 'Add Experience' : 'Update Experience'} titleTypographyProps={{ variant: 'h6' }} />
+        <CardHeader title={dataExperienceMod== null ? 'Add Experience' : 'Update Experience'} titleTypographyProps={{ variant: 'h6' }} />
       <CardContent >
         <form onSubmit={handleSubmit} >
           <Grid container spacing={5}>
@@ -229,18 +239,27 @@ const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => {
                 <InputLabel id='form-layouts-separator-multiple-select-label'>Skills</InputLabel>
                 <Select
                   multiple
-                  value={state.skills}
-                  onChange={(event)=> dispatch({ type: 'skills', payload: event.target.value as string[] })}
-                  id='form-layouts-separator-multiple-select'
+                  value={state.skills.map((skill:ISkill) => skill.id)} // Assuming state.skills is an array of skill objects with an 'id' property
+                  onChange={(event) => {
+                    const selectedSkillIds = event.target.value as string[];   
+                    const selectedSkills = skillList.filter(skill => selectedSkillIds.includes(skill.id));
+                    dispatch({ type: 'skills', payload: selectedSkills });
+                  }}                 
+                  id='form-layouts-separator-multiple-select'   
                   labelId='form-layouts-separator-multiple-select-label'
                   input={<OutlinedInput label='Language' id='select-multiple-language' />}
-                  renderValue={(selected) => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map((value) => (
-                        <Chip key={value} label={value} />
-                      ))}
+                  renderValue={(selected) => { 
+                    return (
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        {selected.map((skillId: string) => {
+                          const skill = skillList.find(skill => skill.id === skillId);
+                          return (
+                            <Chip key={skillId} label={skill ? skill.name : 'Unknown Skill'} />
+                          );
+                        })}
                     </Box>
-                  )} 
+                    );
+                  }}
                   MenuProps={{
                     style: {
                       maxHeight: 48 * 4.5 + 8,
@@ -248,17 +267,12 @@ const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => {
                     },
                   }}
                 >
-                  <MenuItem value='Proficiency in Programming Languages'>Proficiency in Programming Languages</MenuItem>
-                  <MenuItem value='Software Development and Lifecycle Management'>Software Development and Lifecycle Management</MenuItem>
-                  <MenuItem value='Algorithm Design and Optimization'>Algorithm Design and Optimization</MenuItem>
-                  <MenuItem value='Technical Writing'>Technical Writing</MenuItem>
-                  <MenuItem value='Social Media Management'>Social Media Management</MenuItem>
-                  <MenuItem value='Network Configuration'>Network Configuration</MenuItem>
-                  <MenuItem value='Hardware Deployment'>Hardware Deployment</MenuItem>
-                  <MenuItem value='Security'>Security</MenuItem>
-                  <MenuItem value='Systems and Networks'>Systems and Networks</MenuItem>
-                  <MenuItem value='Data Analysis'>Data Analysis</MenuItem>
-
+                  {
+                    skillList?.map((skill, index) => (
+                      <MenuItem key={index} value={skill.id}>{skill.name}</MenuItem>
+                    ))
+                  }
+            
                 </Select>
               </FormControl>
             </Grid>
@@ -329,9 +343,9 @@ const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => {
             </Grid>
             <Grid item xs={12}> 
               <Button type='submit' variant='contained' size='large'  sx={{ marginRight: 2 }} >
-              {dataExperience== null ? 'Save' : 'Update'}
+              {dataExperienceMod== null ? 'Save' : 'Update'}
               </Button>
-              <Button onClick={()=>setOpen(false)} variant='contained' sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
+              <Button onClick={()=>setOpenExperience(false)} variant='contained' sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
                 Close
               </Button> 
             </Grid>
@@ -348,5 +362,6 @@ const AddEdit_ExperienceModal = ({ open, setOpen, dataExperience}: any) => {
 }
 
 export default AddEdit_ExperienceModal;
+
 
  

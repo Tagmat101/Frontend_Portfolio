@@ -1,7 +1,7 @@
  
 
 // ** React Imports
-import { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useContext, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -18,10 +18,11 @@ import 'react-datepicker/dist/react-datepicker.css'
 import Stack from '@mui/material/Stack'
 import Plus from 'mdi-material-ui/Plus'
 import Button from '@mui/material/Button'
-import { useProjectAll } from '@hooks/useProject';
+import { useProject } from '@hooks/useDetails';
 import BriefcaseOutline from 'mdi-material-ui/BriefcaseOutline';
 import CardProject from '@cards/CardProject';
 import AddProject from '@modals/AddEdit_Project';
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -43,14 +44,15 @@ const TabName = styled('span')(({ theme }) => ({
  
 export default function project(){
   // ** State
-  const { ProjectList, loading, error  }= useProjectAll();
-  const [openModal,setOpenModal] = useState(false)
+  const { projectList, loading, error  }= useProject();
+   const { setOpenProject} = useContext(DetailsPortfolioContext); 
+ 
   
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   const handleCreate =  () => {
-    setOpenModal(true)
+    setOpenProject(true)
  };
   return (
     <Card>
@@ -65,13 +67,12 @@ export default function project(){
             </Button>  
         </div>
         <div>
-      {ProjectList?.map((item:IProject, index: number) => (
+      {projectList?.map((item:IProject, index: number) => (
           <CardProject key={index} projectData={item} />
       ))}
       
     </div>
-    <AddProject open={openModal} dataProject={null} setOpen={setOpenModal}/>
-
+ 
     </Card>
   )
 }

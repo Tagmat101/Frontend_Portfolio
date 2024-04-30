@@ -6,7 +6,7 @@ import HomeOutline from 'mdi-material-ui/HomeOutline'
 import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
-import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
+import BagPersonal from 'mdi-material-ui/BagPersonal'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended' 
 import SchoolIcon from 'mdi-material-ui/School';
@@ -32,6 +32,11 @@ const navigation = (): VerticalNavItemsType => {
       title: 'Portfolio Settings',
       icon: AccountCogOutline,
       path: '/portfolio-settings'
+    },
+    {
+      title: 'My Personal Details',
+      icon: BagPersonal,
+      path: '/details'
     },
     {
       sectionTitle: 'My Personal Details'

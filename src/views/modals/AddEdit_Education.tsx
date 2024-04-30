@@ -1,4 +1,4 @@
-import {useReducer,useEffect,forwardRef} from 'react';
+import {useReducer,useEffect,forwardRef,useContext,SetStateAction, Dispatch, useState} from 'react';
  
 import Button from '@mui/material/Button'; 
 import Modal from '@mui/material/Modal';
@@ -16,6 +16,9 @@ import MessageOutline from 'mdi-material-ui/MessageOutline'
 import { MapMarker, School } from 'mdi-material-ui';
 import DatePicker from 'react-datepicker'
 import { AddEducation,UpdateEducation } from '@api/EducationServices/Services';
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext';
+import { CategorieContext } from 'src/@core/context/CategorieContext';
+ 
 
   type CustomInputProps = {
     label: string;
@@ -45,6 +48,7 @@ import { AddEducation,UpdateEducation } from '@api/EducationServices/Services';
     description: '',
     institution:''
   };
+ 
   function reducer(state, action) {
     switch (action.type) {
       case 'reset':
@@ -59,46 +63,54 @@ import { AddEducation,UpdateEducation } from '@api/EducationServices/Services';
         }
     }
   }
-  
-const AddEdit_EducationModal = ({ open, setOpen ,dataEducation}: any) => { 
-  const [state, dispatch] = useReducer(reducer, initialState); 
- 
-  useEffect(() => {
-    if(dataEducation!=null&& open==true){
-      dispatch({ type: 'updateState', payload: dataEducation});
+  interface StateContextType { 
+    dataEducationMod: IEducation|null; 
+    setDataEducationMod: Dispatch<SetStateAction<IEducation|null>>; 
+}
 
-    }
-  }, [open]);
-  const handleClose = () => setOpen(false);
+const AddEdit_EducationModal = () => { 
+  const [state, dispatch] = useReducer(reducer, initialState);  
+  const { dataEducationMod,setDataEducationMod,openEducation,setOpenEducation} = useContext(DetailsPortfolioContext); 
+
+  useEffect(() => {
+    if(dataEducationMod!=null && openEducation==true){
+    
+      dispatch({ type: 'updateState', payload: dataEducationMod});
+      
+    } 
+  }, [openEducation]);
+  
+  const handleClose = ()=>{
+    dispatch({ type: 'reset' }); 
+     setDataEducationMod(null);
+     setOpenEducation(false);
+  };
 
    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        if(dataEducation==null){
+        if(dataEducationMod==null){
           console.log(state)
           const response = await AddEducation(state);
           console.log(response);
-          dispatch({ type: 'reset' }); 
+          
         }else{
           console.log(state)
-          const response = await UpdateEducation(state);
-          console.log(response);
-          dispatch({ type: 'reset' }); 
-        }
+          const response = await UpdateEducation(state);   
+        } 
         handleClose(); 
-        window.location.reload();
-       
+        window.location.reload(); 
   };
 
   return (
   
       <Modal
-        open={open}
+        open={openEducation}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Card sx={style}>
-      <CardHeader title={dataEducation == null ? 'Add Education' : 'Update Education'} titleTypographyProps={{ variant: 'h6' }} />
+      <CardHeader title={dataEducationMod == null ? 'Add Education' : 'Update Education'} titleTypographyProps={{ variant: 'h6' }} />
       <CardContent>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={5}>
@@ -211,9 +223,9 @@ const AddEdit_EducationModal = ({ open, setOpen ,dataEducation}: any) => {
             </Grid>
             <Grid item xs={12}>
             <Button type='submit' variant='contained' size='large'  sx={{ marginRight: 2 }} >
-            {dataEducation== null ? 'Save' : 'Update'}
+            {dataEducationMod== null ? 'Save' : 'Update'}
               </Button>
-              <Button onClick={()=>setOpen(false)} variant='contained' sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
+              <Button onClick={()=>setOpenEducation(false)} variant='contained' sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
                 Close
               </Button> 
             </Grid>

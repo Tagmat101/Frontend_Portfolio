@@ -1,5 +1,5 @@
 // ** React Imports
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useState,useContext } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -25,8 +25,10 @@ import Plus from 'mdi-material-ui/Plus'
 import Pen from 'mdi-material-ui/Pen'
 import Delete from 'mdi-material-ui/Delete'
 import {useDeleteEducation, useEducationAll} from '@hooks/useEducation' 
-import { AddEducation } from 'src/Api/EducationService/Education'
+ 
 import AddEdit_Education from "@modals/AddEdit_Education"
+import {  DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
+import { useEducation } from '@hooks/useDetails'
 // Styled Grid component
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   display: 'flex',
@@ -43,9 +45,18 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
 const EducationCard = ({ educationData }: { educationData: IEducation }) => {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { message, loading, error ,handleDelete} = useDeleteEducation(educationData.id);
-  const [openModal,setOpenModal] = useState(false)
-
+  const { message, loading, error ,deleteEducation} = useEducation();
+ 
+  const { setDataEducationMod,setOpenEducation} = useContext(DetailsPortfolioContext); 
+  
+  const handleDeleteBtn =  () => {
+     deleteEducation(educationData.id);
+    window.location.reload(); 
+  }
+  const handleUpdate = () => {  
+    setDataEducationMod(educationData)
+    setOpenEducation(true)
+  }
   const open = Boolean(anchorEl)
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -54,12 +65,8 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-
-  console.log(educationData.endDate)
-
-  const handleUpdate = () => {
-    setOpenModal(true)
-  }
+ 
+ 
   return (
     <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>
@@ -132,12 +139,10 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
                 <Pen fontSize='medium' sx={{ marginRight: 2 }} />
             
           </Button> 
-        <Button onClick={handleDelete}>
+        <Button onClick={handleDeleteBtn}>
                 <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
         </Button>
-      </div>
-      <AddEdit_Education open={openModal} dataEducation={educationData} setOpen={setOpenModal}/>
-
+      </div> 
     </Card>
   )
 }

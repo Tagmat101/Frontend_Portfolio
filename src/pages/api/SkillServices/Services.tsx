@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from 'universal-cookie';
+ 
 
 
 const root = 'api/skill';
@@ -71,6 +72,7 @@ export async function getSkillByID(idSkill:string) {
     }
 }  
 
+ 
 export async function getSkillAll() {
   try {   
     const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/skill/all`;

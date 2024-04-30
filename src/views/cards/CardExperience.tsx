@@ -1,5 +1,5 @@
 // ** React Imports
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useContext, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -25,6 +25,8 @@ import Pen from 'mdi-material-ui/Pen'
 import Delete from 'mdi-material-ui/Delete'
 import { useDeleteExperience } from 'src/@core/hooks/useExperience'
 import AddEdit_Experience from "@modals/AddEdit_Experience"
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
+import { useExperience } from '@hooks/useDetails'
 // Styled Grid component
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   display: 'flex',
@@ -41,9 +43,18 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
 export default function CardExperience ({ experienceData }: { experienceData: IExperience }) {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { message, loading, error,handleDelete } = useDeleteExperience(experienceData.id);
-  const [openModal,setOpenModal] = useState(false)
- 
+  const { message, loading, error,deleteExperience } = useExperience();
+  
+  const { setDataExperienceMod,setOpenExperience} = useContext(DetailsPortfolioContext); 
+  const handleDeleteBtn =() => {
+     deleteExperience(experienceData.id);
+    window.location.reload(); 
+  }
+  const handleUpdate = () => {  
+    setDataExperienceMod(experienceData)
+    setOpenExperience(true)
+  }
+
   const open = Boolean(anchorEl)
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -53,13 +64,8 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
     setAnchorEl(null)
   }
  
-  const handleUpdate = () => {
-    setOpenModal(true)
-  }
-  const handleDeleteBtn = () => {
-    handleDelete();
-    window.location.reload(); 
-  }
+ 
+
   return (
     <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>
@@ -143,8 +149,7 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
                 <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
         </Button>
       </div>
-      <AddEdit_Experience open={openModal} dataExperience={experienceData} setOpen={setOpenModal}/>
-
+ 
     </Card>
   )
 }

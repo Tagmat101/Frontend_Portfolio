@@ -1,5 +1,5 @@
 // ** React Imports
-import { MouseEvent, useState } from 'react'
+import { MouseEvent, useContext, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -23,8 +23,9 @@ import GooglePlus from 'mdi-material-ui/GooglePlus'
 import ShareVariant from 'mdi-material-ui/ShareVariant'
 import Pen from 'mdi-material-ui/Pen'
 import Delete from 'mdi-material-ui/Delete'
-import { useDeleteProject } from 'src/@core/hooks/useProject'
+import { useProject } from '@hooks/useDetails'
 import AddEdit_Project from "@modals/AddEdit_Project"
+import { DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
 
 // Styled Grid component
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
@@ -41,10 +42,22 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
  
 export default function CardProject ({ projectData }: { projectData: IProject }) {
   // ** State
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { message, loading, error,handleDelete } = useDeleteProject(projectData?.id);
-  const [openModal,setOpenModal] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null) 
+  const { setOpenProject,setDataProjectMod} = useContext(DetailsPortfolioContext); 
  
+    const { loading, error,message,deleteProject } = useProject(); 
+ 
+  
+    const handleDeleteBtn = () => {
+       deleteProject(projectData.id);
+      window.location.reload(); 
+    }
+  
+  const handleUpdate = () => {  
+    setDataProjectMod(projectData)
+    setOpenProject(true)
+  }
+
   const open = Boolean(anchorEl) 
  
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -54,13 +67,8 @@ export default function CardProject ({ projectData }: { projectData: IProject })
     setAnchorEl(null)
   }
  
-  const handleUpdate = () => {
-    setOpenModal(true)
-  }
-  const handleDeleteBtn = () => {
-    handleDelete();
-    window.location.reload(); 
-  }
+ 
+  
   return (
     <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>
@@ -148,8 +156,7 @@ export default function CardProject ({ projectData }: { projectData: IProject })
                 <Delete fontSize='medium' sx={{ marginRight: 2 }} /> 
         </Button>
       </div>
-      <AddEdit_Project open={openModal} dataProject={projectData} setOpen={setOpenModal}/>
-
+ 
     </Card>
   )
 }
