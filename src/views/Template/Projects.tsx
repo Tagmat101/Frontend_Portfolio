@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, Box, styled, Typography, Grid } from '@mui/material';
 import { useProjectAll, useProjectByID } from '@hooks/useProject';
 import CardProTemplate from './CardsTemplate/CardProTemplate';
+import CardProject from '@cards/CardProject';
 
 // Styled component for the container
 const FrameContainer = styled(Card)({
@@ -23,7 +24,7 @@ const ProjectsTemp = ({data}:{data:IProject[]}) => {
       </Grid>
       {data?.map((item, index) => (
         <Grid item xs={12} key={index}>
-            <CardProTemplate projectData={item} />
+            <CardProject projectData={item} />
         </Grid>
       ))}
     </Grid> : <></>
