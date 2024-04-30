@@ -41,6 +41,7 @@ const FormCreation = () => {
   console.log(dataPortfolioMod)
   const [selectedCategorie, setSelectedCategorie] = useState<string>(modify ? (dataPortfolioMod.categorie != null ?  dataPortfolioMod.categorie.id : "" ) : "");
 
+
   const handleAddItem = (type: keyof ListState, value: string) => {
     if (!list[type].some(item => item.id === value)) {
       let itemName = '';
