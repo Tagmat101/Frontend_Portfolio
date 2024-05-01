@@ -4,7 +4,7 @@ import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import { Card, CardContent, CardHeader, MenuItem, Select, TextField, Typography, CircularProgress, Autocomplete, Chip, InputAdornment } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
-import { CreatePortfolioPost, ModifyPortfolio } from 'src/pages/api/PortfolioServices/Services';
+import { ModifyPortfolio } from 'src/pages/api/PortfolioServices/Services';
 import { getEducationAll } from 'src/pages/api/EducationServices/Services';
 import { getProjectAll } from 'src/pages/api/ProjectServices/Services';
 import { getExperienceAll } from 'src/pages/api/ExperienceServices/Service';
@@ -21,6 +21,7 @@ interface ListState {
 
 const FormCreation = () => {
   const {modify,dataPortfolioMod,setModify,setValue , setOpenPortCrea , setDataPortfolioCrea} = useContext(PortfolioContext)
+  const [resume, setResume] = useState<string>('');
   const [list, setList] = useState<ListState>({
     educations: modify ? dataPortfolioMod.educations : [],
     experiences: modify ? dataPortfolioMod.experiences : [],
@@ -112,7 +113,8 @@ const FormCreation = () => {
           educations: list.educations.map(edu => ({ id: edu.id })),
           experiences: list.experiences.map(exp => ({ id: exp.id })),
           projects: list.projects.map(proj => ({ id: proj.id })),
-          categorie: {id: selectedCategorie}
+          categorie: {id: selectedCategorie},
+          resume: resume 
         }
       };
 
@@ -124,7 +126,8 @@ const FormCreation = () => {
           educations: list.educations.map(edu => ({ institution: edu.institution })),
           experiences: list.experiences.map(exp => ({ companyName: exp.companyName })),
           projects: list.projects.map(proj => ({ name: proj.name })),
-          categorie: {id: selectedCategorie}
+          categorie: {id: selectedCategorie},
+          resume: resume ? "you've selected your resume" : "No resume selected"
         }
       }
 
@@ -156,6 +159,28 @@ const FormCreation = () => {
       console.error(error);
     }
   };
+
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const MAX_FILE_SIZE_MB = 3;
+    const selectedFile = event.target.files && event.target.files[0];
+    if (selectedFile) {
+      // Check file size
+      const fileSizeInMB = selectedFile.size / (1024 * 1024);
+      if (fileSizeInMB > MAX_FILE_SIZE_MB) {
+        alert(`Selected file exceeds the maximum allowed size of ${MAX_FILE_SIZE_MB} MB.`);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Data = reader.result?.toString().split(',')[1]; 
+        setResume(base64Data || ''); 
+      };
+      reader.readAsDataURL(selectedFile); 
+    }
+  };
+  
 
   useEffect(() => {
     let isMounted = true; // Track if the component is mounted
@@ -427,6 +452,27 @@ const FormCreation = () => {
                 </Select>
               </FormControl>
             </Grid>
+
+
+             {/* Resume file */}
+             <Grid item xs={12}>
+              <FormControl fullWidth>
+                  <input
+                      type="file"
+                      accept=".pdf" // You can restrict the file types here if needed
+                      style={{ display: 'none' }}
+                      id="file-input"
+                      onChange={handleFileChange}
+                    />
+                    <label htmlFor="file-input">
+                      <Button variant="contained" component="span">
+                        Choose Resume
+                      </Button>
+                    </label>
+              </FormControl>
+              {resume && <Typography variant="body1">File chosen</Typography>}
+            </Grid>
+
 
             <Grid item xs={12}>
               <Button type='submit' variant='contained' size='large' onClick={handleCreate}>

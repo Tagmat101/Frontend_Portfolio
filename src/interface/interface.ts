@@ -70,6 +70,12 @@ interface Project {
   id: string;
   name: string;
 } 
+
+interface User {
+  name: string;
+  email: string;
+  tel: string;
+}
   
 interface PortfolioDataHelper { //this interface helps me to get data from db 
   categories: Categorie[];
@@ -80,12 +86,17 @@ interface PortfolioDataHelper { //this interface helps me to get data from db
 }
 
  interface PortfolioData {  
+    id: string;
     name: string;
     color: string;
     educations: IEducation[];
     experiences: IExperience[];
     projects: IProject[];
     skills: string[]; 
+    visible: boolean;
+    categorie: Categorie;
+    user: User;
+    resume: string;
 }
 
 

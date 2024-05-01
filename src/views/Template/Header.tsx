@@ -1,18 +1,36 @@
 import React, { useState } from 'react';
-import { Button, Typography, Link, Box, styled } from '@mui/material';
+import { Button, Typography, Link, Box } from '@mui/material';
 import { Typewriter } from 'react-simple-typewriter';
-import { Eye, Github, Linkedin } from 'mdi-material-ui';
+import { Github, Linkedin } from 'mdi-material-ui';
 
-const Header = ({data}:{data:PortfolioData}) => {
-  const [view, setView] = useState(false);
-  const [fr, setFr] = useState(true);
+const Header = ({ data }: { data: PortfolioData }) => {
+  const [showResume, setShowResume] = useState(false);
 
   const handleViewResume = () => {
-    setView(!view);
+    setShowResume(true);
+  };
+
+  const downloadPDF = (pdf: string) => {
+    const randomName = generateRandomName();
+    const linkSource = `data:application/pdf;base64,${pdf}`;
+    const downloadLink = document.createElement("a");
+    const fileName = `${randomName}_resume.pdf`;
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
+  };
+
+  const generateRandomName = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const length = 10;
+    let randomName = '';
+    for (let i = 0; i < length; i++) {
+        randomName += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return randomName;
   };
 
   return (
-    data ? 
     <Box
       sx={{
         height: '80vh',
@@ -51,7 +69,8 @@ const Header = ({data}:{data:PortfolioData}) => {
         </Link>
       </Box>
       <Box sx={{ marginTop: 3 }}>
-       <button
+        <button
+          onClick={() => downloadPDF(data.resume)}
           style={{
             backgroundColor: data.color,
             padding: '13px',
@@ -65,7 +84,7 @@ const Header = ({data}:{data:PortfolioData}) => {
             marginRight: '10px',
           }}
         >
-          View Resume
+          Download resume
         </button>
         <Button
           variant="outlined"
@@ -77,7 +96,7 @@ const Header = ({data}:{data:PortfolioData}) => {
           View All projects
         </Button>
       </Box>
-    </Box> : <></>
+    </Box>
   );
 };
 
