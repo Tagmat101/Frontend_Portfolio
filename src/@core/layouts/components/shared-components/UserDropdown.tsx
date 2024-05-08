@@ -75,7 +75,6 @@ const UserDropdown = () => {
       color: 'text.secondary'
     }
   }
-  console.log(data)
   return (
     <Fragment>
       <Badge
