@@ -39,7 +39,7 @@ const Trophy = ({data}:{data:PortfolioData[]}) => {
           
         </Typography>
         <Typography variant='h5' sx={{ my: 4, color: 'primary.main' }}>
-          {data.length}
+          {data.length} Portfolios 
         </Typography>
         <Button size='small' variant='contained'>
           View Portfolios
