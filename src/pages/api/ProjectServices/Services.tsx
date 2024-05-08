@@ -21,25 +21,22 @@ export const GetDataProjects = async() => {
 }
  
 /////////////////////////////////////////////////////////////////////////////
-export const AddProject = async (data: IProject,previewImages:any) => {
+export const AddProject = async (data: IProject) => {
   try {
    
     const cookie_ = cookie.get('token-cookie');
 
-    const formData = new FormData(); 
-    formData.append('project',  JSON.stringify(data));
  
-    if (previewImages && previewImages.length > 0) {
-      for (const image of previewImages) {
-          formData.append('images', image);
-      }
-    }
+    // if (previewImages && previewImages.length > 0) {
+    //   for (const image of previewImages) {
+    //       formData.append('images', image);
+    //   }
+    // }
 
     const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project/create`;
-    const response = await axios.post(url, formData, {
+    const response = await axios.post(url, data, {
       headers: {
-        Authorization: `Bearer ${cookie_}`,
-        'Content-Type': 'multipart/form-data'
+        Authorization:cookie_
       }
     });
     console.log(response.data);

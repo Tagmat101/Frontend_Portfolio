@@ -13,6 +13,7 @@ import IconButton from '@mui/material/IconButton'
 import CardContent from '@mui/material/CardContent'
 import CardActions from '@mui/material/CardActions'
 import Grid, { GridProps } from '@mui/material/Grid'
+import { Alert } from '@mui/material';
 
 // ** Icons Imports
 import Twitter from 'mdi-material-ui/Twitter'
@@ -24,7 +25,6 @@ import ShareVariant from 'mdi-material-ui/ShareVariant'
 import Plus from 'mdi-material-ui/Plus'
 import Pen from 'mdi-material-ui/Pen'
 import Delete from 'mdi-material-ui/Delete'
-import {useDeleteEducation, useEducationAll} from '@hooks/useEducation' 
  
 import AddEdit_Education from "@modals/AddEdit_Education"
 import {  DetailsPortfolioContext } from 'src/@core/context/PortfolioDetailsContext'
@@ -41,7 +41,9 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
     borderRight: `1px solid ${theme.palette.divider}`
   }
 }))
-
+function formatDate(date: string): string { 
+  return date.split('T')[0];
+}
 const EducationCard = ({ educationData }: { educationData: IEducation }) => {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -70,11 +72,17 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
   return (
     <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>
-        <StyledGrid item md={5} xs={12}>
-          <CardContent sx={{ display: 'flex', alignItems: 'center' ,justifyContent: 'center', }}>
-            <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' />
-          </CardContent>
-        </StyledGrid>
+        <StyledGrid  md={3} >
+        
+        {/* <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' /> */}
+        <img
+         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+
+        src={educationData.institutionLogo}
+      />           
+  
+    </StyledGrid>
+      
         <Grid
           item
           xs={12}
@@ -85,51 +93,76 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
           }}
         >
           <CardContent>
-            <Typography variant='h6' sx={{ marginBottom: 2 }}>
-            {educationData.institution}
-            </Typography>
-    
-            <Typography variant='body2' sx={{ marginBottom: 3.5 }}>
-            {educationData.degree}
-             </Typography>
-            <Typography sx={{ fontWeight: 500, marginBottom: 3 }}>
-            {educationData.startDate}
-              <Box component='span' sx={{ fontWeight: 'bold' }}>
-              {educationData.endDate}
+             
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+            <Typography variant='body2'sx={{fontWeight: 'bold'}} >
+
+                institution :
+                </Typography> 
+              {
+                 <Typography variant='body2' sx={{fontWeight: 400 ,marginRight: 2}}>
+                  {educationData.institution}
+                </Typography>
+              } 
+              
+            </Box>
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+            <Typography variant='body2'sx={{fontWeight: 'bold'}} >
+
+                degree :
+                </Typography> 
+              {
+                 <Typography variant='body2'>
+                  {educationData.degree}
+                </Typography>
+              } 
+              
+            </Box>
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+            <Typography variant='body2'sx={{fontWeight: 'bold'}} >
+
+                location :
+                </Typography> 
+              {
+                 <Typography variant='body2'sx={{fontWeight: 400 ,marginRight: 2}}>
+                  {educationData.location}
+                </Typography>
+              } 
+              
+            </Box>
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+            <Typography variant='body2'sx={{fontWeight: 'bold'}} >
+                fieldOfStudy :
+                </Typography> 
+              {
+                 <Typography variant='body2'sx={{fontWeight: 400 ,marginRight: 2}}>
+                  {educationData.fieldOfStudy}
+                </Typography>
+              } 
+              
+            </Box>
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+                <Typography variant='body2'sx={{fontWeight: 'bold'}} >
+                description :
+                </Typography> 
+              {
+                 <Typography variant='body2' sx={{fontWeight: 400 ,marginRight: 2}}>
+                  {educationData.description}
+                </Typography>
+              } 
+              
+            </Box>
+            <Typography sx={{ fontWeight: 400, marginBottom: 3 ,display:"flex",flexDirection:"row" }} >
+            <Box   sx={{ fontWeight: 400,paddingRight:"10px"}}>
+            {formatDate(educationData.startDate)}  
+            </Box>
+   
+              <Box component='span' sx={{ fontWeight: 400}}>
+                 {formatDate(educationData.endDate)} 
               </Box>
             </Typography>
           </CardContent>
-          <CardActions className='card-action-dense'>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-              <Button>
-                <CartPlus fontSize='small' sx={{ marginRight: 2 }} />
-            
-              </Button> 
-              <Menu
-                open={open}
-                id='long-menu'
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'long-button'
-                }}
-              >
-                <MenuItem onClick={handleClose}>
-                  <Facebook />
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Twitter />
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Linkedin />
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <GooglePlus />
-                </MenuItem>
-              </Menu>
-            </Box>
-            
-          </CardActions>
+           
         </Grid>
         
       </Grid>
