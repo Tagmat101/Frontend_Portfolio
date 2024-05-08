@@ -46,16 +46,21 @@ export default function CardSkill({ skillData }: { skillData: ISkill }) {
  
  
   return (
-   <Card>  
+   <Card sx={{ maxWidth: '20%', maxHeight: '40%',margin:"5px"}}>  
       <Grid container spacing={10}> 
         {
         skillData?.icon!=""
         &&
         <StyledGrid item md={5} xs={12}>
-          <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img width={100} height={100} alt={skillData.name} src={skillData.icon} /> 
-          </CardContent>
-        </StyledGrid> 
+        <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img
+            alt={skillData.name}
+            src={skillData.icon}
+            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+          /> 
+        </CardContent>
+      </StyledGrid>
+      
         } 
         <Grid
           item

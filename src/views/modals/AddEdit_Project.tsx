@@ -65,7 +65,7 @@ const employmentTypes = [
     startDate: new Date(),
     endDate:new Date(),
     responsibilities:[],  
-    images:[]
+    imageUrl:"",
   };
   function reducer(state, action) {
     switch (action.type) {
@@ -121,14 +121,14 @@ const AddEdit_ProjectModal = () => {
       // formData.append('images', state.images);   
    
         if(dataProjectMod==null){  
-          const response = await AddProject(state,previewImages); 
+          const response = await AddProject(state); 
           dispatch({ type: 'reset' }); 
         }else{
-          const response = await UpdateProject(formData);
+          const response = await UpdateProject(state);
           dispatch({ type: 'reset' }); 
         }
         handleClose(); 
-        // window.location.reload(); 
+        window.location.reload(); 
   };
 
   // const handleImages = (newValue) => {
@@ -198,6 +198,21 @@ const AddEdit_ProjectModal = () => {
                 label='Project Name' 
                 onChange={(e) => dispatch({ type: 'name', payload: e.target.value })}
                 value={state.name}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <Briefcase />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField 
+                fullWidth
+                label='image url' 
+                onChange={(e) => dispatch({ type: 'imageUrl', payload: e.target.value })}
+                value={state.imageUrl}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position='start'>
@@ -334,7 +349,7 @@ const AddEdit_ProjectModal = () => {
                     )}
             /> 
             </Grid>
-            <Grid item xs={12} spacing={2}  > 
+            {/* <Grid item xs={12} spacing={2}  > 
                   <Autocomplete
                       multiple={true}
                       disableInput 
@@ -377,7 +392,7 @@ const AddEdit_ProjectModal = () => {
                     </label>
                 
 
-                </Grid>
+                </Grid> */}
                                 {/* {selectedFiles?.length > 0 ? (
                     selectedFiles.map((file, index) => (
                       <Typography key={index} variant="body1" component="span" marginLeft={1}>
@@ -426,7 +441,7 @@ const AddEdit_ProjectModal = () => {
               />
             </Grid>
             <Grid item xs={12}> 
-            <Button color="primary" variant="contained" type='submit'   size='large' disabled={previewImages.length==0} sx={{ marginRight: 2 }} >
+            <Button color="primary" variant="contained" type='submit'   size='large'   sx={{ marginRight: 2 }} >
               {dataProjectMod== null ? 'Save' : 'Update'}
               </Button>
               <Button    color="primary" variant="contained" onClick={()=>setOpenProject(false)}  sx={{ bgcolor: 'red', '&:hover': {backgroundColor: 'darkred'}}} size='large'>
