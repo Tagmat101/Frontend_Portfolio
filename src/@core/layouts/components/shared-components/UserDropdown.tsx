@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, SyntheticEvent, Fragment } from 'react'
+import { useState, SyntheticEvent, Fragment, useEffect } from 'react'
 
 // ** Next Import
 import { useRouter } from 'next/router'
@@ -22,7 +22,8 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import { logoutUser } from '@api/UserServices/Services'
+import { GetUserDetails, logoutUser } from '@api/UserServices/Services'
+import { useDataFetching } from '@hooks/useFetchingData'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -43,6 +44,8 @@ const UserDropdown = () => {
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget)
   }
+
+  const {data} = useDataFetching<User>(GetUserDetails)
 
   const handleDropdownClose = (url?: string) => {
     if (url) {
@@ -72,7 +75,6 @@ const UserDropdown = () => {
       color: 'text.secondary'
     }
   }
-
   return (
     <Fragment>
       <Badge
@@ -107,9 +109,9 @@ const UserDropdown = () => {
               <Avatar alt='John Doe' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', marginLeft: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{data?.name}</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                Admin
+                Admin {data?.name}
               </Typography>
             </Box>
           </Box>
@@ -141,10 +143,10 @@ const UserDropdown = () => {
           </Box>
         </MenuItem>
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
+          {/* <Box sx={styles}>
             <CurrencyUsd sx={{ marginRight: 2 }} />
             Pricing
-          </Box>
+          </Box> */}
         </MenuItem>
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
