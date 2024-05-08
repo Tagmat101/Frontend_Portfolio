@@ -26,7 +26,7 @@ import React, {
     modify: false,
     value: 'portfolio' ,
     openPortCrea: false,
-    dataPortfolioMod: {categorie: {id: "" , name: "" , state: false},id: "",visible: false,name: "", color: "" , educations: [],experiences: [] , projects: []},
+    dataPortfolioMod: {categorie: {id: "" , name: "" , state: false},id: "",visible: false,name: "", color: "" , educations: [],experiences: [] , projects: [],skills: [],resume: '',user: {name: '',email: '' , tel: ''}},
     dataPortfolioCrea: {},
     setModify: () => {},
     setDataPortfolioMod: () => {},
@@ -48,7 +48,10 @@ import React, {
         educations: [],
         experiences: [],
         projects: [],
-        categorie: {id: "" , name: "" , state: false}
+        categorie: {id: "" , name: "" , state: false},
+        resume: '',
+        user: {email: '',name: '',tel: ''},
+        skills: []
     });
     const [dataPortfolioCrea , setDataPortfolioCrea] = useState<any>({})
     const [modify, setModify] = useState<boolean>(false);

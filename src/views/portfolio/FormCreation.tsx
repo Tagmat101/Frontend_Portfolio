@@ -20,7 +20,7 @@ interface ListState {
 }
 
 const FormCreation = () => {
-  const {modify,dataPortfolioMod,setModify,setValue , setOpenPortCrea , setDataPortfolioCrea} = useContext(PortfolioContext)
+  const {modify,dataPortfolioMod,setDataPortfolioMod,setModify,setValue , setOpenPortCrea , setDataPortfolioCrea} = useContext(PortfolioContext)
   const [resume, setResume] = useState<string>('');
   const [list, setList] = useState<ListState>({
     educations: modify ? dataPortfolioMod.educations : [],
@@ -150,6 +150,7 @@ const FormCreation = () => {
       if(modify) {
         setModify(false)
         setValue('view')
+        document.location.reload()
       }
       setLoading(false);
       
