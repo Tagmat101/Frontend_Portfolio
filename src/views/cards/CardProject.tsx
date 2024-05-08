@@ -39,7 +39,9 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
     borderRight: `1px solid ${theme.palette.divider}`
   }
 }))
- 
+function formatDate(date: string): string { 
+  return date.split('T')[0];
+}
 export default function CardProject ({ projectData }: { projectData: IProject }) {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null) 
@@ -70,14 +72,14 @@ export default function CardProject ({ projectData }: { projectData: IProject })
  
   
   return (
-    <Card sx={{margin:"10px"}}>
-      <Grid container spacing={6}>
+    <Card sx={{  maxHeight: '30%',margin:"10px"}}>  
+    <Grid container spacing={6}>
         <StyledGrid  md={3} >
        
             {/* <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' /> */}
             <img
-            style={{ maxWidth: '100%', maxHeight: '200px' }}
-            src={projectData.images?.length > 0 ? `data:image/png;base64,${projectData.images[0]}` : ""}
+                   style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            src={projectData.imageUrl}
           />           
       
         </StyledGrid>
@@ -91,59 +93,81 @@ export default function CardProject ({ projectData }: { projectData: IProject })
           }}
         >
           <CardContent>
-            <Typography variant='h6' sx={{ marginBottom: 2 }}>
-            {projectData.name}
-            </Typography>
-            <Typography variant='body2' sx={{ marginBottom: 3.5 }}>
-            {projectData.description}
-             </Typography>
+           
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+            <Typography variant='body2'sx={{fontWeight: 'bold'}} >
+
+                name :
+                </Typography> 
+              {
+                 <Typography variant='body2'>
+                     {projectData.name}
+                </Typography>
+              } 
+              
+            </Box>
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+            <Typography variant='body2'sx={{fontWeight: 'bold'}} >
+
+            description :
+                </Typography> 
+              {
+                 <Typography variant='body2'>
+                     {projectData.description}
+                </Typography>
+              } 
+              
+            </Box>
+            
+           
             <Typography sx={{ fontWeight: 500, marginBottom: 3 }}>
-            {projectData.startDate} -  
+            {formatDate(projectData.startDate)} -   
               <Box component='span' sx={{ fontWeight: 'bold' }}>
-               {projectData.endDate}
+               {formatDate(projectData.endDate)}
               </Box>
             </Typography>
-          </CardContent>
-          <CardActions className='card-action-dense'>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-              <Button>
-                <CartPlus fontSize='small' sx={{ marginRight: 2 }} />
-            
-              </Button>
-              <IconButton
-                id='long-button'
-                aria-label='share'
-                aria-haspopup='true'
-                onClick={handleClick}
-                aria-controls='long-menu'
-                aria-expanded={open ? 'true' : undefined}
-              >
-                <ShareVariant fontSize='small' />
-              </IconButton>
-              <Menu
-                open={open}
-                id='long-menu'
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'long-button'
-                }}
-              >
-                <MenuItem onClick={handleClose}>
-                  <Facebook />
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Twitter />
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Linkedin />
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <GooglePlus />
-                </MenuItem>
-              </Menu>
+
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+                <Typography variant='body2' >
+                responsibilities :
+                </Typography> 
+              {
+                projectData.responsibilities.map((item, index) => (
+                  <Typography key={index} variant='body2' sx={{marginRight: 2}}>
+                    {item}
+                  </Typography> 
+                ))
+              } 
+              
             </Box>
-          </CardActions>
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5 }}>
+                <Typography variant='body2' >
+                achievements : 
+                </Typography> 
+              {
+                projectData.achievements.map((item, index) => (
+                  <Typography key={index} variant='body2'  sx={{marginRight: 2}}>
+                    {item}
+                  </Typography> 
+                ))
+              } 
+              
+            </Box>
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5 }}>
+                <Typography variant='body2' >
+                skills : 
+                </Typography> 
+              {
+                projectData.skills.map((item, index) => (
+                  <Typography key={index} variant='body2' sx={{marginRight: 2}}>
+                    {item.name}
+                  </Typography> 
+                ))
+              } 
+              
+            </Box>
+          </CardContent>
+          
         </Grid>
       </Grid>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>

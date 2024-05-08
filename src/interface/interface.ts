@@ -9,6 +9,7 @@ interface ISkill{
 interface IEducation {
     id: string;
     institution: string; 
+    institutionLogo: string; 
     degree:string;
     startDate:Date;
     endDate:Date;
@@ -20,6 +21,7 @@ interface IEducation {
    interface IExperience {
     id: string;
     companyName: string; 
+    companyLogo: string; 
     jobTitle:string;
     startDate:Date;
     endDate:Date;
@@ -41,7 +43,7 @@ interface IEducation {
     responsibilities: string[];
     achievements: string[];
     skills: ISkill[];
-    images?: any[];
+    imageUrl?: string;
   }
   
    interface Categorie {

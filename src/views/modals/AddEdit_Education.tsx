@@ -46,6 +46,7 @@ import { CategorieContext } from 'src/@core/context/CategorieContext';
     fieldOfStudy: '',
     location: '',
     description: '',
+    institutionLogo:'',
     institution:''
   };
  
@@ -121,6 +122,22 @@ const AddEdit_EducationModal = () => {
                 placeholder='Ex: Boston University'
                 onChange={(e) => dispatch({ type: 'institution', payload: e.target.value })}
                 value={state.institution}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <School />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label='School'
+                placeholder='Ex: icon'
+                onChange={(e) => dispatch({ type: 'institutionLogo', payload: e.target.value })}
+                value={state.institutionLogo}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position='start'>

@@ -73,6 +73,7 @@ const employmentTypes = [
     jobTitle: '',
     employmentType:"",
     companyName:'',
+    companyLogo:'',
     location:""
     
   };
@@ -175,7 +176,22 @@ const AddEdit_ExperienceModal = () => {
                 }}
               />
             </Grid> 
-
+            <Grid item xs={12}>
+              <TextField
+                fullWidth 
+                value={state.companyLogo} 
+                onChange={(e) => dispatch({ type: 'companyLogo', payload: e.target.value })}
+                label='Company Logo'
+                placeholder="Ex: icon"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <EmailOutline />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Grid> 
             <Grid item xs={12}>
               <FormControl fullWidth required>
                 <InputLabel id='form-layouts-separator-select-label'>Employment Type</InputLabel>
@@ -239,7 +255,7 @@ const AddEdit_ExperienceModal = () => {
                 <InputLabel id='form-layouts-separator-multiple-select-label'>Skills</InputLabel>
                 <Select
                   multiple
-                  value={state.skills.map((skill:ISkill) => skill.id)} // Assuming state.skills is an array of skill objects with an 'id' property
+                  value={state.skills.map((skill:ISkill) => skill.id)}  
                   onChange={(event) => {
                     const selectedSkillIds = event.target.value as string[];   
                     const selectedSkills = skillList.filter(skill => selectedSkillIds.includes(skill.id));

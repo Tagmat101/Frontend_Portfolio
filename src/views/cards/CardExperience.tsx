@@ -39,7 +39,9 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
     borderRight: `1px solid ${theme.palette.divider}`
   }
 }))
- 
+function formatDate(date: string): string { 
+  return date.split('T')[0];
+}
 export default function CardExperience ({ experienceData }: { experienceData: IExperience }) {
   // ** State
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -69,11 +71,16 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
   return (
     <Card sx={{margin:"10px"}}>
       <Grid container spacing={6}>
-        <StyledGrid item md={5} xs={12}>
-          <CardContent sx={{ display: 'flex', alignItems: 'center' ,justifyContent: 'center', }}>
-            <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' />
-          </CardContent>
-        </StyledGrid>
+      <StyledGrid  md={3} >
+       
+       {/* <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' /> */}
+       <img
+       style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+       src={experienceData.companyLogo}
+     />           
+ 
+   </StyledGrid>
+      
         <Grid
           item
           xs={12}
@@ -84,59 +91,92 @@ export default function CardExperience ({ experienceData }: { experienceData: IE
           }}
         >
           <CardContent>
-            <Typography variant='h6' sx={{ marginBottom: 2 }}>
-            {experienceData.jobTitle}
-            </Typography>
-            <Typography variant='body2' sx={{ marginBottom: 3.5 }}>
-            {experienceData.companyName}
-             </Typography>
-            <Typography sx={{ fontWeight: 500, marginBottom: 3 }}>
-            {experienceData.startDate} -  
-              <Box component='span' sx={{ fontWeight: 'bold' }}>
-               {experienceData.endDate}
+           
+            
+             <Box sx={{fontWeight: 400,display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+                <Typography variant='body2'  sx={{fontWeight: 'bold'}}>
+                job Title :
+                </Typography> 
+              {
+                 <Typography variant='body2'>
+                  {experienceData.jobTitle}
+                </Typography>
+              } 
+              
+            </Box>
+             <Box sx={{dfontWeight: 400,display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+                <Typography variant='body2' sx={{fontWeight: 'bold'}} >
+                company Name :
+                </Typography> 
+              {
+                 <Typography variant='body2'>
+                  {experienceData.companyName}
+                </Typography>
+              } 
+              
+            </Box>
+            
+             <Box sx={{ display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+                <Typography variant='body2'  sx={{fontWeight: 'bold' }}>
+                employment Type :
+                </Typography> 
+              {
+                 <Typography variant='body2' sx={{fontWeight: 400}}>
+                 {experienceData.employmentType}
+                </Typography>
+              } 
+              
+            </Box>
+            <Box sx={{ display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+                <Typography variant='body2'  sx={{fontWeight: 'bold'}}>
+                responsibilities :
+                </Typography> 
+              {
+                experienceData.responsibilities.map((item, index) => (
+                  <Typography key={index} variant='body2'  sx={{fontWeight: 400 ,marginRight: 2}}>
+                    {item}
+                  </Typography> 
+                ))
+              } 
+              
+            </Box>
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5 }}>
+                <Typography variant='body2'  sx={{fontWeight: 'bold'}}>
+                achievements :
+                </Typography> 
+              {
+                experienceData.achievements.map((item, index) => (
+                  <Typography key={index} variant='body2' sx={{fontWeight: 400 ,marginRight: 2}}>
+                    {item}
+                  </Typography> 
+                ))
+              } 
+              
+            </Box>
+            <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5 }}>
+                <Typography variant='body2' sx={{fontWeight: 'bold'}}>
+                skills :
+                </Typography> 
+              {
+                experienceData.skills.map((item, index) => (
+                  <Typography key={index} variant='body2' sx={{fontWeight: 400 ,marginRight: 2}}>
+                    {item.name}
+                  </Typography> 
+                ))
+              } 
+              
+            </Box>
+            <Typography sx={{ fontWeight: 400, marginBottom: 3 ,display:"flex",flexDirection:"row" }} >
+            <Box   sx={{ fontWeight: 400,paddingRight:"10px"}}>
+            {formatDate(experienceData.startDate)}  
+            </Box>
+   
+              <Box component='span' sx={{ fontWeight: 400}}>
+                 {formatDate(experienceData.endDate)} 
               </Box>
             </Typography>
           </CardContent>
-          <CardActions className='card-action-dense'>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-              <Button>
-                <CartPlus fontSize='small' sx={{ marginRight: 2 }} />
-            
-              </Button>
-              <IconButton
-                id='long-button'
-                aria-label='share'
-                aria-haspopup='true'
-                onClick={handleClick}
-                aria-controls='long-menu'
-                aria-expanded={open ? 'true' : undefined}
-              >
-                <ShareVariant fontSize='small' />
-              </IconButton>
-              <Menu
-                open={open}
-                id='long-menu'
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                MenuListProps={{
-                  'aria-labelledby': 'long-button'
-                }}
-              >
-                <MenuItem onClick={handleClose}>
-                  <Facebook />
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Twitter />
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Linkedin />
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <GooglePlus />
-                </MenuItem>
-              </Menu>
-            </Box>
-          </CardActions>
+           
         </Grid>
       </Grid>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
