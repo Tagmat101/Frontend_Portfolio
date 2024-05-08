@@ -20,68 +20,116 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
+import { useDataFetching } from '@hooks/useFetchingData'
+import { GetCategoriesPort } from '@api/CategoriePortServices/Service'
+import { CogBox, Folder, LayersMinus, Presentation } from 'mdi-material-ui'
+import { getSkillAll } from '@api/SkillServices/Services'
+import { getProjectAll } from '@api/ProjectServices/Services'
+import { getEducationAll } from '@api/EducationServices/Services'
 
-interface DataType {
-  stats: string
-  title: string
-  color: ThemeColor
-  icon: ReactElement
-}
 
-const salesData: DataType[] = [
-  {
-    stats: '245k',
-    title: 'Sales',
-    color: 'primary',
-    icon: <TrendingUp sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '12.5k',
-    title: 'Customers',
-    color: 'success',
-    icon: <AccountOutline sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '1.54k',
-    color: 'warning',
-    title: 'Products',
-    icon: <CellphoneLink sx={{ fontSize: '1.75rem' }} />
-  },
-  {
-    stats: '$88k',
-    color: 'info',
-    title: 'Revenue',
-    icon: <CurrencyUsd sx={{ fontSize: '1.75rem' }} />
-  }
-]
 
-const renderStats = () => {
-  return salesData.map((item: DataType, index: number) => (
-    <Grid item xs={12} sm={3} key={index}>
-      <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar
-          variant='rounded'
-          sx={{
-            mr: 3,
-            width: 44,
-            height: 44,
-            boxShadow: 3,
-            color: 'common.white',
-            backgroundColor: `${item.color}.main`
-          }}
-        >
-          {item.icon}
-        </Avatar>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Typography variant='caption'>{item.title}</Typography>
-          <Typography variant='h6'>{item.stats}</Typography>
+
+const renderStats = ({dataCategories,skillsData,projectsData,educationsData}:{dataCategories:Categorie[],skillsData:ISkill[],projectsData:IProject[],educationsData:Education[]}) => {
+  
+  return(
+    <>
+      <Grid item xs={12} sm={3}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar
+            variant='rounded'
+            sx={{
+              mr: 3,
+              width: 44,
+              height: 44,
+              boxShadow: 3,
+              color: 'common.white',
+              backgroundColor: `warning.main`
+            }}
+          >
+            <LayersMinus sx={{ fontSize: '1.75rem' }}/>
+          </Avatar>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography variant='caption'>Categories</Typography>
+            <Typography variant='h6'>{dataCategories.length}</Typography>
+          </Box>
         </Box>
-      </Box>
-    </Grid>
-  ))
+     </Grid>
+
+
+     <Grid item xs={12} sm={3}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar
+            variant='rounded'
+            sx={{
+              mr: 3,
+              width: 44,
+              height: 44,
+              boxShadow: 3,
+              color: 'common.white',
+              backgroundColor: `primary.main`
+            }}
+          >
+            <CogBox sx={{ fontSize: '1.75rem' }}/>
+          </Avatar>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography variant='caption'>Skills</Typography>
+            <Typography variant='h6'>{skillsData.length}</Typography>
+          </Box>
+        </Box>
+     </Grid>
+
+
+     <Grid item xs={12} sm={3}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar
+            variant='rounded'
+            sx={{
+              mr: 3,
+              width: 44,
+              height: 44,
+              boxShadow: 3,
+              color: 'common.white',
+              backgroundColor: `info.main`
+            }}
+          >
+            <Folder sx={{ fontSize: '1.75rem' }}/>
+          </Avatar>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography variant='caption'>Projects</Typography>
+            <Typography variant='h6'>{projectsData.length}</Typography>
+          </Box>
+        </Box>
+     </Grid>
+
+
+     <Grid item xs={12} sm={3}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Avatar
+            variant='rounded'
+            sx={{
+              mr: 3,
+              width: 44,
+              height: 44,
+              boxShadow: 3,
+              color: 'common.white',
+              backgroundColor: `success.main`
+            }}
+          >
+            <Presentation sx={{ fontSize: '1.75rem' }}/>
+          </Avatar>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography variant='caption'>Educations</Typography>
+            <Typography variant='h6'>{educationsData.length}</Typography>
+          </Box>
+        </Box>
+     </Grid>
+     
+    </>
+  )
 }
 
-const StatisticsCard = () => {
+const StatisticsCard = ({dataCategories,skillsData,projectsData,educationsData}:{dataCategories:Categorie[],skillsData:ISkill[],projectsData:IProject[],educationsData:Education[]}) => {
   return (
     <Card>
       <CardHeader
@@ -109,7 +157,7 @@ const StatisticsCard = () => {
       />
       <CardContent sx={{ pt: theme => `${theme.spacing(3)} !important` }}>
         <Grid container spacing={[5, 0]}>
-          {renderStats()}
+           {renderStats({ dataCategories, skillsData, projectsData, educationsData })}
         </Grid>
       </CardContent>
     </Card>

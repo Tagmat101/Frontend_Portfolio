@@ -14,6 +14,12 @@ import DotsVertical from 'mdi-material-ui/DotsVertical'
 
 // ** Types
 import { ThemeColor } from 'src/@core/layouts/types'
+import { GetCategoriesPort } from '@api/CategoriePortServices/Service'
+import { getSkillAll } from '@api/SkillServices/Services'
+import { getProjectAll } from '@api/ProjectServices/Services'
+import { getEducationAll } from '@api/EducationServices/Services'
+import { useDataFetching } from '@hooks/useFetchingData'
+import { GetAllPortfolios } from '@api/PortfolioServices/Services'
 
 interface DataType {
   title: string
@@ -55,7 +61,8 @@ const data: DataType[] = [
   }
 ]
 
-const TotalEarning = () => {
+const TotalEarning = ({dataCategories,skillsData,projectsData,educationsData,portfoliosData}:{portfoliosData:PortfolioData[],dataCategories:Categorie[],skillsData:ISkill[],projectsData:IProject[],educationsData:Education[]}) => {
+ 
   return (
     <Card>
       <CardHeader
@@ -70,7 +77,7 @@ const TotalEarning = () => {
       <CardContent sx={{ pt: theme => `${theme.spacing(2.25)} !important` }}>
         <Box sx={{ mb: 1.5, display: 'flex', alignItems: 'center' }}>
           <Typography variant='h4' sx={{ fontWeight: 600, fontSize: '2.125rem !important' }}>
-            $24,895
+            {portfoliosData.length}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', color: 'success.main' }}>
             <MenuUp sx={{ fontSize: '1.875rem', verticalAlign: 'middle' }} />
@@ -83,15 +90,14 @@ const TotalEarning = () => {
         <Typography component='p' variant='caption' sx={{ mb: 10 }}>
           Compared to $84,325 last year
         </Typography>
+        
 
-        {data.map((item: DataType, index: number) => {
-          return (
-            <Box
-              key={item.title}
+
+           <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                ...(index !== data.length - 1 ? { mb: 8.5 } : {})
+                mb: 8.5
               }}
             >
               <Avatar
@@ -103,7 +109,7 @@ const TotalEarning = () => {
                   backgroundColor: theme => `rgba(${theme.palette.customColors.main}, 0.04)`
                 }}
               >
-                <img src={item.imgSrc} alt={item.title} height={item.imgHeight} />
+                {/* <img src={item.imgSrc} alt={item.title} height={item.imgHeight} /> */}
               </Avatar>
               <Box
                 sx={{
@@ -116,21 +122,111 @@ const TotalEarning = () => {
               >
                 <Box sx={{ marginRight: 2, display: 'flex', flexDirection: 'column' }}>
                   <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
-                    {item.title}
+                    Categories
                   </Typography>
-                  <Typography variant='caption'>{item.subtitle}</Typography>
+                  <Typography variant='caption'>All categories done</Typography>
                 </Box>
 
                 <Box sx={{ minWidth: 85, display: 'flex', flexDirection: 'column' }}>
                   <Typography variant='body2' sx={{ mb: 2, fontWeight: 600, color: 'text.primary' }}>
-                    {item.amount}
+                    {dataCategories.length}
                   </Typography>
-                  <LinearProgress color={item.color} value={item.progress} variant='determinate' />
+                  {/* <LinearProgress color={item.color} value={item.progress} variant='determinate' /> */}
                 </Box>
               </Box>
             </Box>
-          )
-        })}
+
+
+
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                mb: 8.5
+              }}
+            >
+              <Avatar
+                variant='rounded'
+                sx={{
+                  mr: 3,
+                  width: 40,
+                  height: 40,
+                  backgroundColor: theme => `rgba(${theme.palette.customColors.main}, 0.04)`
+                }}
+              >
+                {/* <img src={item.imgSrc} alt={item.title} height={item.imgHeight} /> */}
+              </Avatar>
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <Box sx={{ marginRight: 2, display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
+                    Skills
+                  </Typography>
+                  <Typography variant='caption'>All Skills done</Typography>
+                </Box>
+
+                <Box sx={{ minWidth: 85, display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant='body2' sx={{ mb: 2, fontWeight: 600, color: 'text.primary' }}>
+                    {skillsData.length}
+                  </Typography>
+                  {/* <LinearProgress color={item.color} value={item.progress} variant='determinate' /> */}
+                </Box>
+              </Box>
+            </Box>
+
+
+
+
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                
+              }}
+            >
+              <Avatar
+                variant='rounded'
+                sx={{
+                  mr: 3,
+                  width: 40,
+                  height: 40,
+                  backgroundColor: theme => `rgba(${theme.palette.customColors.main}, 0.04)`
+                }}
+              >
+                {/* <img src={item.imgSrc} alt={item.title} height={item.imgHeight} /> */}
+              </Avatar>
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <Box sx={{ marginRight: 2, display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
+                    Projects
+                  </Typography>
+                  <Typography variant='caption'>All Projects done</Typography>
+                </Box>
+
+                <Box sx={{ minWidth: 85, display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant='body2' sx={{ mb: 2, fontWeight: 600, color: 'text.primary' }}>
+                    {projectsData.length}
+                  </Typography>
+                  {/* <LinearProgress color={item.color} value={item.progress} variant='determinate' /> */}
+                </Box>
+              </Box>
+            </Box>
+
       </CardContent>
     </Card>
   )
