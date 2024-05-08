@@ -65,7 +65,7 @@ export default function page(){
             </Button>  
         </div>
         <div >
-          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-arround' ,padding:"15px", flexWrap: 'wrap', padding: '15px'}}>
+          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-arround' ,padding:"15px", flexWrap: 'wrap'}}>
               {skillList?.map((item: ISkill, index: number) => (
                 <CardSkill key={index} skillData={item} />
               ))} 

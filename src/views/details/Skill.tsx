@@ -9,10 +9,10 @@ export default function Skill() {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div>
-      {skillList?.map((item:ISkill) => (
-            <CardSkill  skillData={item} />
-      ))}
-    </div>
+    <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-arround' ,padding:"15px", flexWrap: 'wrap'}}>
+    {skillList?.map((item: ISkill, index: number) => (
+      <CardSkill key={index} skillData={item} />
+    ))} 
+</div>
   );
 }
