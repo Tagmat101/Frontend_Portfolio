@@ -66,7 +66,7 @@ const TotalEarning = ({dataCategories,skillsData,projectsData,educationsData,por
   return (
     <Card>
       <CardHeader
-        title='Total Earning'
+        title='Total Portfolios'
         titleTypographyProps={{ sx: { lineHeight: '1.6 !important', letterSpacing: '0.15px !important' } }}
         action={
           <IconButton size='small' aria-label='settings' className='card-more-options' sx={{ color: 'text.secondary' }}>
