@@ -89,7 +89,6 @@ const UserLayout = ({ children }: Props) => {
         <AddEdit_ExperienceModal/>
         <AddEdit_ProjectModal/>
         <AddEdit_Skill/>
-
       </VerticalLayout>
       </ContextCategorieProvider>
     </ContextPortfolioProvider> 
