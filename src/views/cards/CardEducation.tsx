@@ -70,24 +70,23 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
  
  
   return (
-    <Card sx={{margin:"10px"}}>
-      <Grid container spacing={6}>
-        <StyledGrid  md={3} >
+    <Card sx={styles.container}>
+      <Grid  sx={styles.content} spacing={6}>
+    
         
         {/* <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' /> */}
-        <img
-         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-
+                
+        <img 
+        style={{ objectFit: 'contain'  ,  width: 50, height: 50, marginRight: 15}}
         src={educationData.institutionLogo}
-      />           
-  
-    </StyledGrid>
+      /> 
       
         <Grid
           item
           xs={12}
           md={7}
           sx={{
+            ...styles.textContainer,
             paddingTop: ['0 !important', '0 !important', '1.5rem !important'],
             paddingLeft: ['1.5rem !important', '1.5rem !important', '0 !important']
           }}
@@ -95,6 +94,7 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
           <CardContent>
              
             <Box sx={{display:"flex",flexDirection:"row",marginBottom: 3.5}}>
+            
             <Typography variant='body2'sx={{fontWeight: 'bold'}} >
 
                 institution :
@@ -182,3 +182,34 @@ const EducationCard = ({ educationData }: { educationData: IEducation }) => {
 
 export default EducationCard
  
+const styles = {
+  container: { 
+    paddingLeft: 5,
+    marginBottom: 10,  
+  },
+  content: {
+    flexDirection: 'row', 
+  },
+  image: {
+    width: 50,
+    height: 50,
+    aspectRatio: 1,
+    marginRight: 15,
+  },
+  textContainer: {
+    flex: 1, // Allow text content to expand within remaining space
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  subTitle: {
+    fontSize: 14,
+    fontWeight: '400',
+  },
+  description: {
+    fontSize: 14,
+    fontWeight: '400',
+    marginTop: 5, // Add some vertical spacing
+  },
+};
