@@ -108,3 +108,4 @@ interface CategorieHelper {
   state: boolean;
 }
 
+export {}

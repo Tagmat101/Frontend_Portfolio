@@ -20,13 +20,13 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 import { ContextPortfolioProvider } from 'src/@core/context/PortfolioContext'
 import { ContextCategorieProvider } from 'src/@core/context/CategorieContext'
 import { ContextPortfolioDetailsProvider } from 'src/@core/context/PortfolioDetailsContext'
-import CategorieUCModal from 'src/views/Modals/CategorieModals/CategorieUCModal'
-import CategorieDModal from 'src/views/Modals/CategorieModals/CategorieDModal'
-import Confirmation from 'src/views/Modals/PortfolioModals/Confirmation'
 import AddEdit_EducationModal from '@modals/AddEdit_Education'
 import AddEdit_ExperienceModal from '@modals/AddEdit_Experience'
 import AddEdit_ProjectModal from '@modals/AddEdit_Project'
 import AddEdit_Skill from '@modals/AddEdit_Skill'
+import CategorieUCModal from '@modals/CategorieModals/CategorieUCModal'
+import CategorieDModal from '@modals/CategorieModals/CategorieDModal'
+import Confirmation from '@modals/PortfolioModals/Confirmation'
 
 interface Props {
   children: ReactNode

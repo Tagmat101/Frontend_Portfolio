@@ -12,7 +12,7 @@ import Select from '@mui/material/Select';
 import { Button, Grid, Typography,Autocomplete,Chip,OutlinedInput } from '@mui/material';
 
  
-import { Briefcase, EmailOutline, CloseCircle, MessageOutline } from 'mdi-material-ui';
+import { Briefcase, EmailOutline, CloseCircle, MessageOutline, ConsoleNetworkOutline } from 'mdi-material-ui';
 import DatePicker from 'react-datepicker' 
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -65,17 +65,18 @@ const employmentTypes = [
     startDate: new Date(),
     endDate:new Date(),
     responsibilities:[],  
-    imageUrl:"",
+    media:[],
   };
   function reducer(state, action) {
+   
     switch (action.type) {
       case 'reset':
         return initialState;
       case 'updateState':
-          return { ...state, ...action.payload };
-      default:
-        console.log(action.type+" "+action.payload )
-        if (action.type in state) {
+          return { ...state, ...action.payload }; 
+      default: 
+        if (action.type in state) { 
+          console.log(action.type," ",action.payload)
           return { ...state, [action.type]: action.payload };
         } else {
           throw new Error(`Unhandled action type: ${action.type}`);
@@ -85,10 +86,7 @@ const employmentTypes = [
   
 const AddEdit_ProjectModal = () => { 
   const [state, dispatch] = useReducer(reducer, initialState); 
-  const { skillList} = useSkill();
-
-  const [previewImages, setPreviewImages] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]); 
+  const { skillList} = useSkill(); 
 
   const {dataProjectMod, setDataProjectMod,openProject,setOpenProject} = useContext(DetailsPortfolioContext); 
 
@@ -105,21 +103,7 @@ const AddEdit_ProjectModal = () => {
   };
 
    const handleSubmit = async (event: FormEvent) => {
-        event.preventDefault(); 
-   
-
-      // const formData = new FormData();
-          
-      // formData.append('link', state.link);  
-      // formData.append('name', state.name);  
-      // formData.append('description', state.description);  
-      // formData.append('achievements', state.achievements);  
-      // formData.append('responsibilities', state.responsibilities);  
-      // formData.append('skills', state.skills);  
-      // formData.append('endDate', state.endDate);  
-      // formData.append('startDate', state.startDate);  
-      // formData.append('images', state.images);   
-   
+        event.preventDefault();  
         if(dataProjectMod==null){  
           const response = await AddProject(state); 
           dispatch({ type: 'reset' }); 
@@ -150,35 +134,21 @@ const AddEdit_ProjectModal = () => {
   // } 
  
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    setSelectedFiles((selectedFile) => [...selectedFile, file]);
-     if (file) {
+    const file = event.target.files && event.target.files[0]; 
+    if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         const result = reader.result;
-        if (result && typeof result === 'string') {
-          setPreviewImages((prevPreviewImages) => [...prevPreviewImages, result]);
-          // dispatch({ type: 'images', payload: [...previewImages, result] });  
+        if (result && typeof result === 'string') { 
+          dispatch({ type: 'media', payload: [...state.media, result] }) 
         }
       };
       reader.readAsDataURL(file);
-    } else {
-      setPreviewImages(null);
-    } 
+    }  
     
   };
-  const handleDeleteImage = (indexToDelete:number) => {
-    console.log(previewImages)
-    const updatedPreviewImages = previewImages.filter((image, index) => index !== indexToDelete);
-    setPreviewImages(updatedPreviewImages);
-  };
-
-  const handleChangeImages = (newValue) => { 
-    console.log(newValue)
-    setPreviewImages(newValue);
-    // dispatch({ type: 'images', payload: newValue });  
-   };
-
+   
+ 
   return (
    
       <Modal
@@ -329,7 +299,7 @@ const AddEdit_ProjectModal = () => {
            </Grid> 
            <Grid item xs={12}>
             <Autocomplete multiple options={[]} freeSolo  
-                 onChange={(event ,newValue) => dispatch({ type: 'achievements', payload: newValue})} 
+                onChange={(event ,newValue) => dispatch({ type: 'achievements', payload: newValue})} 
                  value={state.achievements}
                 renderTags={(value, getTagProps) =>
                   value.map((option, index) => (
@@ -349,34 +319,45 @@ const AddEdit_ProjectModal = () => {
                     )}
             /> 
             </Grid>
-            {/* <Grid item xs={12} spacing={2}  > 
+            <Grid item xs={12} spacing={2}  > 
                   <Autocomplete
-                      multiple={true}
-                      disableInput 
+                      multiple 
                       freeSolo
-                      sx={{ display: 'flex', flexDirection: 'row' }}
-                      value={previewImages}
-                      onChange={(event, newValue) => handleChangeImages(newValue)}
+                      options={[]} 
+                      sx={{ display: 'flex', flexDirection: 'row' , pointerEvents: 'none' }}
+                      value={state.media} 
+                      onChange={(e,newValue)=> dispatch({ type: 'media', payload: newValue }) }
                       renderTags={(value, getTagProps) =>
-                        value.map((option, index) => (
-                          <Chip
-                            key={index}
-                            sx={{ width: '20%', height: '100px' }}
-                            variant="outlined"
-                            label={<img src={option} alt={`selectedFile-${index}`} style={{ maxWidth: '100%', maxHeight: '100px' }} />}
-                            onDelete={() => handleDeleteImage(index)}  
-                            deleteIcon={<CloseCircle />}
-                            {...getTagProps({ index })}
-                          />
-                        ))
-                      }
-                      renderInput={(params) => (
-                        <TextField
-                          {...params} 
-                          label="Images"
-                          placeholder="Images..."
-                        /> 
-                      )}
+                        value.map((option:string, index: number) => {
+                          const { key, ...tagProps } = getTagProps({ index });
+                          return (  
+                            <Chip
+                              key={index}
+                              sx={{
+                                width: '150px',
+                                height: '150px',  
+                                alignItems: 'center' ,
+                                pointerEvents: value.includes(option) ? 'auto' : 'none'
+                              }}
+                              variant="outlined"
+                              label={<img src={option} alt={`selectedFile-${index}`}  style={{ width: '150px', height: '140px' }} />}
+                              // deleteIcon={<CloseCircle />}  
+                              {...tagProps}
+                            />
+                           );
+                          })
+                        }
+                        renderInput={(params) => (
+                          <TextField 
+                            {...params}  
+                            label="Images"
+                            placeholder="Images..."
+                            InputProps={{
+                              ...params.InputProps,
+                           
+                            }} 
+                          /> 
+                        )}
                     />
                     <input
                       type="file"
@@ -392,8 +373,8 @@ const AddEdit_ProjectModal = () => {
                     </label>
                 
 
-                </Grid> */}
-                                {/* {selectedFiles?.length > 0 ? (
+                </Grid>
+                 {/* {selectedFiles?.length > 0 ? (
                     selectedFiles.map((file, index) => (
                       <Typography key={index} variant="body1" component="span" marginLeft={1}>
                         {file.name}
@@ -403,10 +384,10 @@ const AddEdit_ProjectModal = () => {
                     <Typography variant="body1" component="span" marginLeft={1}>
                       Select image
                     </Typography>
-                  )} */}
+                  )}   */}
 
                
-                {/* {previewImages?.length > 0 && (
+                 {/* {previewImages?.length > 0 && (
                   <Grid item xs={12}>
                     {previewImages?.map((previewImage, index) => (
                       <img
@@ -417,8 +398,8 @@ const AddEdit_ProjectModal = () => {
                       />
                     ))}
                   </Grid>
-                )}
-             */}
+                )} */}
+            
             
             <Grid item xs={12}>
               <TextField

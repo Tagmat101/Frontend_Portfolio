@@ -77,9 +77,8 @@ export default function CardProject ({ projectData }: { projectData: IProject })
         <StyledGrid  md={3} >
        
             {/* <img width={137} height={176} alt='Apple iPhone 11 Pro' src='/images/cards/iPhone-11-pro.png' /> */}
-            <img
-                   style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-            src={projectData.imageUrl}
+            <img  style={{ width: '100%', maxHeight: '300px', objectFit: 'contain' }}
+            src={projectData.media[0]}
           />           
       
         </StyledGrid>

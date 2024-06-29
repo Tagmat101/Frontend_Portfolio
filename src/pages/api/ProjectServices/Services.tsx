@@ -26,20 +26,14 @@ export const AddProject = async (data: IProject) => {
    
     const cookie_ = cookie.get('token-cookie');
 
- 
-    // if (previewImages && previewImages.length > 0) {
-    //   for (const image of previewImages) {
-    //       formData.append('images', image);
-    //   }
-    // }
-
+  
     const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/project/create`;
     const response = await axios.post(url, data, {
       headers: {
         Authorization:cookie_
       }
     });
-    console.log(response.data);
+    console.log("AddProject ",response.data);
     return response.data;
   } catch (error) {
     console.log(error.response.data);
