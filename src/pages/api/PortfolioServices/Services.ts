@@ -25,6 +25,7 @@ export const GetAllPortfolios = async() => {
     try{
         const cookie_ = cookie.get('token-cookie')
         const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${root}/all`;
+        console.log(url)
         const response = await axios.get(url,{
             headers: {
                 'Authorization': cookie_
@@ -37,6 +38,8 @@ export const GetAllPortfolios = async() => {
         throw error
     }
 }
+
+
 
 export const GetCountPortfolios = async() => {
     try {
