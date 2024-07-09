@@ -20,6 +20,8 @@ import Button, { ButtonProps } from '@mui/material/Button'
 
 // ** Icons Imports
 import Close from 'mdi-material-ui/Close'
+import { useDataFetching } from '@hooks/useFetchingData'
+import { GetUserDetails } from '@api/UserServices/Services'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -49,6 +51,8 @@ const TabAccount = () => {
   // ** State
   const [openAlert, setOpenAlert] = useState<boolean>(true)
   const [imgSrc, setImgSrc] = useState<string>('/images/avatars/1.png')
+  const {data} = useDataFetching<User>(GetUserDetails)
+
 
   const onChange = (file: ChangeEvent) => {
     const reader = new FileReader()
@@ -59,6 +63,7 @@ const TabAccount = () => {
       reader.readAsDataURL(files[0])
     }
   }
+  if(!data) return <>Loading...</>
 
   return (
     <CardContent>
@@ -89,10 +94,10 @@ const TabAccount = () => {
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Username' placeholder='johnDoe' defaultValue='johnDoe' />
+            <TextField fullWidth label='Username' placeholder='johnDoe' defaultValue={data.name} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Name' placeholder='John Doe' defaultValue='John Doe' />
+            <TextField fullWidth label='Name' placeholder='John Doe' defaultValue={data.name} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -100,7 +105,7 @@ const TabAccount = () => {
               type='email'
               label='Email'
               placeholder='johnDoe@example.com'
-              defaultValue='johnDoe@example.com'
+              defaultValue={data.email}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -108,10 +113,6 @@ const TabAccount = () => {
               <InputLabel>Role</InputLabel>
               <Select label='Role' defaultValue='admin'>
                 <MenuItem value='admin'>Admin</MenuItem>
-                <MenuItem value='author'>Author</MenuItem>
-                <MenuItem value='editor'>Editor</MenuItem>
-                <MenuItem value='maintainer'>Maintainer</MenuItem>
-                <MenuItem value='subscriber'>Subscriber</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -124,9 +125,6 @@ const TabAccount = () => {
                 <MenuItem value='pending'>Pending</MenuItem>
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField fullWidth label='Company' placeholder='ABC Pvt. Ltd.' defaultValue='ABC Pvt. Ltd.' />
           </Grid>
 
           {openAlert ? (

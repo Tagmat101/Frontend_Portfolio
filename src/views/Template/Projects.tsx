@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { Card, Box, styled, Typography, Grid } from '@mui/material';
-import { useProjectAll, useProjectByID } from '@hooks/useProject';
-import CardProTemplate from './CardsTemplate/CardProTemplate';
-import CardProject from '@cards/CardProject';
+import React from 'react';
+import { Card, Typography, Grid } from '@mui/material';
+import { styled } from '@mui/system';
+import CardProjectTemplate from './CardsTemplate/CardProjectTemplate';
 
 // Styled component for the container
 const FrameContainer = styled(Card)({
@@ -12,22 +11,26 @@ const FrameContainer = styled(Card)({
   margin: '10px', // Add margin to each FrameContainer
 });
 
-const ProjectsTemp = ({data}:{data:IProject[]}) => {
+const ProjectsTemp = ({ data }) => {
   return (
     data.length > 0 ? 
-    <Grid container direction="column" alignItems="center">
-      <Grid item>
-        <Typography variant='h3' sx={{ paddingBottom: 4,marginTop: 4 }}>Projects</Typography>
+    <Grid container spacing={4} direction="column" alignItems="center">
+      <Grid item xs={12}>
+        <Typography variant='h3' sx={{ paddingBottom: 4, marginTop: 4 }}>Projects</Typography>
       </Grid>
-      <Grid item>
+      <Grid item xs={12}>
         <Typography variant='h6' align="center">My work experience as a software engineer and working on different companies and projects.</Typography>
       </Grid>
-      {data?.map((item, index) => (
-        <Grid item xs={12} key={index}>
-            <CardProject projectData={item} />
-        </Grid>
-      ))}
-    </Grid> : <></>
+      <Grid container item xs={12} spacing={3}>
+        {data?.map((item, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index}>
+            <FrameContainer>
+              <CardProjectTemplate projectData={item} />
+            </FrameContainer>
+          </Grid>
+        ))}
+      </Grid>
+    </Grid> : null
   );
 };
 

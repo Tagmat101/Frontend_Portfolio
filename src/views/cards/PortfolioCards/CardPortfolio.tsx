@@ -43,7 +43,7 @@ const CardPortfolio = ({ portfolio }: CardPortfolioProps) => {
       {
         const response = await DeletePortfolio(portfolio.id)
         alert(response.data.message)
-        document.location.reload()
+        setValue('portfolio')
       } catch(error:any) {
          console.log(error)
          alert(error.response.data.message)

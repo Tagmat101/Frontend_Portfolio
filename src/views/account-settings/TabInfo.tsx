@@ -21,6 +21,8 @@ import DatePicker from 'react-datepicker'
 
 // ** Styled Components
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import { useDataFetching } from '@hooks/useFetchingData'
+import { GetUserDetails } from '@api/UserServices/Services'
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField inputRef={ref} label='Birth Date' fullWidth {...props} />
@@ -28,7 +30,9 @@ const CustomInput = forwardRef((props, ref) => {
 
 const TabInfo = () => {
   // ** State
-  const [date, setDate] = useState<Date | null | undefined>(null)
+  const {data} = useDataFetching<User>(GetUserDetails)
+
+  if(!data) return <>Loading...</>
 
   return (
     <CardContent>
@@ -44,19 +48,7 @@ const TabInfo = () => {
               defaultValue='The name’s John Deo. I am a tireless seeker of knowledge, occasional purveyor of wisdom and also, coincidentally, a graphic designer. Algolia helps businesses across industries quickly create relevant 😎, scalable 😀, and lightning 😍 fast search and discovery experiences.'
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <DatePickerWrapper>
-              <DatePicker
-                selected={date}
-                showYearDropdown
-                showMonthDropdown
-                id='account-settings-date'
-                placeholderText='MM-DD-YYYY'
-                customInput={<CustomInput />}
-                onChange={(date: Date) => setDate(date)}
-              />
-            </DatePickerWrapper>
-          </Grid>
+          
           <Grid item xs={12} sm={6}>
             <TextField fullWidth type='number' label='Phone' placeholder='(123) 456-7890' />
           </Grid>
@@ -112,9 +104,6 @@ const TabInfo = () => {
           <Grid item xs={12}>
             <Button variant='contained' sx={{ marginRight: 3.5 }}>
               Save Changes
-            </Button>
-            <Button type='reset' variant='outlined' color='secondary' onClick={() => setDate(null)}>
-              Reset
             </Button>
           </Grid>
         </Grid>

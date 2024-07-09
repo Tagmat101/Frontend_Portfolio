@@ -77,6 +77,7 @@ interface User {
   name: string;
   email: string;
   tel: string;
+  password: string;
 }
   
 interface PortfolioDataHelper { //this interface helps me to get data from db 
