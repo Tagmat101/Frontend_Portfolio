@@ -29,6 +29,7 @@ import { PortfolioContext } from 'src/@core/context/PortfolioContext';
 import { getEducationAll } from '@api/EducationServices/Services';
 import { getProjectAll } from '@api/ProjectServices/Services';
 import { getExperienceAll } from '@api/ExperienceServices/Service';
+import { GetDataSkills } from '@api/SkillServices/Services';
 
 interface ListState {
   educations: any[];
@@ -98,7 +99,7 @@ const FormCreation = () => {
         const responseProjects = await getProjectAll();
         const responseExperiences = await getExperienceAll();
         const responseCategories = await GetCategoriesPortActive();
-
+        const responseSkills = await GetDataSkills()
         if (idPortfolio !== '') {
           setLoading(true);
           const data = await GetPortfolioById(idPortfolio);
@@ -125,7 +126,7 @@ const FormCreation = () => {
             projects: responseProjects,
             experiences: responseExperiences,
             categories: responseCategories,
-            skills: [],
+            skills: responseSkills,
           });
         }
       } catch (error) {
@@ -140,7 +141,7 @@ const FormCreation = () => {
     };
   }, []);
   if(modify && !dataPortfolioMod) {
-    return <>loading</>
+    return <CircularProgress style={{ marginLeft: '10px' }} size={24} />
   }
   const handleAddItem = (type: keyof ListState, value: string) => {
     if (!list[type].some((item) => item.id === value)) {

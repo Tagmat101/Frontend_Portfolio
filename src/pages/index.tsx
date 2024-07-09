@@ -15,6 +15,7 @@ import { GetDataSkillsCount, getSkillAll } from '@api/SkillServices/Services'
 import { GetDataProjectsCount, getProjectAll } from '@api/ProjectServices/Services'
 import { getEducationAll, getEducationAllCount } from '@api/EducationServices/Services'
 import { GetCountPortfolios } from '@api/PortfolioServices/Services'
+import { CircularProgress } from '@mui/material'
 
 const Dashboard = () => {
   const {data:dataCategories} = useDataFetching<Categorie[]>(GetCategoriesPortCount)
@@ -23,7 +24,7 @@ const Dashboard = () => {
   const {data:educationsData} = useDataFetching<IEducation[]>(getEducationAllCount)
   const {data:portfoliosData} = useDataFetching<PortfolioData[]>(GetCountPortfolios)
 
-  if(!dataCategories || !skillsData || !projectsData || !educationsData || !portfoliosData) return <>Loading...</>
+  if(!dataCategories || !skillsData || !projectsData || !educationsData || !portfoliosData) return <CircularProgress style={{ marginLeft: '10px' }} size={24} />
 
   return (
     <ApexChartWrapper>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Card, Box, styled, Typography, Grid } from '@mui/material';
-import { useEducationAll } from '@hooks/useEducation';
 import EducationCard from '@cards/CardEducation';
 import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineOppositeContent, TimelineSeparator } from '@mui/lab';
 import EducationCardTemplate from './CardsTemplate/CardEducation';

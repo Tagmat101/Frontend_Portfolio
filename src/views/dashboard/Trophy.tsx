@@ -4,8 +4,6 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import { styled, useTheme } from '@mui/material/styles'
-import { useDataFetching } from '@hooks/useFetchingData'
-import { GetAllPortfolios } from '@api/PortfolioServices/Services'
 
 // Styled component for the triangle shaped background image
 const TriangleImg = styled('img')({

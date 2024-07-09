@@ -77,20 +77,9 @@ const TotalEarning = ({dataCategories,skillsData,projectsData,educationsData,por
       <CardContent sx={{ pt: theme => `${theme.spacing(2.25)} !important` }}>
         <Box sx={{ mb: 1.5, display: 'flex', alignItems: 'center' }}>
           <Typography variant='h4' sx={{ fontWeight: 600, fontSize: '2.125rem !important' }}>
-            {portfoliosData.length}
+            {portfoliosData}
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', color: 'success.main' }}>
-            <MenuUp sx={{ fontSize: '1.875rem', verticalAlign: 'middle' }} />
-            <Typography variant='body2' sx={{ fontWeight: 600, color: 'success.main' }}>
-              10%
-            </Typography>
-          </Box>
         </Box>
-
-        <Typography component='p' variant='caption' sx={{ mb: 10 }}>
-          Compared to $84,325 last year
-        </Typography>
-        
 
 
            <Box
@@ -129,7 +118,7 @@ const TotalEarning = ({dataCategories,skillsData,projectsData,educationsData,por
 
                 <Box sx={{ minWidth: 85, display: 'flex', flexDirection: 'column' }}>
                   <Typography variant='body2' sx={{ mb: 2, fontWeight: 600, color: 'text.primary' }}>
-                    {dataCategories.length}
+                    {dataCategories}
                   </Typography>
                   {/* <LinearProgress color={item.color} value={item.progress} variant='determinate' /> */}
                 </Box>
@@ -174,7 +163,7 @@ const TotalEarning = ({dataCategories,skillsData,projectsData,educationsData,por
 
                 <Box sx={{ minWidth: 85, display: 'flex', flexDirection: 'column' }}>
                   <Typography variant='body2' sx={{ mb: 2, fontWeight: 600, color: 'text.primary' }}>
-                    {skillsData.length}
+                    {skillsData}
                   </Typography>
                   {/* <LinearProgress color={item.color} value={item.progress} variant='determinate' /> */}
                 </Box>
@@ -220,7 +209,7 @@ const TotalEarning = ({dataCategories,skillsData,projectsData,educationsData,por
 
                 <Box sx={{ minWidth: 85, display: 'flex', flexDirection: 'column' }}>
                   <Typography variant='body2' sx={{ mb: 2, fontWeight: 600, color: 'text.primary' }}>
-                    {projectsData.length}
+                    {projectsData}
                   </Typography>
                   {/* <LinearProgress color={item.color} value={item.progress} variant='determinate' /> */}
                 </Box>
