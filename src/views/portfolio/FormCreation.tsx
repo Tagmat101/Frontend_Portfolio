@@ -69,6 +69,26 @@ const FormCreation = () => {
   const [visi, setVisi] = useState<string>('Public');
   const [selectedCategorie, setSelectedCategorie] = useState<string>('');
 
+
+
+  const resetStates = () => {
+    setName('');
+    setColor('#aabbcc');
+    setVisi('Public');
+    setSelectedCategorie('');
+    setList({
+      educations: [],
+      experiences: [],
+      projects: [],
+    });
+    setResume('');
+    setDataPortfolioMod(null);
+    setLoading(false);
+    setError('');
+    
+  };
+  
+
   useEffect(() => {
     let isMounted = true; // Track if the component is mounted
    
@@ -231,13 +251,10 @@ const FormCreation = () => {
           display: display.selectedItems,
         });
       }
-
-      if (modify) {
-        setModify(false);
-        setValue('view');
-        document.location.reload();
+      if(modify) {
+        setValue('view')
       }
-      setLoading(false);
+      resetStates()
     } catch (error) {
       setLoading(false);
       setError('Error creating portfolio. Please try again later.');
