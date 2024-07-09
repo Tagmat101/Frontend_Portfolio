@@ -20,7 +20,7 @@ const style = {
 };
 
 const Confirmation = () => {
-  const { dataPortfolioCrea, openPortCrea , setOpenPortCrea ,setDataPortfolioCrea } = useContext(PortfolioContext);
+  const { dataPortfolioCrea, openPortCrea , setOpenPortCrea ,setDataPortfolioCrea, setValue } = useContext(PortfolioContext);
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -29,7 +29,7 @@ const Confirmation = () => {
       const response = await CreatePortfolioPost(dataPortfolioCrea.create)
       setDataPortfolioCrea({})
       setOpenPortCrea(false)
-      document.location.reload()
+      setValue('view')
     } catch (error: any) {
       setErrorMessage(error.response?.data?.message || 'An error occurred');
     }

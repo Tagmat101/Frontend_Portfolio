@@ -51,7 +51,7 @@ const renderStats = ({dataCategories,skillsData,projectsData,educationsData}:{da
           </Avatar>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant='caption'>Categories</Typography>
-            <Typography variant='h6'>{dataCategories.length}</Typography>
+            <Typography variant='h6'>{dataCategories}</Typography>
           </Box>
         </Box>
      </Grid>
@@ -74,7 +74,7 @@ const renderStats = ({dataCategories,skillsData,projectsData,educationsData}:{da
           </Avatar>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant='caption'>Skills</Typography>
-            <Typography variant='h6'>{skillsData.length}</Typography>
+            <Typography variant='h6'>{skillsData}</Typography>
           </Box>
         </Box>
      </Grid>
@@ -97,7 +97,7 @@ const renderStats = ({dataCategories,skillsData,projectsData,educationsData}:{da
           </Avatar>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant='caption'>Projects</Typography>
-            <Typography variant='h6'>{projectsData.length}</Typography>
+            <Typography variant='h6'>{projectsData}</Typography>
           </Box>
         </Box>
      </Grid>
@@ -120,7 +120,7 @@ const renderStats = ({dataCategories,skillsData,projectsData,educationsData}:{da
           </Avatar>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant='caption'>Educations</Typography>
-            <Typography variant='h6'>{educationsData.length}</Typography>
+            <Typography variant='h6'>{educationsData}</Typography>
           </Box>
         </Box>
      </Grid>

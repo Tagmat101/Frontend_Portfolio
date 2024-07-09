@@ -20,6 +20,8 @@ import EyeOutline from 'mdi-material-ui/EyeOutline'
 import KeyOutline from 'mdi-material-ui/KeyOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
+import { GetUserDetails } from '@api/UserServices/Services'
+import { useDataFetching } from '@hooks/useFetchingData'
 
 interface State {
   newPassword: string
@@ -32,6 +34,7 @@ interface State {
 
 const TabSecurity = () => {
   // ** States
+ 
   const [values, setValues] = useState<State>({
     newPassword: '',
     currentPassword: '',
@@ -40,6 +43,11 @@ const TabSecurity = () => {
     showCurrentPassword: false,
     showConfirmNewPassword: false
   })
+  const {data} = useDataFetching<User>(GetUserDetails)
+
+  if(!data) return <>Loading...</>
+
+ 
 
   // Handle Current Password
   const handleCurrentPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +93,7 @@ const TabSecurity = () => {
                   <InputLabel htmlFor='account-settings-current-password'>Current Password</InputLabel>
                   <OutlinedInput
                     label='Current Password'
-                    value={values.currentPassword}
+                    value={data.password}
                     id='account-settings-current-password'
                     type={values.showCurrentPassword ? 'text' : 'password'}
                     onChange={handleCurrentPasswordChange('currentPassword')}

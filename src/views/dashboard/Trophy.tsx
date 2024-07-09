@@ -4,8 +4,6 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import { styled, useTheme } from '@mui/material/styles'
-import { useDataFetching } from '@hooks/useFetchingData'
-import { GetAllPortfolios } from '@api/PortfolioServices/Services'
 
 // Styled component for the triangle shaped background image
 const TriangleImg = styled('img')({
@@ -39,7 +37,7 @@ const Trophy = ({data}:{data:PortfolioData[]}) => {
           
         </Typography>
         <Typography variant='h5' sx={{ my: 4, color: 'primary.main' }}>
-          {data.length} Portfolios 
+          {data}
         </Typography>
         <Button size='small' variant='contained'>
           View Portfolios

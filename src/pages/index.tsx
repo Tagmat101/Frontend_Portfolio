@@ -1,41 +1,30 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 
-// ** Icons Imports
-import Poll from 'mdi-material-ui/Poll'
-import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
-import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import BriefcaseVariantOutline from 'mdi-material-ui/BriefcaseVariantOutline'
-
-// ** Custom Components Imports
-import CardStatisticsVerticalComponent from 'src/@core/components/card-statistics/card-stats-vertical'
-
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
-import Table from 'src/views/dashboard/Table'
 import Trophy from 'src/views/dashboard/Trophy'
 import TotalEarning from 'src/views/dashboard/TotalEarning'
 import StatisticsCard from 'src/views/dashboard/StatisticsCard'
 import WeeklyOverview from 'src/views/dashboard/WeeklyOverview'
-import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
-import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 import { useDataFetching } from '@hooks/useFetchingData'
-import { GetCategoriesPort } from '@api/CategoriePortServices/Service'
-import { getSkillAll } from '@api/SkillServices/Services'
-import { getProjectAll } from '@api/ProjectServices/Services'
-import { getEducationAll } from '@api/EducationServices/Services'
-import { GetAllPortfolios } from '@api/PortfolioServices/Services'
+import { GetCategoriesPort, GetCategoriesPortCount } from '@api/CategoriePortServices/Service'
+import { GetDataSkillsCount, getSkillAll } from '@api/SkillServices/Services'
+import { GetDataProjectsCount, getProjectAll } from '@api/ProjectServices/Services'
+import { getEducationAll, getEducationAllCount } from '@api/EducationServices/Services'
+import { GetCountPortfolios } from '@api/PortfolioServices/Services'
+import { CircularProgress } from '@mui/material'
 
 const Dashboard = () => {
-  const {data:dataCategories} = useDataFetching<Categorie[]>(GetCategoriesPort)
-  const {data:skillsData} = useDataFetching<ISkill[]>(getSkillAll)
-  const {data:projectsData} = useDataFetching<IProject[]>(getProjectAll)
-  const {data:educationsData} = useDataFetching<IEducation[]>(getEducationAll)
-  const {data:portfoliosData} = useDataFetching<PortfolioData[]>(GetAllPortfolios)
+  const {data:dataCategories} = useDataFetching<Categorie[]>(GetCategoriesPortCount)
+  const {data:skillsData} = useDataFetching<ISkill[]>(GetDataSkillsCount)
+  const {data:projectsData} = useDataFetching<IProject[]>(GetDataProjectsCount)
+  const {data:educationsData} = useDataFetching<IEducation[]>(getEducationAllCount)
+  const {data:portfoliosData} = useDataFetching<PortfolioData[]>(GetCountPortfolios)
 
-  if(!dataCategories || !skillsData || !projectsData || !educationsData || !portfoliosData) return <>Loading...</>
+  if(!dataCategories || !skillsData || !projectsData || !educationsData || !portfoliosData) return <CircularProgress style={{ marginLeft: '10px' }} size={24} />
 
   return (
     <ApexChartWrapper>

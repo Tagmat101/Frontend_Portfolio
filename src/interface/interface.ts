@@ -11,8 +11,8 @@ interface IEducation {
     institution: string; 
     institutionLogo: string; 
     degree:string;
-    startDate:Date;
-    endDate:Date;
+    startDate:string;
+    endDate:string;
     fieldOfStudy:string;
     location:string;
     description:string;
@@ -38,8 +38,8 @@ interface IEducation {
     name: string;
     link: string;
     description: string;
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
     responsibilities: string[];
     achievements: string[];
     skills: ISkill[];
@@ -48,7 +48,7 @@ interface IEducation {
   
    interface Categorie {
     id: string;
-    name: String;
+    name: string;
     state: boolean;
   }
   
@@ -77,6 +77,7 @@ interface User {
   name: string;
   email: string;
   tel: string;
+  password: string;
 }
   
 interface PortfolioDataHelper { //this interface helps me to get data from db 

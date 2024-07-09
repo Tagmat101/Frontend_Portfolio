@@ -32,6 +32,22 @@ export async function getEducationAll() {
     throw error
   }
 } 
+
+export async function getEducationAllCount() {
+  try {   
+    const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/${root}/all/count`; 
+    const cookie_ = cookie.get('token-cookie')
+    const response = await axios.get(url,{
+        headers: {
+            'Authorization': cookie_
+        }
+    }) 
+
+    return response.data.data;
+  } catch (error) {
+    throw error
+  }
+} 
  
  
 export const AddEducation = async(data:IEducation) => {

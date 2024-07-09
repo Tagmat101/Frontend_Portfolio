@@ -12,27 +12,27 @@ import React, {
   interface StateContextType {
     modify:boolean;
     value: string;
-    dataPortfolioMod: PortfolioData;
+    idPortfolio: string;
     dataPortfolioCrea: any;
     openPortCrea: boolean;
     setValue: Dispatch<SetStateAction<string>>;
-    setDataPortfolioMod: Dispatch<SetStateAction<PortfolioData>>;
     setModify: Dispatch<SetStateAction<boolean>>;
     setDataPortfolioCrea: Dispatch<SetStateAction<any>>;
     setOpenPortCrea: Dispatch<SetStateAction<boolean>>;
+    setIdPortfolio: Dispatch<SetStateAction<string>>;
   }
   
   export const PortfolioContext = createContext<StateContextType>({
     modify: false,
     value: 'portfolio' ,
     openPortCrea: false,
-    dataPortfolioMod: {categorie: {id: "" , name: "" , state: false},id: "",visible: false,name: "", color: "" , educations: [],experiences: [] , projects: [],skills: [],resume: '',user: {name: '',email: '' , tel: ''}},
     dataPortfolioCrea: {},
+    idPortfolio: '',
     setModify: () => {},
-    setDataPortfolioMod: () => {},
     setValue: () => {},
     setDataPortfolioCrea: () => {},
-    setOpenPortCrea: () => {}
+    setOpenPortCrea: () => {},
+    setIdPortfolio: () => {}
   });
   
   type ContextProviderProps = {
@@ -40,25 +40,13 @@ import React, {
   };
   
   export const ContextPortfolioProvider = ({ children }: ContextProviderProps) => {
-    const [dataPortfolioMod, setDataPortfolioMod] = useState<PortfolioData>({
-        id: "",
-        name: "",
-        visible: false,
-        color: "",
-        educations: [],
-        experiences: [],
-        projects: [],
-        categorie: {id: "" , name: "" , state: false},
-        resume: '',
-        user: {email: '',name: '',tel: ''},
-        skills: []
-    });
+    const [idPortfolio, setIdPortfolio] = useState<string>('')
     const [dataPortfolioCrea , setDataPortfolioCrea] = useState<any>({})
     const [modify, setModify] = useState<boolean>(false);
     const [value,setValue] = useState<string>('portfolio')
     const [openPortCrea , setOpenPortCrea] = useState<boolean>(false)
     return (
-      <PortfolioContext.Provider value={{ openPortCrea, setOpenPortCrea, dataPortfolioCrea, setDataPortfolioCrea, value,setValue, dataPortfolioMod , setDataPortfolioMod, modify, setModify }}>
+      <PortfolioContext.Provider value={{ idPortfolio,setIdPortfolio, openPortCrea, setOpenPortCrea, dataPortfolioCrea, setDataPortfolioCrea, value,setValue, modify, setModify }}>
         {children}
       </PortfolioContext.Provider>
     );

@@ -69,16 +69,17 @@ const Header = ({ data }: { data: PortfolioData }) => {
         </Link>
       </Box>
       <Box sx={{ marginTop: 3 }}>
-        <button
+      <button
+          disabled={data.resume === ''}
           onClick={() => downloadPDF(data.resume)}
           style={{
-            backgroundColor: data.color,
+            backgroundColor: data.resume === '' ? 'transparent' : data.color,
             padding: '13px',
             border: 'none',
             borderRadius: '4px',
-            color: '#000',
+            color: data.resume === '' ? 'gray' : '#000', // Optional: Change text color when transparent
             fontSize: '16px',
-            cursor: 'pointer',
+            cursor: data.resume === '' ? 'not-allowed' : 'pointer',
             transition: 'background-color 0.3s',
             marginLeft: '10px',
             marginRight: '10px',
@@ -86,6 +87,7 @@ const Header = ({ data }: { data: PortfolioData }) => {
         >
           Download resume
         </button>
+
         <Button
           variant="outlined"
           color="primary"

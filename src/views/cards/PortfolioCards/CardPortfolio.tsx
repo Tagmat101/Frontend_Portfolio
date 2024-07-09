@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent'
 import { Theme } from '@mui/material/styles';
 import { useContext, useState } from 'react'
 import { PortfolioContext } from 'src/@core/context/PortfolioContext'
-import { DeletePortfolio } from 'src/pages/api/PortfolioServices/Services'
+import { DeletePortfolio, GetPortfolioById } from 'src/pages/api/PortfolioServices/Services'
 import { ThemeColor } from 'src/@core/layouts/types'
 import Chip from '@mui/material/Chip';
 import router from 'next/router'
@@ -29,20 +29,21 @@ const statusObj: StatusObj = {
 
 const CardPortfolio = ({ portfolio }: CardPortfolioProps) => {
   // ** States
-  const {setModify,modify,setValue,setDataPortfolioMod} = useContext(PortfolioContext)
+  const {setModify,modify,setValue,setIdPortfolio} = useContext(PortfolioContext)
+
   // ** Functions 
-  const handleModifyButton = () => {
-    setModify(true)
-    setValue('portfolio')
-    setDataPortfolioMod(portfolio)
-  }
+  const handleModifyButton = async () => {
+    setModify(true);
+    setValue('portfolio');
+    setIdPortfolio(portfolio.id)
+  };
 
   const handleDeleteButton = async () => {
       try
       {
         const response = await DeletePortfolio(portfolio.id)
         alert(response.data.message)
-        document.location.reload()
+        setValue('portfolio')
       } catch(error:any) {
          console.log(error)
          alert(error.response.data.message)
