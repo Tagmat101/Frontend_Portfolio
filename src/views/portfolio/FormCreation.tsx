@@ -114,6 +114,7 @@ const FormCreation = () => {
             setColor(data.color);
             setVisi(data.visible ? 'Public' : 'Private');
             setSelectedCategorie(data.categorie ? data.categorie.id : '');
+            setResume(data.resume)
             setLoading(false);
           }
         }
