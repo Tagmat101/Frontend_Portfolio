@@ -45,6 +45,7 @@ const FormCreation = () => {
     setValue,
     setOpenPortCrea,
     setDataPortfolioCrea,
+    setIdPortfolio
   } = useContext(PortfolioContext);
 
   const [dataPortfolioMod, setDataPortfolioMod] = useState<PortfolioData | null>(
@@ -73,6 +74,7 @@ const FormCreation = () => {
 
 
   const resetStates = () => {
+    console.log("reseting states")
     setName('');
     setColor('#aabbcc');
     setVisi('Public');
@@ -80,13 +82,14 @@ const FormCreation = () => {
     setList({
       educations: [],
       experiences: [],
-      projects: [],
+      projects: [], 
     });
     setResume('');
     setDataPortfolioMod(null);
     setLoading(false);
     setError('');
-    
+    setModify(false)
+    setIdPortfolio('')
   };
   
 
@@ -461,7 +464,7 @@ const FormCreation = () => {
                 onClick={handleCreate}
                 disabled={loading}
               >
-                {loading ? <CircularProgress size={24} /> : 'Create'}
+                {loading ? <CircularProgress size={24} /> :  modify ? 'Modify' : 'Create'}
               </Button>
             </Grid>
           </Grid>
