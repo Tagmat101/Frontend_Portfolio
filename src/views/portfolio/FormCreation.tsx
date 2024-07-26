@@ -271,6 +271,10 @@ const FormCreation = () => {
     const MAX_FILE_SIZE_MB = 3;
     const selectedFile = event.target.files && event.target.files[0];
     if (selectedFile) {
+      if(selectedFile.type != "PDF") {
+         alert('Only pdf files are permissible')
+         return
+      }
       const fileSizeInMB = selectedFile.size / (1024 * 1024);
       if (fileSizeInMB > MAX_FILE_SIZE_MB) {
         alert(
